@@ -5,6 +5,7 @@ import Dashboard from "./screens/dashboard/index";
 import { Route, Routes } from "react-router-dom";
 import SideBar from "./screens/global/SideBar";
 import TeamDashboard from "./screens/Team/Index";
+import UsersDashboard from "./screens/Users/Index";
 function App() {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
@@ -21,6 +22,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/Team" element={<TeamDashboard />} />
+              <Route path="/Users" element={<UsersDashboard />} />
             </Routes>
           </main>
         </div>

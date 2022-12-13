@@ -23,7 +23,7 @@ export const mockDataTeam = [
     email: "jaimelannister@gmail.com",
     age: 45,
     phone: "(422)982-6739",
-    access: "user",
+    access: "manager",
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ export const mockDataTeam = [
     email: "daenerystargaryen@gmail.com",
     age: 31,
     phone: "(421)445-1189",
-    access: "user",
+    access: "frontend",
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ export const mockDataTeam = [
     email: "ferraraclifford@gmail.com",
     age: 44,
     phone: "(543)124-0123",
-    access: "user",
+    access: "backend",
   },
   {
     id: 8,
@@ -63,7 +63,7 @@ export const mockDataTeam = [
     email: "rossinifrances@gmail.com",
     age: 36,
     phone: "(222)444-5555",
-    access: "user",
+    access: "product owner",
   },
   {
     id: 9,
@@ -74,8 +74,49 @@ export const mockDataTeam = [
     access: "admin",
   },
 ];
-
-export const mockDataContacts = [
+export const mockUsers = [
+  {
+    id: 1,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    adress: "heliplis,28 abdelwahab khalaf",
+  },
+  {
+    id: 2,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    adress: "heliplis,28 abdelwahab khalaf",
+  },
+  {
+    id: 3,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    adress: "heliplis,28 abdelwahab khalaf",
+  },
+  {
+    id: 4,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    adress: "heliplis,28 abdelwahab khalaf",
+  },
+  {
+    id: 5,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    adress: "heliplis,28 abdelwahab khalaf",
+  },
+];
+export const mockDataBrands = [
   {
     id: 1,
     name: "Jon Snow",
@@ -198,8 +239,7 @@ export const mockDataContacts = [
     registrarId: 92197,
   },
 ];
-
-export const mockDataInvoices = [
+export const mockDataProducts = [
   {
     id: 1,
     name: "Jon Snow",
@@ -265,8 +305,157 @@ export const mockDataInvoices = [
     date: "05/02/2021",
   },
 ];
-
-export const mockTransactions = [
+export const mockMerchants = [
+  {
+    txId: "01e4dsa",
+    user: "johndoe",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "0315dsaa",
+    user: "jackdower",
+    date: "2022-04-01",
+    cost: "133.45",
+  },
+  {
+    txId: "01e4dsa",
+    user: "aberdohnny",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "51034szv",
+    user: "goodmanave",
+    date: "2022-11-05",
+    cost: "200.95",
+  },
+  {
+    txId: "0a123sb",
+    user: "stevebower",
+    date: "2022-11-02",
+    cost: "13.55",
+  },
+  {
+    txId: "01e4dsa",
+    user: "aberdohnny",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "120s51a",
+    user: "wootzifer",
+    date: "2019-04-15",
+    cost: "24.20",
+  },
+  {
+    txId: "0315dsaa",
+    user: "jackdower",
+    date: "2022-04-01",
+    cost: "133.45",
+  },
+];
+export const mockOffers = [
+  {
+    txId: "01e4dsa",
+    user: "johndoe",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "0315dsaa",
+    user: "jackdower",
+    date: "2022-04-01",
+    cost: "133.45",
+  },
+  {
+    txId: "01e4dsa",
+    user: "aberdohnny",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "51034szv",
+    user: "goodmanave",
+    date: "2022-11-05",
+    cost: "200.95",
+  },
+  {
+    txId: "0a123sb",
+    user: "stevebower",
+    date: "2022-11-02",
+    cost: "13.55",
+  },
+  {
+    txId: "01e4dsa",
+    user: "aberdohnny",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "120s51a",
+    user: "wootzifer",
+    date: "2019-04-15",
+    cost: "24.20",
+  },
+  {
+    txId: "0315dsaa",
+    user: "jackdower",
+    date: "2022-04-01",
+    cost: "133.45",
+  },
+];
+export const mockCategories = [
+  {
+    txId: "01e4dsa",
+    user: "johndoe",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "0315dsaa",
+    user: "jackdower",
+    date: "2022-04-01",
+    cost: "133.45",
+  },
+  {
+    txId: "01e4dsa",
+    user: "aberdohnny",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "51034szv",
+    user: "goodmanave",
+    date: "2022-11-05",
+    cost: "200.95",
+  },
+  {
+    txId: "0a123sb",
+    user: "stevebower",
+    date: "2022-11-02",
+    cost: "13.55",
+  },
+  {
+    txId: "01e4dsa",
+    user: "aberdohnny",
+    date: "2021-09-01",
+    cost: "43.95",
+  },
+  {
+    txId: "120s51a",
+    user: "wootzifer",
+    date: "2019-04-15",
+    cost: "24.20",
+  },
+  {
+    txId: "0315dsaa",
+    user: "jackdower",
+    date: "2022-04-01",
+    cost: "133.45",
+  },
+];
+export const mockOrders = [
   {
     txId: "01e4dsa",
     user: "johndoe",
@@ -317,6 +506,7 @@ export const mockTransactions = [
   },
 ];
 
+//profits and charts
 export const mockBarData = [
   {
     country: "AD",
@@ -396,7 +586,6 @@ export const mockBarData = [
     donutColor: "hsl(274, 70%, 50%)",
   },
 ];
-
 export const mockPieData = [
   {
     id: "hack",

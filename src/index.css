@@ -18,8 +18,21 @@ body,
 
 ::-webkit-scrollbar-thumb {
   background: #888;
+
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+.css-wc9pnx-muidatagrid-root .muidatagrid-columnheader:focus-within,
+.css-wc9pnx-muidatagrid-root .muidatagrid-cell:focus-within {
+  outline: none !important;
+}
+.css-wc9pnx-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-wc9pnx-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
+}
+.css-1kt8ah5-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-1kt8ah5-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
 }

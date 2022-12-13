@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/system";
@@ -15,8 +15,8 @@ function TeamDashboard() {
     {
       field: "name",
       headerName: "Name",
-        flex: 1,
-        minWidth: 200,
+      flex: 1,
+      minWidth: 200,
       cellClassName: "name-column--cell",
     },
     {
@@ -29,14 +29,14 @@ function TeamDashboard() {
     {
       field: "phone",
       headerName: "Phone Number",
-        flex: 1,
+      flex: 1,
       minWidth: 200,
     },
     {
       field: "email",
       headerName: "Email",
-        flex: 1,
-        minWidth: 200,
+      flex: 1,
+      minWidth: 200,
     },
     {
       field: "access",
@@ -49,11 +49,11 @@ function TeamDashboard() {
       headerAlign: "center",
       align: "center",
       justifyContent: "space-around",
-        flex: 1,
-        minWidth: 200,
+      flex: 1,
+      minWidth: 200,
       sortable: false,
       hideable: false,
-      renderCell: () => {
+      renderCell: ({ row: { id } }) => {
         return (
           <Box display={"flex"} justifyContent={"space-around"} width={"80%"}>
             <Button
@@ -62,6 +62,7 @@ function TeamDashboard() {
                 backgroundColor: colors.redAccent[600],
                 borderRadius: "5px",
               }}
+              onClick={() => alert(id)}
             >
               Delete
             </Button>
@@ -71,6 +72,7 @@ function TeamDashboard() {
                 backgroundColor: colors.blueAccent[600],
                 borderRadius: "5px",
               }}
+              onClick={() => alert(id)}
             >
               Edit
             </Button>

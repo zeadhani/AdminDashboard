@@ -38,6 +38,7 @@ function Table({ rowData, ColumnData }) {
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
+        onRowClick={(rowData)=>console.log(rowData)}
         disableSelectionOnClick
         disableVirtualization
       />

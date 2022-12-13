@@ -184,7 +184,7 @@ function SideBar() {
         />
         <Item
           title="Users"
-          to="/users"
+          to="/Users"
           icon={<EmojiPeopleOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
