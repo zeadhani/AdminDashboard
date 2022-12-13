@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { ColorModeContext, tokens, useMode } from "./Theme";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import TopBar from "./screens/global/TopBar";
+import Dashboard from "./screens/dashboard/index";
+import { Route, Routes } from "react-router-dom";
+import SideBar from "./screens/global/SideBar";
+import TeamDashboard from "./screens/Team/Index";
 function App() {
+  const [theme, colorMode] = useMode();
+  const colors = tokens(theme.palette.mode);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+          <SideBar />
+          <main
+            className="content"
+          >
+            <TopBar />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/Team" element={<TeamDashboard />} />
+            </Routes>
+          </main>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
