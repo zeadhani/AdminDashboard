@@ -1,6 +1,5 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
@@ -14,8 +13,6 @@ import {
   OutlinedInput,
   Paper,
   Select,
-  TableFooter,
-  TablePagination,
 } from "@mui/material";
 import { tokens } from "../../Theme";
 import { useState } from "react";
@@ -43,7 +40,7 @@ function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [page, setPage] = useState(0);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [count, setCount] = useState(0);
   const [sort, setSort] = useState("createdAt");
@@ -51,14 +48,14 @@ function ProductsDashboard() {
   const [loading, setLoading] = useState(false);
   const [filtered, setFiltered] = useState([]);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
- 
   const handleOrderByChange = (event) => {
     setOrderBy(event.target.value);
   };
-  const handleSearchChange=(e)=>{
-    setSearch(e.target.value)
-  }
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
 
   const handleSortChange = (event) => {
     setSort(event.target.value);
@@ -106,12 +103,24 @@ function ProductsDashboard() {
     };
 
     getProducts();
-  }, [rowsPerPage, page, count, sort, orderBy,search]);
+  }, [rowsPerPage, page, count, sort, orderBy, search]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const categoriesdata = await axios.get(`http://localhost:3001/category`);
+    
+      setCategories(categoriesdata.data);
+    };
+
+    getCategories();
+  }, []);
+
   const columns = [
     { id: "id", label: "Id" },
     { id: "name", label: "Name" },
     { id: "slug", label: "Slug" },
     { id: "price", label: "Price" },
+    { id: "category", label: "Category" },
     { id: "created_at", label: "Created_At" },
   ];
 
@@ -133,7 +142,12 @@ function ProductsDashboard() {
             borderRadius="6px"
             height={"55px"}
           >
-            <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" value={search} onChange={handleSearchChange}/>
+            <InputBase
+              sx={{ ml: 2, flex: 1 }}
+              placeholder="Search"
+              value={search}
+              onChange={handleSearchChange}
+            />
             <IconButton type="button" sx={{ p: 1 }}>
               <Search />
             </IconButton>
@@ -182,9 +196,9 @@ function ProductsDashboard() {
             )}
             MenuProps={MenuProps}
           >
-            {["Admin", "Manager", "Frontend", "Backend"].map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
+            {categories.map((item) => (
+              <MenuItem key={item._id} value={item._id}>
+                {item.name}
               </MenuItem>
             ))}
           </Select>
@@ -225,6 +239,7 @@ function ProductsDashboard() {
             <TableCell>{row.name}</TableCell>
             <TableCell>{row.slug}</TableCell>
             <TableCell>{row.price}</TableCell>
+            <TableCell>{row.category}</TableCell>
             <TableCell>{moment(row.createdAt).format("YYYY-MM-DD")}</TableCell>
             <TableCell sx={{ textAlign: "center" }}>
               <Box display={"flex"} justifyContent={"center"}>
