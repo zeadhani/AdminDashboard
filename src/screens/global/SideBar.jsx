@@ -4,17 +4,14 @@ import {
   Sidebar,
   Menu,
   MenuItem,
-  SubMenu,
   useProSidebar,
   sidebarClasses,
-  menuClasses,
 } from "react-pro-sidebar";
 import {
   Box,
   useTheme,
   IconButton,
   Typography,
-  Button,
   Avatar,
   Stack,
 } from "@mui/material";
@@ -53,7 +50,7 @@ function SideBar() {
 
   const { collapseSidebar, collapsed } = useProSidebar();
   const [selected, setSelected] = useState(
-    window.location.pathname.split("/")[1] == ""
+    window.location.pathname.split("/")[1] === ""
       ? "Dashboard"
       : window.location.pathname.split("/")[1]
   );

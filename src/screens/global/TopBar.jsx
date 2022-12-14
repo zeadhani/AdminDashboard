@@ -7,11 +7,11 @@ import { DarkModeOutlined } from "@mui/icons-material";
 import { NotificationsOutlined } from "@mui/icons-material";
 import { SettingsOutlined } from "@mui/icons-material";
 import { PersonOutlined } from "@mui/icons-material";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function TopBar() {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  // const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   return (
     <Box display={"flex"} justifyContent={"space-between"} p={2}>

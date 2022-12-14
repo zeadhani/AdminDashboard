@@ -1,13 +1,10 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
+import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
-import { CircularProgress, LinearProgress } from "@mui/material";
+import { IconButton, InputBase, LinearProgress } from "@mui/material";
 import {
   Box,
   Button,
@@ -27,7 +24,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment/moment";
-
+import TableCard from "../../components/TableCard";
+import { Search, SearchOutlined } from "@mui/icons-material";
+import { Stack } from "@mui/system";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -44,12 +43,22 @@ function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [page, setPage] = useState(0);
+  const [search, setSearch] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [count, setCount] = useState(0);
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("asc");
   const [loading, setLoading] = useState(false);
   const [filtered, setFiltered] = useState([]);
   const [products, setProducts] = useState([]);
+
+ 
+  const handleOrderByChange = (event) => {
+    setOrderBy(event.target.value);
+  };
+  const handleSearchChange=(e)=>{
+    setSearch(e.target.value)
+  }
 
   const handleSortChange = (event) => {
     setSort(event.target.value);
@@ -69,12 +78,6 @@ function ProductsDashboard() {
     setPage(0);
   };
 
-  const StyledTableCell = styled(TableCell)(() => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: colors.blueAccent[600],
-    },
-  }));
-
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: colors.primary[400],
@@ -91,10 +94,11 @@ function ProductsDashboard() {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
+
       const products = await axios.get(
         `http://localhost:3001/products?limit=${rowsPerPage}&page=${
           page + 1
-        }&sort=${sort}`
+        }&sort=${sort},${orderBy}&search=${search}`
       );
       setProducts(products.data.data);
       setCount(products.data.totalCount);
@@ -102,7 +106,7 @@ function ProductsDashboard() {
     };
 
     getProducts();
-  }, [rowsPerPage, page, count, sort]);
+  }, [rowsPerPage, page, count, sort, orderBy,search]);
   const columns = [
     { id: "id", label: "Id" },
     { id: "name", label: "Name" },
@@ -114,14 +118,27 @@ function ProductsDashboard() {
   return (
     <Box mx="20px">
       <Header title={"BOGO PRODUCTS"} subtitle={"Managing bogo products!"} />
-      <Box
+      <Stack
+        direction={"row"}
+        spacing={6}
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
           paddingTop: "20px",
           paddingBottom: "20px",
         }}
       >
+        <FormControl sx={{ width: 300 }}>
+          <Box
+            display="flex"
+            backgroundColor={colors.primary[400]}
+            borderRadius="6px"
+            height={"55px"}
+          >
+            <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" value={search} onChange={handleSearchChange}/>
+            <IconButton type="button" sx={{ p: 1 }}>
+              <Search />
+            </IconButton>
+          </Box>
+        </FormControl>
         <FormControl sx={{ width: 200 }}>
           <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
           <Select
@@ -130,10 +147,21 @@ function ProductsDashboard() {
             value={sort}
             onChange={handleSortChange}
           >
-            <MenuItem value={""}>Default</MenuItem>
-            <MenuItem value={"price"}>Price</MenuItem>
             <MenuItem value={"createdAt"}>Created At</MenuItem>
+            <MenuItem value={"price"}>Price</MenuItem>
             <MenuItem value={"name"}>Name</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl sx={{ width: 200 }}>
+          <InputLabel id="demo-simple-select-label">Order by</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={orderBy}
+            onChange={handleOrderByChange}
+          >
+            <MenuItem value={"asc"}>Ascending</MenuItem>
+            <MenuItem value={"desc"}>Descending</MenuItem>
           </Select>
         </FormControl>
         <FormControl sx={{ width: 400 }}>
@@ -161,7 +189,8 @@ function ProductsDashboard() {
             ))}
           </Select>
         </FormControl>
-      </Box>
+      </Stack>
+
       <Box sx={{ width: "100%" }} height={5}>
         {loading && (
           <LinearProgress
@@ -170,86 +199,60 @@ function ProductsDashboard() {
           />
         )}
       </Box>
-      <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-        <Table stickyHeader sx={{ minWidth: 1200 }}>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <StyledTableCell key={column.id}>
-                  {column.label}
-                </StyledTableCell>
-              ))}
-              <StyledTableCell sx={{ textAlign: "center" }}>
-                Actions
-              </StyledTableCell>
-            </TableRow>
-          </TableHead>
 
-          <TableBody>
-            {products.map((row) => (
-              <StyledTableRow
-                key={row._id}
-                onClick={() => alert(row.name)}
-                sx={{
-                  "&:hover": {
-                    cursor: "pointer",
-                    backgroundColor: colors.grey[900],
-                  },
-                }}
-              >
-                <StyledTableCell>{row._id}</StyledTableCell>
-                <StyledTableCell>{row.name}</StyledTableCell>
-                <StyledTableCell>{row.slug}</StyledTableCell>
-                <StyledTableCell>{row.price}</StyledTableCell>
-                <StyledTableCell>{moment(row.createdAt).format('YYYY-MM-DD')}</StyledTableCell>
-                <StyledTableCell sx={{ textAlign: "center" }}>
-                  <Box display={"flex"} justifyContent={"center"}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: colors.redAccent[600],
-                        borderRadius: "5px",
-                        marginRight:"5px"
-                      }}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: colors.blueAccent[600],
-                        borderRadius: "5px",
-                        marginLeft:'5px'
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  </Box>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-
-          <TableFooter
+      <TableCard
+        component={Paper}
+        sx={{ maxHeight: "70vh" }}
+        columns={columns}
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      >
+        {products.map((row) => (
+          <StyledTableRow
+            key={row._id}
+            onClick={() => alert(row.name)}
             sx={{
-              position: "sticky",
-              insetBlockEnd: 0,
-              backgroundColor: colors.blueAccent[600],
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: colors.grey[900],
+              },
             }}
           >
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 25, 50]}
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+            <TableCell>{row._id}</TableCell>
+            <TableCell>{row.name}</TableCell>
+            <TableCell>{row.slug}</TableCell>
+            <TableCell>{row.price}</TableCell>
+            <TableCell>{moment(row.createdAt).format("YYYY-MM-DD")}</TableCell>
+            <TableCell sx={{ textAlign: "center" }}>
+              <Box display={"flex"} justifyContent={"center"}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: colors.redAccent[600],
+                    borderRadius: "5px",
+                    marginRight: "5px",
+                  }}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: colors.blueAccent[600],
+                    borderRadius: "5px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  Edit
+                </Button>
+              </Box>
+            </TableCell>
+          </StyledTableRow>
+        ))}
+      </TableCard>
     </Box>
   );
 }

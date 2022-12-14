@@ -9,7 +9,7 @@ import UsersDashboard from "./screens/Users/Index";
 import ProductsDashboard from "./screens/products";
 function App() {
   const [theme, colorMode] = useMode();
-  const colors = tokens(theme.palette.mode);
+  // const colors = tokens(theme.palette.mode);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
