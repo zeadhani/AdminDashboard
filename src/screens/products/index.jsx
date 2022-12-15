@@ -4,7 +4,11 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
 import { IconButton, InputBase, LinearProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  createSearchParams,
+  useSearchParams,
+} from "react-router-dom";
 import {
   Box,
   Button,
@@ -38,15 +42,32 @@ const MenuProps = {
 function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  const [search, setSearch] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(
+    searchParams.get("page") ? parseInt(searchParams.get("page")) : 0
+  );
+  const [search, setSearch] = useState(
+    searchParams.get("search") ? searchParams.get("search") : ""
+  );
+  const [rowsPerPage, setRowsPerPage] = useState(
+    searchParams.get("rowsPerPage")
+      ? parseInt(searchParams.get("rowsPerPage"))
+      : 5
+  );
   const [count, setCount] = useState(0);
-  const [sort, setSort] = useState("createdAt");
-  const [orderBy, setOrderBy] = useState("asc");
+ 
+  const [sort, setSort] = useState(
+    searchParams.get("sort") ? searchParams.get("sort") : "createdAt"
+  );
+ 
+  const [orderBy, setOrderBy] = useState(
+    searchParams.get("orderBy") ? searchParams.get("orderBy") : "asc"
+  );
   const [loading, setLoading] = useState(false);
-  const [filtered, setFiltered] = useState([]);
+  const [filtered, setFiltered] = useState(
+    searchParams.get("filtered") ? searchParams.get("filtered").split(",") : []
+  );
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -102,6 +123,16 @@ function ProductsDashboard() {
       setLoading(false);
     };
 
+    navigate({
+      search: `?${createSearchParams({
+        rowsPerPage,
+        page,
+        sort,
+        orderBy,
+        search,
+        filtered: [filtered],
+      })}`,
+    });
     getProducts();
   }, [rowsPerPage, page, count, sort, orderBy, search, filtered]);
 
