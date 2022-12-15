@@ -7,6 +7,7 @@ import SideBar from "./screens/global/SideBar";
 import TeamDashboard from "./screens/Team/Index";
 import UsersDashboard from "./screens/Users/Index";
 import ProductsDashboard from "./screens/products";
+import ProductDetails from "./screens/products/productDetails";
 function App() {
   const [theme, colorMode] = useMode();
   // const colors = tokens(theme.palette.mode);
@@ -16,15 +17,14 @@ function App() {
         <CssBaseline />
         <div className="app">
           <SideBar />
-          <main
-            className="content"
-          >
+          <main className="content">
             <TopBar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/Team" element={<TeamDashboard />} />
               <Route path="/Users" element={<UsersDashboard />} />
-              <Route path="/Products" element={<ProductsDashboard />} />
+              <Route exact path="/Products" element={<ProductsDashboard />} />
+              <Route path="/Products/:slug" element={<ProductDetails />} />
             </Routes>
           </main>
         </div>

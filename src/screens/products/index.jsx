@@ -4,13 +4,12 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
 import { IconButton, InputBase, LinearProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
-  Chip,
   FormControl,
   InputLabel,
-  OutlinedInput,
   Paper,
   Select,
 } from "@mui/material";
@@ -22,7 +21,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment/moment";
 import TableCard from "../../components/TableCard";
-import { Search, SearchOutlined } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { Stack } from "@mui/system";
 
 const ITEM_HEIGHT = 48;
@@ -39,6 +38,7 @@ const MenuProps = {
 function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -95,7 +95,7 @@ function ProductsDashboard() {
       const products = await axios.get(
         `http://localhost:3001/products?limit=${rowsPerPage}&page=${
           page + 1
-        }&sort=${sort},${orderBy}&search=${search}`
+        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
       );
       setProducts(products.data.data);
       setCount(products.data.totalCount);
@@ -103,15 +103,13 @@ function ProductsDashboard() {
     };
 
     getProducts();
-  }, [rowsPerPage, page, count, sort, orderBy, search]);
+  }, [rowsPerPage, page, count, sort, orderBy, search, filtered]);
 
   useEffect(() => {
     const getCategories = async () => {
       const categoriesdata = await axios.get(`http://localhost:3001/category`);
-    
       setCategories(categoriesdata.data);
     };
-
     getCategories();
   }, []);
 
@@ -186,18 +184,10 @@ function ProductsDashboard() {
             multiple
             value={filtered}
             onChange={handleFilterChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
             MenuProps={MenuProps}
           >
             {categories.map((item) => (
-              <MenuItem key={item._id} value={item._id}>
+              <MenuItem key={item._id} value={item?._id}>
                 {item.name}
               </MenuItem>
             ))}
@@ -224,10 +214,10 @@ function ProductsDashboard() {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       >
-        {products.map((row) => (
+        {products.map((row, index) => (
           <StyledTableRow
             key={row._id}
-            onClick={() => alert(row.name)}
+            onClick={() => navigate(`/Products/${row.slug}`)}
             sx={{
               "&:hover": {
                 cursor: "pointer",
@@ -235,10 +225,10 @@ function ProductsDashboard() {
               },
             }}
           >
-            <TableCell>{row._id}</TableCell>
+            <TableCell>{index + 1}</TableCell>
             <TableCell>{row.name}</TableCell>
             <TableCell>{row.slug}</TableCell>
-            <TableCell>{row.price}</TableCell>
+            <TableCell>{row.price} EGP</TableCell>
             <TableCell>{row.category}</TableCell>
             <TableCell>{moment(row.createdAt).format("YYYY-MM-DD")}</TableCell>
             <TableCell sx={{ textAlign: "center" }}>
