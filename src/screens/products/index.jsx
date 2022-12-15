@@ -3,7 +3,12 @@ import { styled } from "@mui/material/styles";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
-import { IconButton, InputBase, LinearProgress } from "@mui/material";
+import {
+  IconButton,
+  InputBase,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import {
   useNavigate,
   createSearchParams,
@@ -27,7 +32,6 @@ import moment from "moment/moment";
 import TableCard from "../../components/TableCard";
 import { Search } from "@mui/icons-material";
 import { Stack } from "@mui/system";
- 
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -73,7 +77,7 @@ function ProductsDashboard() {
   );
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  const [error, setError] = useState(false);
   const handleOrderByChange = (event) => {
     setOrderBy(event.target.value);
   };
@@ -115,14 +119,18 @@ function ProductsDashboard() {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-
-      const products = await axios.get(
-        `http://localhost:3001/products?limit=${rowsPerPage}&page=${
-          page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
-      );
-      setProducts(products.data.data);
-      setCount(products.data.totalCount);
+      try {
+        const products = await axios.get(
+          `http://localhost:3001/products?limit=${rowsPerPage}&page=${
+            page + 1
+          }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
+        );
+        setProducts(products.data.data);
+        setCount(products.data.totalCount);
+        setError(false);
+      } catch (err) {
+        setError(true);
+      }
       setLoading(false);
     };
 
@@ -210,7 +218,7 @@ function ProductsDashboard() {
             <MenuItem value={"desc"}>Descending</MenuItem>
           </Select>
         </FormControl>
-        <FormControl sx={{ width: 400 ,flex:1}}>
+        <FormControl sx={{ width: 400, flex: 1 }}>
           <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
           <Select
             labelId="demo-multiple-chip-label"
@@ -248,49 +256,55 @@ function ProductsDashboard() {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       >
-        {products.map((row, index) => (
-          <StyledTableRow
-            key={row._id}
-            onClick={() => navigate(`/Products/${row.slug}`)}
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-                backgroundColor: colors.grey[900],
-              },
-            }}
-          >
-            <TableCell>{index + 1}</TableCell>
-            <TableCell>{row.name}</TableCell>
-            <TableCell>{row.slug}</TableCell>
-            <TableCell>{row.price} EGP</TableCell>
-            <TableCell>{row.category}</TableCell>
-            <TableCell>{moment(row.createdAt).format("YYYY-MM-DD")}</TableCell>
-            <TableCell sx={{ textAlign: "center" }}>
-              <Box display={"flex"} justifyContent={"center"}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: colors.redAccent[600],
-                    borderRadius: "5px",
-                    marginRight: "5px",
-                  }}
-                >
-                  Delete
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: colors.blueAccent[600],
-                    borderRadius: "5px",
-                    marginLeft: "5px",
-                  }}
-                >
-                  Edit
-                </Button>
-              </Box>
-            </TableCell>
-          </StyledTableRow>
-        ))}
+        {error && (
+          <Typography p={2} component={"h2"}>Error , could not fetch data</Typography>
+        )}
+        {!error &&
+          products.map((row, index) => (
+            <StyledTableRow
+              key={row._id}
+              onClick={() => navigate(`/Products/${row.slug}`)}
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                  backgroundColor: colors.grey[900],
+                },
+              }}
+            >
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.slug}</TableCell>
+              <TableCell>{row.price} EGP</TableCell>
+              <TableCell>{row.category}</TableCell>
+              <TableCell>
+                {moment(row.createdAt).format("YYYY-MM-DD")}
+              </TableCell>
+              <TableCell sx={{ textAlign: "center" }}>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: colors.redAccent[600],
+                      borderRadius: "5px",
+                      marginRight: "5px",
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: colors.blueAccent[600],
+                      borderRadius: "5px",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+              </TableCell>
+            </StyledTableRow>
+          ))}
       </TableCard>
     </Box>
   );
