@@ -27,6 +27,7 @@ import moment from "moment/moment";
 import TableCard from "../../components/TableCard";
 import { Search } from "@mui/icons-material";
 import { Stack } from "@mui/system";
+ 
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -42,8 +43,10 @@ const MenuProps = {
 function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
   const [page, setPage] = useState(
     searchParams.get("page") ? parseInt(searchParams.get("page")) : 0
   );
@@ -56,11 +59,11 @@ function ProductsDashboard() {
       : 5
   );
   const [count, setCount] = useState(0);
- 
+
   const [sort, setSort] = useState(
     searchParams.get("sort") ? searchParams.get("sort") : "createdAt"
   );
- 
+
   const [orderBy, setOrderBy] = useState(
     searchParams.get("orderBy") ? searchParams.get("orderBy") : "asc"
   );
@@ -207,7 +210,7 @@ function ProductsDashboard() {
             <MenuItem value={"desc"}>Descending</MenuItem>
           </Select>
         </FormControl>
-        <FormControl sx={{ width: 400 }}>
+        <FormControl sx={{ width: 400 ,flex:1}}>
           <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
           <Select
             labelId="demo-multiple-chip-label"
