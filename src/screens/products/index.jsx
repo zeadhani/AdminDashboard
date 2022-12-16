@@ -32,6 +32,7 @@ import moment from "moment/moment";
 import TableCard from "../../components/TableCard";
 import { Search } from "@mui/icons-material";
 import { Stack } from "@mui/system";
+import { grey } from "@mui/material/colors";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -78,6 +79,7 @@ function ProductsDashboard() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
+
   const handleOrderByChange = (event) => {
     setOrderBy(event.target.value);
   };
@@ -103,6 +105,22 @@ function ProductsDashboard() {
     setPage(0);
   };
 
+  const getProducts = async () => {
+    setLoading(true);
+    try {
+      const products = await axios.get(
+        `http://localhost:3001/products?limit=${rowsPerPage}&page=${
+          page + 1
+        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
+      );
+      setProducts(products.data.data);
+      setCount(products.data.totalCount);
+      setError(false);
+    } catch (err) {
+      setError(true);
+    }
+    setLoading(false);
+  };
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: colors.primary[400],
@@ -116,24 +134,17 @@ function ProductsDashboard() {
     },
   }));
 
-  useEffect(() => {
-    const getProducts = async () => {
-      setLoading(true);
-      try {
-        const products = await axios.get(
-          `http://localhost:3001/products?limit=${rowsPerPage}&page=${
-            page + 1
-          }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
-        );
-        setProducts(products.data.data);
-        setCount(products.data.totalCount);
-        setError(false);
-      } catch (err) {
-        setError(true);
-      }
-      setLoading(false);
-    };
+  const handleDeleteProduct = async (slug) => {
+    try {
+      await axios.delete(`http://localhost:3001/products/${slug}`);
+      getProducts();
+      setError(false);
+    } catch (err) {
+      setError(true);
+    }
+  };
 
+  useEffect(() => {
     navigate({
       search: `?${createSearchParams({
         rowsPerPage,
@@ -169,10 +180,11 @@ function ProductsDashboard() {
       <Header title={"BOGO PRODUCTS"} subtitle={"Managing bogo products!"} />
       <Stack
         direction={"row"}
-        spacing={6}
+        spacing={4}
+        width={"100%"}
         sx={{
           paddingTop: "20px",
-          paddingBottom: "20px",
+          paddingBottom:"20px"
         }}
       >
         <FormControl sx={{ width: 300 }}>
@@ -188,7 +200,7 @@ function ProductsDashboard() {
               value={search}
               onChange={handleSearchChange}
             />
-            <IconButton type="button" sx={{ p: 1 }}>
+            <IconButton type="button" sx={{ p: 1 }} disableRipple>
               <Search />
             </IconButton>
           </Box>
@@ -218,7 +230,7 @@ function ProductsDashboard() {
             <MenuItem value={"desc"}>Descending</MenuItem>
           </Select>
         </FormControl>
-        <FormControl sx={{ width: 400, flex: 1 }}>
+        <FormControl sx={{ width: 300 }} >
           <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
           <Select
             labelId="demo-multiple-chip-label"
@@ -235,8 +247,13 @@ function ProductsDashboard() {
             ))}
           </Select>
         </FormControl>
+        <Box borderRadius={"8px"} flex={1} justifyContent={"center"} alignItems={"end"} display={'flex'} >
+        <Button variant="outlined" color={theme.palette.mode === "dark" ?"secondary":"primary"} size={"large"} 
+        onClick={()=>navigate('/products/add-product')}
+        >Add New</Button>
+      </Box>
       </Stack>
-
+     
       <Box sx={{ width: "100%" }} height={5}>
         {loading && (
           <LinearProgress
@@ -257,13 +274,20 @@ function ProductsDashboard() {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       >
         {error && (
-          <Typography p={2} component={"h2"}>Error , could not fetch data</Typography>
+          <Typography p={2} component={"h2"}>
+            Error , could not fetch data
+          </Typography>
         )}
+         {products.length ===0 && (
+          <Typography p={2} component={"h2"}>
+            No items Found
+          </Typography>
+        )}
+        
         {!error &&
           products.map((row, index) => (
             <StyledTableRow
               key={row._id}
-              onClick={() => navigate(`/Products/${row.slug}`)}
               sx={{
                 "&:hover": {
                   cursor: "pointer",
@@ -286,8 +310,8 @@ function ProductsDashboard() {
                     sx={{
                       backgroundColor: colors.redAccent[600],
                       borderRadius: "5px",
-                      marginRight: "5px",
                     }}
+                    onClick={() => handleDeleteProduct(row.slug)}
                   >
                     Delete
                   </Button>
@@ -297,9 +321,29 @@ function ProductsDashboard() {
                       backgroundColor: colors.blueAccent[600],
                       borderRadius: "5px",
                       marginLeft: "5px",
+                      marginRight: "5px",
                     }}
+                    onClick={() =>
+                      navigate(`/Products/${row.slug}`, {
+                        state: { editable: true },
+                      })
+                    }
                   >
                     Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: colors.greenAccent[600],
+                      borderRadius: "5px",
+                    }}
+                    onClick={() =>
+                      navigate(`/Products/${row.slug}`, {
+                        state: { editable: false },
+                      })
+                    }
+                  >
+                    View
                   </Button>
                 </Box>
               </TableCell>

@@ -14,7 +14,15 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { Paper } from "@mui/material";
 import { tokens } from "../Theme";
 
-function TableCard({ children, columns ,count,rowsPerPage,page,handleChangePage,handleChangeRowsPerPage }) {
+function TableCard({
+  children,
+  columns,
+  count,
+  rowsPerPage,
+  page,
+  handleChangePage,
+  handleChangeRowsPerPage,
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const StyledTableCell = styled(TableCell)(() => ({
