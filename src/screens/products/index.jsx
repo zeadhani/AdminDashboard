@@ -32,7 +32,7 @@ import moment from "moment/moment";
 import TableCard from "../../components/TableCard";
 import { Search } from "@mui/icons-material";
 import { Stack } from "@mui/system";
-import { grey } from "@mui/material/colors";
+import LinearProg from "../../components/LinearProg";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -180,11 +180,11 @@ function ProductsDashboard() {
       <Header title={"BOGO PRODUCTS"} subtitle={"Managing bogo products!"} />
       <Stack
         direction={"row"}
-        spacing={4}
+        spacing={3}
         width={"100%"}
         sx={{
           paddingTop: "20px",
-          paddingBottom:"20px"
+          paddingBottom: "20px",
         }}
       >
         <FormControl sx={{ width: 300 }}>
@@ -230,7 +230,7 @@ function ProductsDashboard() {
             <MenuItem value={"desc"}>Descending</MenuItem>
           </Select>
         </FormControl>
-        <FormControl sx={{ width: 300 }} >
+        <FormControl sx={{ width: 300 }}>
           <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
           <Select
             labelId="demo-multiple-chip-label"
@@ -247,22 +247,18 @@ function ProductsDashboard() {
             ))}
           </Select>
         </FormControl>
-        <Box borderRadius={"8px"} flex={1} justifyContent={"center"} alignItems={"end"} display={'flex'} >
-        <Button variant="outlined" color={theme.palette.mode === "dark" ?"secondary":"primary"} size={"large"} 
-        onClick={()=>navigate('/products/add-product')}
-        >Add New</Button>
-      </Box>
+        <Box position={"absolute"} right={20}>
+          <Button
+            variant="outlined"
+            color={theme.palette.mode === "dark" ? "secondary" : "primary"}
+            size={"large"}
+            onClick={() => navigate("/products/add-product")}
+          >
+            Add New
+          </Button>
+        </Box>
       </Stack>
-     
-      <Box sx={{ width: "100%" }} height={5}>
-        {loading && (
-          <LinearProgress
-            color={theme.palette.mode === "dark" ? "info" : "primary"}
-            sx={{ height: "5px" }}
-          />
-        )}
-      </Box>
-
+      <LinearProg loading={loading}/>
       <TableCard
         component={Paper}
         sx={{ maxHeight: "70vh" }}
@@ -278,12 +274,12 @@ function ProductsDashboard() {
             Error , could not fetch data
           </Typography>
         )}
-         {products.length ===0 && (
+        {products.length === 0 && !error && !loading && (
           <Typography p={2} component={"h2"}>
             No items Found
           </Typography>
         )}
-        
+
         {!error &&
           products.map((row, index) => (
             <StyledTableRow

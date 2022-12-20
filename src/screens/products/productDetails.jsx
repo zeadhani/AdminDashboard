@@ -6,7 +6,12 @@ function ProductDetails() {
   const { state } = useLocation();
   const { editable } = state;
 
-  return <>{editable&&<Typography>zzz</Typography>}</>;
+  return (
+    <>
+      {editable && <Typography>edit</Typography>}
+      {!editable && <Typography>view</Typography>}
+    </>
+  );
 }
 
 export default ProductDetails;
