@@ -2,7 +2,7 @@ import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
-import { tokens } from "../Theme";
+import { tokens } from "../../Theme";
 
 function Table({ rowData, ColumnData }) {
   const theme = useTheme();
@@ -38,7 +38,7 @@ function Table({ rowData, ColumnData }) {
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
-        onRowClick={(rowData)=>console.log(rowData)}
+        onRowClick={(rowData) => console.log(rowData)}
         disableSelectionOnClick
         disableVirtualization
       />

@@ -12,7 +12,7 @@ import {
 import React from "react";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { Paper } from "@mui/material";
-import { tokens } from "../Theme";
+import { tokens } from "../../Theme";
 
 function TableCard({
   children,

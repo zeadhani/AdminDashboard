@@ -1,14 +1,7 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
-import {
-  IconButton,
-  InputBase,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
+import { IconButton, InputBase } from "@mui/material";
 import {
   useNavigate,
   createSearchParams,
@@ -29,10 +22,13 @@ import MenuItem from "@mui/material/MenuItem";
 import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment/moment";
-import TableCard from "../../components/TableCard";
+import TableCard from "../../components/Table/TableCard";
 import { Search } from "@mui/icons-material";
 import { Stack } from "@mui/system";
 import LinearProg from "../../components/LinearProg";
+import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
+import TableImage from "../../components/Table/TableImage";
+import CustomTableRow from "../../components/Table/TableRow";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,7 +44,6 @@ const MenuProps = {
 function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -76,6 +71,7 @@ function ProductsDashboard() {
   const [filtered, setFiltered] = useState(
     searchParams.get("filtered") ? searchParams.get("filtered").split(",") : []
   );
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
@@ -113,30 +109,19 @@ function ProductsDashboard() {
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
       );
-      setProducts(products.data.data);
-      setCount(products.data.totalCount);
+
+      setProducts(products.data.data.data);
+      setCount(products.data.data.totalCount);
       setError(false);
     } catch (err) {
       setError(true);
     }
     setLoading(false);
   };
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: colors.primary[400],
-    },
-    "&:nth-of-type(even)": {
-      backgroundColor:
-        theme.palette.mode === "dark" ? colors.primary[500] : colors.grey[800],
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
 
-  const handleDeleteProduct = async (slug) => {
+  const handleDeleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/products/${slug}`);
+      await axios.delete(`http://localhost:3001/products/${id}`);
       getProducts();
       setError(false);
     } catch (err) {
@@ -168,8 +153,8 @@ function ProductsDashboard() {
 
   const columns = [
     { id: "id", label: "Id" },
+    { id: "image", label: "Image" },
     { id: "name", label: "Name" },
-    { id: "slug", label: "Slug" },
     { id: "price", label: "Price" },
     { id: "category", label: "Category" },
     { id: "created_at", label: "Created_At" },
@@ -213,9 +198,15 @@ function ProductsDashboard() {
             value={sort}
             onChange={handleSortChange}
           >
-            <MenuItem value={"createdAt"}>Created At</MenuItem>
-            <MenuItem value={"price"}>Price</MenuItem>
-            <MenuItem value={"name"}>Name</MenuItem>
+            <MenuItem value={"createdAt"} key={"createdAt"}>
+              Created At
+            </MenuItem>
+            <MenuItem value={"price"} key={"price"}>
+              Price
+            </MenuItem>
+            <MenuItem value={"name"} key={"name"}>
+              Name
+            </MenuItem>
           </Select>
         </FormControl>
         <FormControl sx={{ width: 200 }}>
@@ -226,8 +217,12 @@ function ProductsDashboard() {
             value={orderBy}
             onChange={handleOrderByChange}
           >
-            <MenuItem value={"asc"}>Ascending</MenuItem>
-            <MenuItem value={"desc"}>Descending</MenuItem>
+            <MenuItem value={"asc"} key={"asc"}>
+              Ascending
+            </MenuItem>
+            <MenuItem value={"desc"} key={"desc"}>
+              Descending
+            </MenuItem>
           </Select>
         </FormControl>
         <FormControl sx={{ width: 300 }}>
@@ -241,7 +236,7 @@ function ProductsDashboard() {
             MenuProps={MenuProps}
           >
             {categories.map((item) => (
-              <MenuItem key={item._id} value={item?._id}>
+              <MenuItem key={item.id} value={item?.name}>
                 {item.name}
               </MenuItem>
             ))}
@@ -258,7 +253,7 @@ function ProductsDashboard() {
           </Button>
         </Box>
       </Stack>
-      <LinearProg loading={loading}/>
+      <LinearProg loading={loading} />
       <TableCard
         component={Paper}
         sx={{ maxHeight: "70vh" }}
@@ -269,81 +264,37 @@ function ProductsDashboard() {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       >
-        {error && (
-          <Typography p={2} component={"h2"}>
-            Error , could not fetch data
-          </Typography>
-        )}
+        {error && <Box p={2}>Error , could not fetch data</Box>}
         {products.length === 0 && !error && !loading && (
-          <Typography p={2} component={"h2"}>
-            No items Found
-          </Typography>
+          <Box p={2}>No items Found</Box>
         )}
 
         {!error &&
           products.map((row, index) => (
-            <StyledTableRow
-              key={row._id}
-              sx={{
-                "&:hover": {
-                  cursor: "pointer",
-                  backgroundColor: colors.grey[900],
-                },
-              }}
-            >
-              <TableCell>{index + 1}</TableCell>
+            <CustomTableRow colors={colors} key={row.id}>
+              <TableCell>{row.id}</TableCell>
+              <TableImage image={row.image} />
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.slug}</TableCell>
               <TableCell>{row.price} EGP</TableCell>
-              <TableCell>{row.category}</TableCell>
+              <TableCell>{row.Category?.name}</TableCell>
               <TableCell>
                 {moment(row.createdAt).format("YYYY-MM-DD")}
               </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
-                <Box display={"flex"} justifyContent={"center"}>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: colors.redAccent[600],
-                      borderRadius: "5px",
-                    }}
-                    onClick={() => handleDeleteProduct(row.slug)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: colors.blueAccent[600],
-                      borderRadius: "5px",
-                      marginLeft: "5px",
-                      marginRight: "5px",
-                    }}
-                    onClick={() =>
-                      navigate(`/Products/${row.slug}`, {
-                        state: { editable: true },
-                      })
-                    }
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: colors.greenAccent[600],
-                      borderRadius: "5px",
-                    }}
-                    onClick={() =>
-                      navigate(`/Products/${row.slug}`, {
-                        state: { editable: false },
-                      })
-                    }
-                  >
-                    View
-                  </Button>
-                </Box>
-              </TableCell>
-            </StyledTableRow>
+              <ActionsButtonsTable
+                deleteAction={() => handleDeleteProduct(row.id)}
+                editAction={() =>
+                  navigate(`/Products/${row.name}`, {
+                    state: { editable: true },
+                  })
+                }
+                viewAction={() =>
+                  navigate(`/Products/${row.name}`, {
+                    state: { editable: false },
+                  })
+                }
+                colors={colors}
+              />
+            </CustomTableRow>
           ))}
       </TableCard>
     </Box>

@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/system";
 import { tokens } from "../../Theme";
 import { mockDataTeam } from "../../data/mockData";
-import Table from "../../components/Table";
+import Table from "../../components/Table/Table";
 import { Link } from "react-router-dom";
 function TeamDashboard() {
   const theme = useTheme();

@@ -5,7 +5,7 @@ import React from 'react'
 function LinearProg({loading}) {
     const theme = useTheme();
   return (
-    <Box sx={{ width: "100%" }} height={3}>
+    <Box sx={{ width: "100%" }} height={4}>
     {loading && (
       <LinearProgress
         color={theme.palette.mode === "dark" ? "info" : "primary"}

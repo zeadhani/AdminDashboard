@@ -9,6 +9,8 @@ import UsersDashboard from "./screens/Users/Index";
 import ProductsDashboard from "./screens/products";
 import ProductDetails from "./screens/products/productDetails";
 import AddProduct from "./screens/products/AddProduct";
+import ToastMessage from "./components/ToastMessage";
+
 function App() {
   const [theme, colorMode] = useMode();
   // const colors = tokens(theme.palette.mode);
@@ -26,9 +28,10 @@ function App() {
               <Route path="/Users" element={<UsersDashboard />} />
               <Route exact path="/Products" element={<ProductsDashboard />} />
               <Route path="/Products/add-product" element={<AddProduct />} />
-              <Route path="/Products/:slug" element={<ProductDetails />} />
+              <Route path="/Products/:name" element={<ProductDetails />} />
             </Routes>
           </main>
+          <ToastMessage />
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
