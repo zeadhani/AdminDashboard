@@ -141,6 +141,13 @@ function AddProduct() {
               imageFileerror={imageFileerror}
               label={"product Image"}
             />
+            {imageFile && (
+              <img
+                width={80}
+                style={{ borderRadius: 5 }}
+                src={URL.createObjectURL(imageFile)}
+              />
+            )}
             <FormButton theme={theme}>Create new product</FormButton>
           </FormCard>
         )}

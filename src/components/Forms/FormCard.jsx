@@ -7,7 +7,7 @@ function FormCard({ children, serverErrors, loading, handleSubmit }) {
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ width: 700, margin: "auto", paddingTop: "20px" }}
+      style={{ width: 700, margin: "auto", paddingTop: "20px",paddingBottom:"20px" }}
     >
       {serverErrors && (
         <Typography my={2} textAlign={"center"} variant="h5" color={"red"}>

@@ -1,13 +1,34 @@
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import CustomTextField from "./CustomTextField";
 
-function ImageFileUpload({ label, handleImageUpload, imageFileerror, add }) {
+function ImageFileUpload(props) {
+  const {
+    label,
+    handleImageUpload,
+    imageFileerror,
+    add,
+    image,
+    editable,
+    triggerAdd,
+  } = props;
   return (
-    <Stack direction={"row"} spacing={2}>
-      <Typography display={"flex"} alignItems={"center"}>
-        {label}
-      </Typography>
+    <Stack spacing={2}>
+      <Stack spacing={2} direction={"row"}>
+        <Typography display={"flex"} alignItems={"center"}>
+          {label}
+        </Typography>
+        {editable && (
+          <Button
+            variant="text"
+            color={add ? "error" : "success"}
+            onClick={triggerAdd}
+            sx={{ height: "40px" }}
+          >
+            {add ? "Dismiss" : "Change"}
+          </Button>
+        )}
+      </Stack>
       {add && (
         <CustomTextField
           sx={{ flex: 1 }}
@@ -16,6 +37,13 @@ function ImageFileUpload({ label, handleImageUpload, imageFileerror, add }) {
           onChange={handleImageUpload}
           error={imageFileerror ? true : false}
           helperText={imageFileerror}
+        />
+      )}
+      {!add && (
+        <img
+          width={80}
+          style={{ borderRadius: 5 }}
+          src={`https://drive.google.com/uc?export=view&id=${image}`}
         />
       )}
     </Stack>

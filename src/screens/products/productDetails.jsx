@@ -1,138 +1,201 @@
-import {
-  Box,
-  Button,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Box, MenuItem, Typography, useTheme } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import { Formik } from "formik";
 import * as yup from "yup";
-import LinearProg from "../../components/LinearProg";
-import { ToastContainer } from "react-toastify";
+import FormCard from "../../components/Forms/FormCard";
+import CustomTextField from "../../components/Forms/CustomTextField";
+import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import FormButton from "../../components/Forms/FormButton";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function ProductDetails() {
   const { name } = useParams();
   const { state } = useLocation();
   const { editable } = state;
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
+  const [add, setAdd] = useState(false);
+  const [product, setProduct] = useState(false);
   const [categories, setCategories] = useState([]);
   const [imageFile, setimageFile] = useState();
+  const [serverErrors, setServerErrors] = useState(null);
   const [imageFileerror, setimageFileerror] = useState("");
   let form_data = new FormData();
 
-  const handleImageUpload = (e) => {};
+  const handleImageUpload = (e) => {
+    setimageFileerror("");
+    setimageFile(null);
+    const file = e.target.files[0];
 
-  const handleFormSubmit = async (values) => {};
+    if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
+      setimageFileerror("Not Supported file type");
+      return;
+    }
+    setimageFile(file);
+  };
+
+  const handleFormSubmit = async (values) => {
+    if (add) {
+      if (!imageFile || imageFileerror) {
+        setimageFileerror("Image is required");
+        return;
+      }
+    }
+    setLoading(true);
+    const { name, price, category } = values;
+    if (imageFile) {
+      form_data.append("image", imageFile);
+    }
+    form_data.append("name", name);
+    form_data.append("price", price);
+    form_data.append("categoryId", category);
+    console.log(form_data);
+    try {
+      setServerErrors("");
+      const res = await axios.patch(
+        `http://localhost:3001/products/${product.id}`,
+        form_data
+      );
+      if (res.statusText == "OK") toast("product Edited!");
+    } catch (err) {
+      setServerErrors(err.response.data.error);
+    }
+    setLoading(false);
+  };
 
   const formValidation = yup.object().shape({
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
     category: yup.string().ensure().required("category is required!"),
   });
+  const getProduct = async () => {
+    setLoading(true);
+    try {
+      const product = await axios.get(`http://localhost:3001/products/${name}`);
+      setProduct(product.data);
+      if (editable) {
+        const categoriesdata = await axios.get(
+          `http://localhost:3001/category`
+        );
+        setCategories(categoriesdata.data);
+      }
+    } catch (err) {
+      setServerErrors(err.response.data.error);
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    getProduct();
+  }, []);
   const initialValues = {
-    name: "",
-    price: "",
-    category: "",
+    name: product ? product.name : "",
+    price: product ? product.price : 0,
+    category: product ? product.categoryId : "",
   };
   return (
-    <>
-      <Box mx="20px">
-        <Header
-          title={"BOGO PRODUCTS"}
-          subtitle={
-            editable
-              ? "Editing your bogo product!"
-              : "Viewing your bogo product!"
-          }
-        />
-        <Formik
-          onSubmit={handleFormSubmit}
-          initialValues={initialValues}
-          validationSchema={formValidation}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-          }) => (
-            <form
-              onSubmit={handleSubmit}
-              style={{ width: 700, margin: "auto", paddingTop: "20px" }}
+    <Box mx="20px">
+      <Header
+        title={"BOGO PRODUCTS"}
+        subtitle={
+          editable ? "Editing your bogo product!" : "Viewing your bogo product!"
+        }
+      />
+      <Formik
+        onSubmit={handleFormSubmit}
+        initialValues={initialValues}
+        validationSchema={formValidation}
+        enableReinitialize={true}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+        }) => (
+          <FormCard
+            serverErrors={serverErrors}
+            loading={loading}
+            handleSubmit={handleSubmit}
+          >
+            <CustomTextField
+              type={"text"}
+              name="name"
+              label={"product Name"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.name}
+              touched={touched.name}
+              errors={errors.name}
+              disabled={!editable}
+              variant={editable ? "filled" : "standard"}
+            />
+            <CustomTextField
+              type={"text"}
+              name="price"
+              label={"Product price"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.price}
+              touched={touched.price}
+              errors={errors.price}
+              disabled={!editable}
+              variant={editable ? "filled" : "standard"}
+            />
+            <CustomTextField
+              type={"text"}
+              name="category"
+              label={"Product Category"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.category}
+              touched={touched.category}
+              errors={errors.category}
+              select={editable}
+              disabled={!editable}
+              variant={editable ? "filled" : "standard"}
             >
-              <LinearProg loading={loading} />
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Product Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.name}
-                  name="name"
-                  error={!!touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
-                />
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Product price"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.price}
-                  name="price"
-                  error={!!touched.price && !!errors.price}
-                  helperText={touched.price && errors.price}
-                />
+              {categories.map((item) => (
+                <MenuItem key={item.id} value={item?.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </CustomTextField>
 
-                <TextField
-                  select
-                  variant="filled"
-                  fullWidth
-                  label="Product Category"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.category}
-                  name="category"
-                  error={!!touched.category && !!errors.category}
-                  helperText={touched.category && errors.category}
-                >
-                  {categories.map((item) => (
-                    <MenuItem key={item.id} value={item?.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <Stack direction={"row"} spacing={2}>
-                  <Typography display={"flex"} alignItems={"center"}>
-                    product Image
-                  </Typography>
-                  <TextField
-                    sx={{ flex: 1 }}
-                    variant="standard"
-                    type="file"
-                    onChange={handleImageUpload}
-                    error={imageFileerror ? true : false}
-                    helperText={imageFileerror}
-                  />
-                </Stack>
-                {editable && <FormButton theme={theme}>Save</FormButton>}
-              </Stack>
-            </form>
-          )}
-        </Formik>
-      </Box>
-    </>
+            <ImageFileUpload
+              add={add}
+              editable={editable}
+              triggerAdd={() => {
+                setAdd((prev) => !prev);
+                if (!add) {
+                  setimageFile("");
+                  setimageFileerror("");
+                }
+              }}
+              image={product?.image}
+              handleImageUpload={handleImageUpload}
+              imageFileerror={imageFileerror}
+              label={"product Image"}
+              disabled={!editable}
+              variant={editable ? "filled" : "standard"}
+            />
+            {imageFile && add && (
+              <img
+                width={80}
+                style={{ borderRadius: 5 }}
+                src={URL.createObjectURL(imageFile)}
+              />
+            )}
+            {editable && <FormButton theme={theme}>Save</FormButton>}
+          </FormCard>
+        )}
+      </Formik>
+    </Box>
   );
 }
 
