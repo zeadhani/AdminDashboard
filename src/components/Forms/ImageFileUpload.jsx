@@ -20,6 +20,7 @@ function ImageFileUpload(props) {
         </Typography>
         {editable && (
           <Button
+          disableRipple
             variant="text"
             color={add ? "error" : "success"}
             onClick={triggerAdd}

@@ -82,7 +82,6 @@ function ProductsDashboard() {
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
-
   const handleSortChange = (event) => {
     setSort(event.target.value);
   };
@@ -165,98 +164,100 @@ function ProductsDashboard() {
       <Header title={"BOGO PRODUCTS"} subtitle={"Managing bogo products!"} />
       <Stack
         direction={"row"}
-        spacing={3}
         width={"100%"}
+        spacing={3}
         sx={{
           paddingTop: "20px",
           paddingBottom: "20px",
         }}
       >
-        <FormControl sx={{ width: 300 }}>
-          <Box
-            display="flex"
-            backgroundColor={colors.primary[400]}
-            borderRadius="6px"
-            height={"55px"}
-          >
-            <InputBase
-              sx={{ ml: 2, flex: 1 }}
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
-            <IconButton type="button" sx={{ p: 1 }} disableRipple>
-              <Search />
-            </IconButton>
-          </Box>
-        </FormControl>
-        <FormControl sx={{ width: 200 }}>
-          <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={sort}
-            onChange={handleSortChange}
-          >
-            <MenuItem value={"createdAt"} key={"createdAt"}>
-              Created At
-            </MenuItem>
-            <MenuItem value={"price"} key={"price"}>
-              Price
-            </MenuItem>
-            <MenuItem value={"name"} key={"name"}>
-              Name
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl sx={{ width: 200 }}>
-          <InputLabel id="demo-simple-select-label">Order by</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={orderBy}
-            onChange={handleOrderByChange}
-          >
-            <MenuItem value={"asc"} key={"asc"}>
-              Ascending
-            </MenuItem>
-            <MenuItem value={"desc"} key={"desc"}>
-              Descending
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl sx={{ width: 300 }}>
-          <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
-          <Select
-            labelId="demo-multiple-chip-label"
-            id="demo-multiple-chip"
-            multiple
-            value={filtered}
-            onChange={handleFilterChange}
-            MenuProps={MenuProps}
-          >
-            {categories.map((item) => (
-              <MenuItem key={item.id} value={item?.name}>
-                {item.name}
+        <Stack direction={"row"} spacing={3} width={"100%"}>
+          <FormControl sx={{ width: 300 }}>
+            <Box
+              display="flex"
+              backgroundColor={colors.primary[400]}
+              borderRadius="6px"
+              height={"55px"}
+            >
+              <InputBase
+                sx={{ ml: 2, flex: 1 }}
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+              <IconButton type="button" sx={{ p: 1 }} disableRipple>
+                <Search />
+              </IconButton>
+            </Box>
+          </FormControl>
+          <FormControl sx={{ width: 200 }}>
+            <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={sort}
+              onChange={handleSortChange}
+            >
+              <MenuItem value={"createdAt"} key={"createdAt"}>
+                Created At
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Box position={"absolute"} right={20}>
+              <MenuItem value={"price"} key={"price"}>
+                Price
+              </MenuItem>
+              <MenuItem value={"name"} key={"name"}>
+                Name
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ width: 200 }}>
+            <InputLabel id="demo-simple-select-label">Order by</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={orderBy}
+              onChange={handleOrderByChange}
+            >
+              <MenuItem value={"asc"} key={"asc"}>
+                Ascending
+              </MenuItem>
+              <MenuItem value={"desc"} key={"desc"}>
+                Descending
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ width: 300, flex: 1 }}>
+            <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={filtered}
+              onChange={handleFilterChange}
+              MenuProps={MenuProps}
+            >
+              {categories.map((item) => (
+                <MenuItem key={item.id} value={item?.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+        <Box>
           <Button
             variant="outlined"
             color={theme.palette.mode === "dark" ? "secondary" : "primary"}
-            size={"large"}
             onClick={() => navigate("/products/add-product")}
           >
-            Add New
+            Add new
           </Button>
         </Box>
       </Stack>
+
       <LinearProg loading={loading} />
       <TableCard
         component={Paper}
-        sx={{ maxHeight: "70vh" }}
+        // sx={{innerHeight: "60vh" }}
         columns={columns}
         count={count}
         rowsPerPage={rowsPerPage}

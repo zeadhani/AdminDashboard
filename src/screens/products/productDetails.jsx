@@ -1,4 +1,4 @@
-import { Box, MenuItem, Typography, useTheme } from "@mui/material";
+import { Box, MenuItem, Typography, colors, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/Header";
@@ -10,6 +10,8 @@ import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import FormButton from "../../components/Forms/FormButton";
 import axios from "axios";
 import { toast } from "react-toastify";
+import CustomAccordion from "../../components/CustomAccordion";
+import { tokens } from "../../Theme";
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function ProductDetails() {
@@ -17,6 +19,7 @@ function ProductDetails() {
   const { state } = useLocation();
   const { editable } = state;
   const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [loading, setLoading] = useState(false);
   const [add, setAdd] = useState(false);
   const [product, setProduct] = useState(false);
@@ -26,6 +29,11 @@ function ProductDetails() {
   const [imageFileerror, setimageFileerror] = useState("");
   let form_data = new FormData();
 
+  const [expanded, setExpanded] = React.useState();
+
+  const handleChangeExpansion = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
   const handleImageUpload = (e) => {
     setimageFileerror("");
     setimageFile(null);
@@ -36,6 +44,14 @@ function ProductDetails() {
       return;
     }
     setimageFile(file);
+  };
+  const sendAttr = (item) => {
+    let attr = {};
+    item.ProductAttributesValues.map((item) => {
+      attr[item.attribute.name] = item.value;
+    });
+
+    return attr;
   };
 
   const handleFormSubmit = async (values) => {
@@ -96,6 +112,7 @@ function ProductDetails() {
     price: product ? product.price : 0,
     category: product ? product.categoryId : "",
   };
+
   return (
     <Box mx="20px">
       <Header
@@ -191,6 +208,18 @@ function ProductDetails() {
                 src={URL.createObjectURL(imageFile)}
               />
             )}
+            <Box>
+              {product.productItems?.map((item) => (
+                <CustomAccordion
+                  name={item.name}
+                  handleChange={handleChangeExpansion}
+                  expanded={expanded}
+                  count={item.count}
+                  attr={sendAttr(item)}
+                />
+              ))}
+            </Box>
+
             {editable && <FormButton theme={theme}>Save</FormButton>}
           </FormCard>
         )}

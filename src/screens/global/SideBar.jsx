@@ -47,7 +47,6 @@ const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
 };
 
 function SideBar() {
-
   const { collapseSidebar, collapsed } = useProSidebar();
   const [selected, setSelected] = useState(
     window.location.pathname.split("/")[1] === ""

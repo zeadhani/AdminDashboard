@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import Header from "../../components/Header";
-import { Box, MenuItem, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
@@ -21,6 +28,8 @@ function AddProduct() {
   const [imageFileerror, setimageFileerror] = useState("");
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [allattributes, setallattributes] = useState([]);
+  const [attributesData, setattributesData] = useState([]);
 
   const handleImageUpload = (e) => {
     setimageFileerror("");
@@ -50,19 +59,38 @@ function AddProduct() {
     try {
       setServerErrors("");
       const res = await axios.post(`http://localhost:3001/products`, form_data);
-      if (res.statusText == "OK") toast("product Added!");
+      console.log(res.data.name);
+      if (res.statusText != "OK") return;
+      const result = await axios.post(
+        `http://localhost:3001/products/${res.data.name}/additem`,
+        attributesData
+      );
+      if (result.statusText == "OK") toast("Product added successfully");
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
     setLoading(false);
   };
-
+  const handleChangeattribute = (value, index, itemkey) => {
+    let newarray = attributesData;
+    let targetObject = newarray.at(index);
+    targetObject[itemkey] = value;
+    setattributesData(newarray);
+  };
+  console.log(attributesData);
   useEffect(() => {
     const getCategories = async () => {
       const categoriesdata = await axios.get(`http://localhost:3001/category`);
       setCategories(categoriesdata.data);
     };
+    const getattributes = async () => {
+      const attributesdata = await axios.get(`http://localhost:3001/attribute`);
+      setallattributes(attributesdata.data);
+    };
+    setLoading(true);
     getCategories();
+    getattributes();
+    setLoading(false);
   }, []);
 
   const formValidation = yup.object().shape({
@@ -75,7 +103,7 @@ function AddProduct() {
     price: 0,
     category: "",
   };
-
+  // console.log(attributesData);
   return (
     <Box mx="20px">
       <Header title={"BOGO PRODUCTS"} subtitle={"Add new bogo product!"} />
@@ -148,6 +176,64 @@ function AddProduct() {
                 src={URL.createObjectURL(imageFile)}
               />
             )}
+
+            {attributesData.map((item, index) => (
+              <Stack key={item} direction={"row"} spacing={2}>
+                {Object.keys(item).map((itemkey) => (
+                  <TextField
+                    key={itemkey}
+                    label={itemkey}
+                    onChange={(e) =>
+                      handleChangeattribute(e.target.value, index, itemkey)
+                    }
+                    // onChange={(e)=>console.log(e.target.value)}
+                  />
+                ))}
+              </Stack>
+            ))}
+
+            <Stack direction={"row"} spacing={2} justifyContent={"center"}>
+              <Button
+                disableRipple
+                onClick={() => {
+                  let newarray = [...attributesData];
+                  let obj = {};
+                  allattributes.map((item) => {
+                    obj[item.name] = null;
+                  });
+                  obj["count"] = null;
+                  newarray.push(obj);
+                  setattributesData(newarray);
+                }}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+                }}
+                color="info"
+              >
+                Add attribute
+              </Button>
+              {attributesData.length > 0 && (
+                <Button
+                  disableRipple
+                  onClick={() => {
+                    let newarray = [...attributesData];
+                    newarray.pop();
+                    setattributesData(newarray);
+                  }}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  color="error"
+                >
+                  Remove
+                </Button>
+              )}
+            </Stack>
+
             <FormButton theme={theme}>Create new product</FormButton>
           </FormCard>
         )}

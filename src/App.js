@@ -1,5 +1,5 @@
 import { ColorModeContext, tokens, useMode } from "./Theme";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import TopBar from "./screens/global/TopBar";
 import Dashboard from "./screens/dashboard/index";
 import { Route, Routes } from "react-router-dom";
@@ -20,6 +20,7 @@ function App() {
         <CssBaseline />
         <div className="app">
           <SideBar />
+
           <main className="content">
             <TopBar />
             <Routes>
@@ -30,8 +31,8 @@ function App() {
               <Route path="/Products/add-product" element={<AddProduct />} />
               <Route path="/Products/:name" element={<ProductDetails />} />
             </Routes>
+            <ToastMessage />
           </main>
-          <ToastMessage />
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
