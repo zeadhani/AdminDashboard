@@ -1,4 +1,4 @@
-import { Box, MenuItem, Typography, colors, useTheme } from "@mui/material";
+import { Box, MenuItem,  useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/Header";
@@ -12,6 +12,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CustomAccordion from "../../components/CustomAccordion";
 import { tokens } from "../../Theme";
+import env from "react-dotenv";
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function ProductDetails() {
@@ -55,6 +56,7 @@ function ProductDetails() {
   };
 
   const handleFormSubmit = async (values) => {
+    if(!editable) return
     if (add) {
       if (!imageFile || imageFileerror) {
         setimageFileerror("Image is required");
@@ -69,14 +71,14 @@ function ProductDetails() {
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("categoryId", category);
-    console.log(form_data);
+  
     try {
       setServerErrors("");
       const res = await axios.patch(
-        `http://localhost:3001/products/${product.id}`,
+        `${env.API_URL}/products/${product.id}`,
         form_data
       );
-      if (res.statusText == "OK") toast("product Edited!");
+      if (res.statusText === "OK") toast("product Edited!");
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
@@ -106,7 +108,7 @@ function ProductDetails() {
   };
   useEffect(() => {
     getProduct();
-  }, []);
+  });
   const initialValues = {
     name: product ? product.name : "",
     price: product ? product.price : 0,
@@ -203,6 +205,7 @@ function ProductDetails() {
             />
             {imageFile && add && (
               <img
+               alt={`${values.name}`}
                 width={80}
                 style={{ borderRadius: 5 }}
                 src={URL.createObjectURL(imageFile)}

@@ -10,7 +10,7 @@ function FormCard({ children, serverErrors, loading, handleSubmit }) {
       style={{ width: 700, margin: "auto", paddingTop: "20px",paddingBottom:"20px" }}
     >
       {serverErrors && (
-        <Typography my={2} textAlign={"center"} variant="h5" color={"red"}>
+        <Typography my={2} textAlign={"center"} variant="h5" color={"#d32f2f"}   fontWeight={'bold'}>
           {serverErrors}
         </Typography>
       )}

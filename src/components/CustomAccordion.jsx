@@ -50,7 +50,7 @@ function CustomAccordion({ name, handleChange, expanded, count, attr }) {
         <Stack direction={"column"} spacing={2}>
           {count && <Typography> Items in stock : {count}</Typography>}
           <Stack direction={"row"} spacing={2}>
-            {color && <Typography> color : {attr.color}</Typography>}
+            {color && <Typography> color : {color}</Typography>}
             {flavor != null && <Typography> flavor : {flavor}</Typography>}
             {size && <Typography> size : {size}</Typography>}
           </Stack>

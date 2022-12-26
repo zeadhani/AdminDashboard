@@ -18,6 +18,7 @@ import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormCard from "../../components/Forms/FormCard";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
+import env from "react-dotenv"
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function AddProduct() {
@@ -30,7 +31,20 @@ function AddProduct() {
   const [loading, setLoading] = useState(false);
   const [allattributes, setallattributes] = useState([]);
   const [attributesData, setattributesData] = useState([]);
+  const [indexcount, setindexcount] = useState();
 
+  const checkCount = (items) => {
+    console.log(items);
+    let result = { check: false, index: null };
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].count === "" || items[i].count === null) {
+        result.check = true;
+        result.index = i;
+        break;
+      }
+    }
+    return result;
+  };
   const handleImageUpload = (e) => {
     setimageFileerror("");
     setimageFile(null);
@@ -44,8 +58,18 @@ function AddProduct() {
   };
 
   const handleFormSubmit = async (values) => {
+    setServerErrors("");
     if (!imageFile || imageFileerror) {
       setimageFileerror("Image is required");
+      return;
+    }
+    let result = checkCount(attributesData);
+    if (attributesData.length === 0) {
+      setServerErrors("You have to add at least one attribute");
+      return;
+    } else if (result.check) {
+      setServerErrors("Fill the count field at row " + (result.index + 1));
+      setindexcount(result.index);
       return;
     }
     setLoading(true);
@@ -57,12 +81,13 @@ function AddProduct() {
     form_data.append("image", imageFile);
 
     try {
-      setServerErrors("");
-      const res = await axios.post(`http://localhost:3001/products`, form_data);
+      // setServerErrors("");
+      const res = await axios.post(`${env.API_URL}/products`, form_data);
       console.log(res.data.name);
       if (res.statusText != "OK") return;
+
       const result = await axios.post(
-        `http://localhost:3001/products/${res.data.name}/additem`,
+        `${env.API_URL}/products/${res.data.createdProduct.name}/additem`,
         attributesData
       );
       if (result.statusText == "OK") toast("Product added successfully");
@@ -72,19 +97,21 @@ function AddProduct() {
     setLoading(false);
   };
   const handleChangeattribute = (value, index, itemkey) => {
+    setindexcount(null);
+    setServerErrors("");
     let newarray = attributesData;
     let targetObject = newarray.at(index);
     targetObject[itemkey] = value;
     setattributesData(newarray);
   };
-  console.log(attributesData);
+
   useEffect(() => {
     const getCategories = async () => {
-      const categoriesdata = await axios.get(`http://localhost:3001/category`);
+      const categoriesdata = await axios.get(`${env.API_URL}/category`);
       setCategories(categoriesdata.data);
     };
     const getattributes = async () => {
-      const attributesdata = await axios.get(`http://localhost:3001/attribute`);
+      const attributesdata = await axios.get(`${env.API_URL}/attribute`);
       setallattributes(attributesdata.data);
     };
     setLoading(true);
@@ -103,7 +130,7 @@ function AddProduct() {
     price: 0,
     category: "",
   };
-  // console.log(attributesData);
+
   return (
     <Box mx="20px">
       <Header title={"BOGO PRODUCTS"} subtitle={"Add new bogo product!"} />
@@ -183,6 +210,7 @@ function AddProduct() {
                   <TextField
                     key={itemkey}
                     label={itemkey}
+                    error={itemkey === "count" && index === indexcount}
                     onChange={(e) =>
                       handleChangeattribute(e.target.value, index, itemkey)
                     }

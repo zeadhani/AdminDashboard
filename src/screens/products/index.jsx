@@ -29,7 +29,7 @@ import LinearProg from "../../components/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 import TableImage from "../../components/Table/TableImage";
 import CustomTableRow from "../../components/Table/TableRow";
-
+import env from "react-dotenv";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -104,7 +104,7 @@ function ProductsDashboard() {
     setLoading(true);
     try {
       const products = await axios.get(
-        `http://localhost:3001/products?limit=${rowsPerPage}&page=${
+        `${env.API_URL}/products?limit=${rowsPerPage}&page=${
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
       );
@@ -120,7 +120,7 @@ function ProductsDashboard() {
 
   const handleDeleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/products/${id}`);
+      await axios.delete(`${env.API_URL}/products/${id}`);
       getProducts();
       setError(false);
     } catch (err) {
@@ -144,7 +144,7 @@ function ProductsDashboard() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const categoriesdata = await axios.get(`http://localhost:3001/category`);
+      const categoriesdata = await axios.get(`${env.API_URL}/category`);
       setCategories(categoriesdata.data);
     };
     getCategories();
@@ -246,10 +246,11 @@ function ProductsDashboard() {
         <Box>
           <Button
             variant="outlined"
+            sx={{ height: "100%" }}
             color={theme.palette.mode === "dark" ? "secondary" : "primary"}
             onClick={() => navigate("/products/add-product")}
           >
-            Add new
+            Add
           </Button>
         </Box>
       </Stack>
@@ -257,7 +258,6 @@ function ProductsDashboard() {
       <LinearProg loading={loading} />
       <TableCard
         component={Paper}
-        // sx={{innerHeight: "60vh" }}
         columns={columns}
         count={count}
         rowsPerPage={rowsPerPage}

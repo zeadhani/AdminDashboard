@@ -5,7 +5,7 @@ function TableImage({image}) {
   return (
     <TableCell>
       <img
-        width={40}
+        height={40}
         style={{ borderRadius: 5 }}
         src={`https://drive.google.com/uc?export=view&id=${image}`}
       />

@@ -1,5 +1,5 @@
-import { ColorModeContext, tokens, useMode } from "./Theme";
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext,  useMode } from "./Theme";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import TopBar from "./screens/global/TopBar";
 import Dashboard from "./screens/dashboard/index";
 import { Route, Routes } from "react-router-dom";

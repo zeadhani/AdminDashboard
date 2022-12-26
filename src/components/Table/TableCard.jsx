@@ -32,7 +32,7 @@ function TableCard({
   }));
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: "65vh" }}>
+    <TableContainer component={Paper} sx={{ maxHeight: "67vh" }}>
       <Table stickyHeader sx={{ minWidth: 1200 }}>
         <TableHead>
           <TableRow>
@@ -48,7 +48,7 @@ function TableCard({
         <TableFooter
           sx={{
             position: "sticky",
-            insetBlockEnd: 0,
+            insetBlockEnd: -1,
             backgroundColor: colors.blueAccent[600],
           }}
         >
