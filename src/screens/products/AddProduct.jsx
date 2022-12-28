@@ -18,9 +18,10 @@ import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormCard from "../../components/Forms/FormCard";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
-import env from "react-dotenv"
+import env from "react-dotenv";
+import AddAttributes from "../../components/Forms/addAttributes";
+import { checkCount, handleImageUpload } from "../../utils/functions";
 
-const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function AddProduct() {
   const theme = useTheme();
   let form_data = new FormData();
@@ -33,29 +34,28 @@ function AddProduct() {
   const [attributesData, setattributesData] = useState([]);
   const [indexcount, setindexcount] = useState();
 
-  const checkCount = (items) => {
-    console.log(items);
-    let result = { check: false, index: null };
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].count === "" || items[i].count === null) {
-        result.check = true;
-        result.index = i;
-        break;
-      }
-    }
-    return result;
-  };
-  const handleImageUpload = (e) => {
-    setimageFileerror("");
-    setimageFile(null);
-    const file = e.target.files[0];
+  // const checkCount = (items) => {
+  //   let result = { check: false, index: null };
+  //   for (var i = 0; i < items.length; i++) {
+  //     if (items[i].count === "" || items[i].count === null) {
+  //       result.check = true;
+  //       result.index = i;
+  //       break;
+  //     }
+  //   }
+  //   return result;
+  // };
+  // const handleImageUpload = (e) => {
+  //   setimageFileerror("");
+  //   setimageFile(null);
+  //   const file = e.target.files[0];
 
-    if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
-      setimageFileerror("Not Supported file type");
-      return;
-    }
-    setimageFile(file);
-  };
+  //   if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
+  //     setimageFileerror("Not Supported file type");
+  //     return;
+  //   }
+  //   setimageFile(file);
+  // };
 
   const handleFormSubmit = async (values) => {
     setServerErrors("");
@@ -82,12 +82,11 @@ function AddProduct() {
 
     try {
       // setServerErrors("");
-      const res = await axios.post(`${env.API_URL}/products`, form_data);
-      console.log(res.data.name);
+      const res = await axios.post(`http://localhost:3001/products`, form_data);
       if (res.statusText != "OK") return;
 
       const result = await axios.post(
-        `${env.API_URL}/products/${res.data.createdProduct.name}/additem`,
+        `http://localhost:3001/products/${res.data.createdProduct.name}/additem`,
         attributesData
       );
       if (result.statusText == "OK") toast("Product added successfully");
@@ -107,11 +106,11 @@ function AddProduct() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const categoriesdata = await axios.get(`${env.API_URL}/category`);
+      const categoriesdata = await axios.get(`http://localhost:3001/category`);
       setCategories(categoriesdata.data);
     };
     const getattributes = async () => {
-      const attributesdata = await axios.get(`${env.API_URL}/attribute`);
+      const attributesdata = await axios.get(`http://localhost:3001/attribute`);
       setallattributes(attributesdata.data);
     };
     setLoading(true);
@@ -192,7 +191,9 @@ function AddProduct() {
 
             <ImageFileUpload
               add={true}
-              handleImageUpload={handleImageUpload}
+              handleImageUpload={(e) =>
+                handleImageUpload(e, setimageFile, setimageFileerror)
+              }
               imageFileerror={imageFileerror}
               label={"product Image"}
             />
@@ -204,7 +205,7 @@ function AddProduct() {
               />
             )}
 
-            {attributesData.map((item, index) => (
+            {/* {attributesData.map((item, index) => (
               <Stack key={item} direction={"row"} spacing={2}>
                 {Object.keys(item).map((itemkey) => (
                   <TextField
@@ -214,23 +215,47 @@ function AddProduct() {
                     onChange={(e) =>
                       handleChangeattribute(e.target.value, index, itemkey)
                     }
-                    // onChange={(e)=>console.log(e.target.value)}
                   />
                 ))}
               </Stack>
-            ))}
+            ))} */}
 
-            <Stack direction={"row"} spacing={2} justifyContent={"center"}>
+            <AddAttributes
+              attributesData={attributesData}
+              handleChangeattribute={handleChangeattribute}
+              indexcount={indexcount}
+              allattributes={allattributes}
+              setattributesData={setattributesData}
+            />
+
+            {/* <Stack direction={"row"} spacing={2} justifyContent={"center"}>
+            <Button
+              disableRipple
+              onClick={() => {
+                let newarray = [...attributesData];
+                let obj = {};
+                allattributes.map((item) => {
+                  obj[item.name] = null;
+                });
+                obj["count"] = null;
+                newarray.push(obj);
+                setattributesData(newarray);
+              }}
+              sx={{
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+              }}
+              color="info"
+            >
+              Add attribute
+            </Button>
+            {attributesData.length > 0 && (
               <Button
                 disableRipple
                 onClick={() => {
                   let newarray = [...attributesData];
-                  let obj = {};
-                  allattributes.map((item) => {
-                    obj[item.name] = null;
-                  });
-                  obj["count"] = null;
-                  newarray.push(obj);
+                  newarray.pop();
                   setattributesData(newarray);
                 }}
                 sx={{
@@ -238,29 +263,12 @@ function AddProduct() {
                     backgroundColor: "transparent",
                   },
                 }}
-                color="info"
+                color="error"
               >
-                Add attribute
+                Remove
               </Button>
-              {attributesData.length > 0 && (
-                <Button
-                  disableRipple
-                  onClick={() => {
-                    let newarray = [...attributesData];
-                    newarray.pop();
-                    setattributesData(newarray);
-                  }}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "transparent",
-                    },
-                  }}
-                  color="error"
-                >
-                  Remove
-                </Button>
-              )}
-            </Stack>
+            )}
+          </Stack> */}
 
             <FormButton theme={theme}>Create new product</FormButton>
           </FormCard>

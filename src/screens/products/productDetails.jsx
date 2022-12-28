@@ -1,4 +1,4 @@
-import { Box, MenuItem,  useTheme } from "@mui/material";
+import { Box, Button, MenuItem, Stack, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/Header";
@@ -13,8 +13,9 @@ import { toast } from "react-toastify";
 import CustomAccordion from "../../components/CustomAccordion";
 import { tokens } from "../../Theme";
 import env from "react-dotenv";
+import AddAttributes from "../../components/Forms/addAttributes";
+import { checkCount, handleImageUpload, sendAttr } from "../../utils/functions";
 
-const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function ProductDetails() {
   const { name } = useParams();
   const { state } = useLocation();
@@ -24,44 +25,76 @@ function ProductDetails() {
   const [loading, setLoading] = useState(false);
   const [add, setAdd] = useState(false);
   const [product, setProduct] = useState(false);
+  const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [imageFile, setimageFile] = useState();
   const [serverErrors, setServerErrors] = useState(null);
   const [imageFileerror, setimageFileerror] = useState("");
+  const [allattributes, setallattributes] = useState([]);
+  const [attributesData, setattributesData] = useState([]);
+  const [indexcount, setindexcount] = useState();
   let form_data = new FormData();
-
   const [expanded, setExpanded] = React.useState();
+  // const checkCount = (items) => {
+  //   let result = { check: false, index: null };
+  //   for (var i = 0; i < items.length; i++) {
+  //     if (items[i].count === "" || items[i].count === null) {
+  //       result.check = true;
+  //       result.index = i;
+  //       break;
+  //     }
+  //   }
+  //   return result;
+  // };
+  const handleChangeattribute = (value, index, itemkey) => {
+    setindexcount(null);
+    setServerErrors("");
+    let newarray = attributesData;
+    let targetObject = newarray.at(index);
+    targetObject[itemkey] = value;
+    setattributesData(newarray);
+  };
 
   const handleChangeExpansion = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  const handleImageUpload = (e) => {
-    setimageFileerror("");
-    setimageFile(null);
-    const file = e.target.files[0];
+  // const handleImageUpload = (e) => {
+  //   setimageFileerror("");
+  //   setimageFile(null);
+  //   const file = e.target.files[0];
 
-    if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
-      setimageFileerror("Not Supported file type");
-      return;
-    }
-    setimageFile(file);
-  };
-  const sendAttr = (item) => {
-    let attr = {};
-    item.ProductAttributesValues.map((item) => {
-      attr[item.attribute.name] = item.value;
-    });
+  //   if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
+  //     setimageFileerror("Not Supported file type");
+  //     return;
+  //   }
+  //   setimageFile(file);
+  // };
 
-    return attr;
-  };
+  // const sendAttr = (item) => {
+  //   let attr = {};
+  //   item.ProductAttributesValues.map((single) => {
+  //     attr[single.attribute.name] = single.value;
+  //   });
+
+  //   return attr;
+  // };
 
   const handleFormSubmit = async (values) => {
-    if(!editable) return
+    if (!editable) return;
     if (add) {
       if (!imageFile || imageFileerror) {
         setimageFileerror("Image is required");
         return;
       }
+    }
+    let result = checkCount(attributesData);
+    if (attributesData.length === 0) {
+      setServerErrors("You have to add at least one attribute");
+      return;
+    } else if (result.check) {
+      setServerErrors("Fill the count field at row " + (result.index + 1));
+      setindexcount(result.index);
+      return;
     }
     setLoading(true);
     const { name, price, category } = values;
@@ -71,20 +104,28 @@ function ProductDetails() {
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("categoryId", category);
-  
+
     try {
       setServerErrors("");
       const res = await axios.patch(
-        `${env.API_URL}/products/${product.id}`,
+        `http://localhost:3001/products/${product.id}`,
         form_data
       );
-      if (res.statusText === "OK") toast("product Edited!");
+      if (res.statusText != "OK") return;
+
+      const result = await axios.post(
+        `http://localhost:3001/products/${res.data.editedProduct.name}/additem`,
+        attributesData
+      );
+      if (result.statusText == "OK") {
+        toast("Product edited successfully");
+        getProduct();
+      }
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
     setLoading(false);
   };
-
   const formValidation = yup.object().shape({
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
@@ -101,14 +142,36 @@ function ProductDetails() {
         );
         setCategories(categoriesdata.data);
       }
+      setItems(product.data.productItems);
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
     setLoading(false);
   };
+  const getattributes = async () => {
+    const attributesdata = await axios.get(`http://localhost:3001/attribute`);
+    setallattributes(attributesdata.data);
+  };
   useEffect(() => {
     getProduct();
-  });
+    getattributes();
+  }, []);
+
+  async function handleDelete(name) {
+    try {
+      const deleteItem = await axios.delete(
+        `http://localhost:3001/products/${product.name}/item/${name}`
+      );
+
+      if (deleteItem.status === 200) {
+        const newArray = [...items];
+        const resullt = newArray.filter((item) => item.name !== name);
+        setItems(resullt);
+      }
+    } catch (err) {
+      setServerErrors(err);
+    }
+  }
   const initialValues = {
     name: product ? product.name : "",
     price: product ? product.price : 0,
@@ -197,7 +260,9 @@ function ProductDetails() {
                 }
               }}
               image={product?.image}
-              handleImageUpload={handleImageUpload}
+              handleImageUpload={(e) =>
+                handleImageUpload(e, setimageFile, setimageFileerror)
+              }
               imageFileerror={imageFileerror}
               label={"product Image"}
               disabled={!editable}
@@ -205,24 +270,79 @@ function ProductDetails() {
             />
             {imageFile && add && (
               <img
-               alt={`${values.name}`}
+                alt={`${values.name}`}
                 width={80}
                 style={{ borderRadius: 5 }}
                 src={URL.createObjectURL(imageFile)}
               />
             )}
+
             <Box>
-              {product.productItems?.map((item) => (
+              {items?.map((item) => (
                 <CustomAccordion
+                  getProduct={getProduct}
                   name={item.name}
                   handleChange={handleChangeExpansion}
                   expanded={expanded}
                   count={item.count}
                   attr={sendAttr(item)}
+                  editable={editable}
+                  deleteItem={handleDelete}
+                  key={item.name}
+                  title={product.name}
                 />
               ))}
             </Box>
-
+            {editable && (
+              <AddAttributes
+                attributesData={attributesData}
+                handleChangeattribute={handleChangeattribute}
+                indexcount={indexcount}
+                allattributes={allattributes}
+                setattributesData={setattributesData}
+              />
+            )}
+            {/* <Stack direction={"row"} spacing={2} justifyContent={"center"}>
+              <Button
+                disableRipple
+                onClick={() => {
+                  let newarray = [...attributesData];
+                  let obj = {};
+                  allattributes.map((item) => {
+                    obj[item.name] = null;
+                  });
+                  obj["count"] = null;
+                  newarray.push(obj);
+                  setattributesData(newarray);
+                }}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+                }}
+                color="info"
+              >
+                Add attribute
+              </Button>
+              {attributesData.length > 0 && (
+                <Button
+                  disableRipple
+                  onClick={() => {
+                    let newarray = [...attributesData];
+                    newarray.pop();
+                    setattributesData(newarray);
+                  }}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  color="error"
+                >
+                  Remove
+                </Button>
+              )}
+            </Stack> */}
             {editable && <FormButton theme={theme}>Save</FormButton>}
           </FormCard>
         )}

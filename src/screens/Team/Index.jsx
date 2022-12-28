@@ -85,7 +85,7 @@ function TeamDashboard() {
   return (
     <Box mx="20px">
       <Header title={"TEAM MEMBERS"} subtitle={"Managing the team members!"} />
-      <Table rowData={mockDataTeam} ColumnData={columns} />
+      <Table rowData={mockDataTeam} ColumnData={columns}  />
     </Box>
   );
 }
