@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import Header from "../../components/Header";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
-  Button,
   MenuItem,
-  Stack,
-  TextField,
   useTheme,
 } from "@mui/material";
 import { Formik } from "formik";
@@ -18,12 +16,13 @@ import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormCard from "../../components/Forms/FormCard";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
-import env from "react-dotenv";
 import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload } from "../../utils/functions";
 
 function AddProduct() {
   const theme = useTheme();
+
+  const navigate=useNavigate();
   let form_data = new FormData();
   const [categories, setCategories] = useState([]);
   const [imageFile, setimageFile] = useState();
@@ -82,11 +81,11 @@ function AddProduct() {
 
     try {
       // setServerErrors("");
-      const res = await axios.post(`http://localhost:3001/products`, form_data);
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/products`, form_data);
       if (res.statusText != "OK") return;
 
       const result = await axios.post(
-        `http://localhost:3001/products/${res.data.createdProduct.name}/additem`,
+        `${process.env.REACT_APP_API_URL}/products/${res.data.createdProduct.name}/additem`,
         attributesData
       );
       if (result.statusText == "OK") toast("Product added successfully");
@@ -106,11 +105,11 @@ function AddProduct() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const categoriesdata = await axios.get(`http://localhost:3001/category`);
+      const categoriesdata = await axios.get(`${process.env.REACT_APP_API_URL}/category`);
       setCategories(categoriesdata.data);
     };
     const getattributes = async () => {
-      const attributesdata = await axios.get(`http://localhost:3001/attribute`);
+      const attributesdata = await axios.get(`${process.env.REACT_APP_API_URL}/attribute`);
       setallattributes(attributesdata.data);
     };
     setLoading(true);
@@ -132,7 +131,7 @@ function AddProduct() {
 
   return (
     <Box mx="20px">
-      <Header title={"BOGO PRODUCTS"} subtitle={"Add new bogo product!"} />
+      <Header title={"BOGO PRODUCTS"} subtitle={"Add new bogo product!"}  onClick={()=>navigate("/Products")}/>
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}

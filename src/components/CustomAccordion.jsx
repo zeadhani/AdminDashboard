@@ -100,7 +100,7 @@ function CustomAccordion({
 
     try {
       const res = await axios.patch(
-        `http://localhost:3001/products/${title}/item/${name}`,
+        `${process.env.REACT_APP_API_URL}/products/${title}/item/${name}`,
         data
       );
       if (res.status === 200) {

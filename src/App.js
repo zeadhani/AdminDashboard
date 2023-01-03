@@ -1,4 +1,4 @@
-import { ColorModeContext,  useMode } from "./Theme";
+import { ColorModeContext, useMode } from "./Theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import TopBar from "./screens/global/TopBar";
 import Dashboard from "./screens/dashboard/index";
@@ -19,8 +19,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <SideBar />
-
+          <div className="sidebar">
+            <SideBar />
+          </div>
           <main className="content">
             <TopBar />
             <Routes>

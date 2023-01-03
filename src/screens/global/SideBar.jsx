@@ -62,6 +62,8 @@ function SideBar() {
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           backgroundColor: colors.primary[600],
+          height:"100vh",
+          paddingBottom:"20px",
         },
       }}
     >

@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Stack, useTheme } from "@mui/material";
+import { Box, MenuItem, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/Header";
@@ -12,13 +12,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CustomAccordion from "../../components/CustomAccordion";
 import { tokens } from "../../Theme";
-import env from "react-dotenv";
+import { useNavigate } from "react-router-dom";
 import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload, sendAttr } from "../../utils/functions";
 
 function ProductDetails() {
   const { name } = useParams();
   const { state } = useLocation();
+  const navigate=useNavigate();
   const { editable } = state;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -108,13 +109,13 @@ function ProductDetails() {
     try {
       setServerErrors("");
       const res = await axios.patch(
-        `http://localhost:3001/products/${product.id}`,
+        `${process.env.REACT_APP_API_URL}/products/${product.id}`,
         form_data
       );
       if (res.statusText != "OK") return;
 
       const result = await axios.post(
-        `http://localhost:3001/products/${res.data.editedProduct.name}/additem`,
+        `${process.env.REACT_APP_API_URL}/products/${res.data.editedProduct.name}/additem`,
         attributesData
       );
       if (result.statusText == "OK") {
@@ -134,11 +135,11 @@ function ProductDetails() {
   const getProduct = async () => {
     setLoading(true);
     try {
-      const product = await axios.get(`http://localhost:3001/products/${name}`);
+      const product = await axios.get(`${process.env.REACT_APP_API_URL}/products/${name}`);
       setProduct(product.data);
       if (editable) {
         const categoriesdata = await axios.get(
-          `http://localhost:3001/category`
+          `${process.env.REACT_APP_API_URL}/category`
         );
         setCategories(categoriesdata.data);
       }
@@ -149,7 +150,7 @@ function ProductDetails() {
     setLoading(false);
   };
   const getattributes = async () => {
-    const attributesdata = await axios.get(`http://localhost:3001/attribute`);
+    const attributesdata = await axios.get(`${process.env.REACT_APP_API_URL}/attribute`);
     setallattributes(attributesdata.data);
   };
   useEffect(() => {
@@ -160,7 +161,7 @@ function ProductDetails() {
   async function handleDelete(name) {
     try {
       const deleteItem = await axios.delete(
-        `http://localhost:3001/products/${product.name}/item/${name}`
+        `${process.env.REACT_APP_API_URL}/products/${product.name}/item/${name}`
       );
 
       if (deleteItem.status === 200) {
@@ -181,6 +182,7 @@ function ProductDetails() {
   return (
     <Box mx="20px">
       <Header
+        onClick={() => navigate("/Products")}
         title={"BOGO PRODUCTS"}
         subtitle={
           editable ? "Editing your bogo product!" : "Viewing your bogo product!"

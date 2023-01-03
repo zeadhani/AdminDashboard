@@ -17,7 +17,7 @@ function TopBar() {
     <Box display={"flex"} justifyContent={"space-between"} p={2}>
   
       <Box>
-        <Typography variant="h3" fontWeight={"bold"} letterSpacing={2}>
+        <Typography variant="h3" fontWeight={"bold"} letterSpacing={2} sx={{cursor:"pointer"}}>
           LOGO
         </Typography>
       </Box>
