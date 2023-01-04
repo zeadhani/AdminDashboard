@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
-import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  MenuItem,
-  useTheme,
-} from "@mui/material";
+import { MenuItem, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
@@ -18,13 +13,15 @@ import FormCard from "../../components/Forms/FormCard";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload } from "../../utils/functions";
+import CustomContainer from "../global/CustomContainer";
 
 function AddProduct() {
   const theme = useTheme();
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   let form_data = new FormData();
   const [categories, setCategories] = useState([]);
+  const [gender, setGender] = useState([]);
   const [imageFile, setimageFile] = useState();
   const [imageFileerror, setimageFileerror] = useState("");
   const [serverErrors, setServerErrors] = useState(null);
@@ -72,23 +69,27 @@ function AddProduct() {
       return;
     }
     setLoading(true);
-    const { name, price, category } = values;
+    const { name, price, category, gender } = values;
 
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("categoryId", category);
+    form_data.append("genderId", gender);
     form_data.append("image", imageFile);
 
     try {
       // setServerErrors("");
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/products`, form_data);
-      if (res.statusText != "OK") return;
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/products`,
+        form_data
+      );
+      if (res.statusText !== "OK") return;
 
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/products/${res.data.createdProduct.name}/additem`,
         attributesData
       );
-      if (result.statusText == "OK") toast("Product added successfully");
+      if (result.statusText === "OK") toast("Product added successfully");
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
@@ -105,16 +106,27 @@ function AddProduct() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const categoriesdata = await axios.get(`${process.env.REACT_APP_API_URL}/category`);
+      const categoriesdata = await axios.get(
+        `${process.env.REACT_APP_API_URL}/category`
+      );
       setCategories(categoriesdata.data);
     };
     const getattributes = async () => {
-      const attributesdata = await axios.get(`${process.env.REACT_APP_API_URL}/attribute`);
+      const attributesdata = await axios.get(
+        `${process.env.REACT_APP_API_URL}/attribute`
+      );
       setallattributes(attributesdata.data);
+    };
+    const getgender = async () => {
+      const genderData = await axios.get(
+        `${process.env.REACT_APP_API_URL}/gender`
+      );
+      setGender(genderData.data);
     };
     setLoading(true);
     getCategories();
     getattributes();
+    getgender();
     setLoading(false);
   }, []);
 
@@ -127,11 +139,15 @@ function AddProduct() {
     name: "",
     price: 0,
     category: "",
+    gender: "",
   };
 
   return (
-    <Box mx="20px">
-      <Header title={"BOGO PRODUCTS"} subtitle={"Add new bogo product!"}  onClick={()=>navigate("/Products")}/>
+    <CustomContainer
+      title={"BOGO PRODUCTS"}
+      subtitle={"Add new bogo product!"}
+      onClick={() => navigate("/Products")}
+    >
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -187,6 +203,23 @@ function AddProduct() {
                 </MenuItem>
               ))}
             </CustomTextField>
+            <CustomTextField
+              type={"text"}
+              name="gender"
+              label={"Product Gender"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.gender}
+              touched={touched.gender}
+              errors={errors.gender}
+              select
+            >
+              {gender.map((item) => (
+                <MenuItem key={item.id} value={item?.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </CustomTextField>
 
             <ImageFileUpload
               add={true}
@@ -198,6 +231,7 @@ function AddProduct() {
             />
             {imageFile && (
               <img
+                alt="Choosen img"
                 width={80}
                 style={{ borderRadius: 5 }}
                 src={URL.createObjectURL(imageFile)}
@@ -273,7 +307,7 @@ function AddProduct() {
           </FormCard>
         )}
       </Formik>
-    </Box>
+    </CustomContainer>
   );
 }
 

@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { tokens } from "../../Theme";
 import { useState } from "react";
-import Header from "../../components/Header";
 import MenuItem from "@mui/material/MenuItem";
 import { useEffect } from "react";
 import axios from "axios";
@@ -29,6 +28,7 @@ import LinearProg from "../../components/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 import TableImage from "../../components/Table/TableImage";
 import CustomTableRow from "../../components/Table/TableRow";
+import CustomContainer from "../global/CustomContainer";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -71,9 +71,13 @@ function ProductsDashboard() {
   const [filtered, setFiltered] = useState(
     searchParams.get("filtered") ? searchParams.get("filtered").split(",") : []
   );
+  const [filteredGneder, setFilteredGender] = useState(
+    searchParams.get("gender") ? searchParams.get("gender") : ""
+  );
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [gender, setGender] = useState([]);
   const [error, setError] = useState(false);
 
   const handleOrderByChange = (event) => {
@@ -99,14 +103,16 @@ function ProductsDashboard() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  const handleFilterGenderChange = (e) => {
+    setFilteredGender(e.target.value);
+  };
   const getProducts = async () => {
     setLoading(true);
     try {
       const products = await axios.get(
         `${process.env.REACT_APP_API_URL}/products?limit=${rowsPerPage}&page=${
           page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}`
+        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}`
       );
 
       setProducts(products.data.data.data);
@@ -136,18 +142,38 @@ function ProductsDashboard() {
         sort,
         orderBy,
         search,
+        gender: filteredGneder,
         filtered: [filtered],
       })}`,
     });
     getProducts();
-  }, [rowsPerPage, page, count, sort, orderBy, search, filtered]);
+  }, [
+    rowsPerPage,
+    page,
+    count,
+    sort,
+    orderBy,
+    search,
+    filtered,
+    filteredGneder,
+  ]);
 
   useEffect(() => {
     const getCategories = async () => {
-      const categoriesdata = await axios.get(`${process.env.REACT_APP_API_URL}/category`);
+      const categoriesdata = await axios.get(
+        `${process.env.REACT_APP_API_URL}/category`
+      );
       setCategories(categoriesdata.data);
     };
+    const getGender = async () => {
+      const genderData = await axios.get(
+        `${process.env.REACT_APP_API_URL}/gender`
+      );
+      setGender(genderData.data);
+    };
+
     getCategories();
+    getGender();
   }, []);
 
   const columns = [
@@ -155,13 +181,16 @@ function ProductsDashboard() {
     { id: "image", label: "Image" },
     { id: "name", label: "Name" },
     { id: "price", label: "Price" },
+    { id: "gender", label: "Gender" },
     { id: "category", label: "Category" },
     { id: "created_at", label: "Created_At" },
   ];
 
   return (
-    <Box mx="20px">
-      <Header title={"BOGO PRODUCTS"} subtitle={"Managing bogo products!"} />
+    <CustomContainer
+      title={"BOGO PRODUCTS"}
+      subtitle={"Managing bogo products!"}
+    >
       <Stack
         direction={"row"}
         width={"100%"}
@@ -171,8 +200,8 @@ function ProductsDashboard() {
           paddingBottom: "20px",
         }}
       >
-        <Stack direction={"row"} spacing={3} width={"100%"}>
-          <FormControl sx={{ width: 300 }}>
+        <Stack direction={"row"} spacing={2} width={"100%"}>
+          <FormControl sx={{minWidth:"250px" }}>
             <Box
               display="flex"
               backgroundColor={colors.primary[400]}
@@ -190,7 +219,7 @@ function ProductsDashboard() {
               </IconButton>
             </Box>
           </FormControl>
-          <FormControl sx={{ width: 200 }}>
+          <FormControl sx={{minWidth:"150px" }}>
             <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -209,7 +238,7 @@ function ProductsDashboard() {
               </MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ width: 200 }}>
+          <FormControl sx={{minWidth:"150px" }}>
             <InputLabel id="demo-simple-select-label">Order by</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -225,7 +254,25 @@ function ProductsDashboard() {
               </MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ width: 300, flex: 1 }}>
+          <FormControl sx={{minWidth:"150px" }}>
+            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={filteredGneder}
+              onChange={handleFilterGenderChange}
+            >
+              <MenuItem  value={""}>
+                 All Genders
+                </MenuItem>
+              {gender.map((item) => (
+                <MenuItem key={item.id} value={item?.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{  flex:1}}>
             <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
             <Select
               labelId="demo-multiple-chip-label"
@@ -254,7 +301,6 @@ function ProductsDashboard() {
           </Button>
         </Box>
       </Stack>
-
       <LinearProg loading={loading} />
       <TableCard
         component={Paper}
@@ -277,6 +323,7 @@ function ProductsDashboard() {
               <TableImage image={row.image} />
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.price} EGP</TableCell>
+              <TableCell>{row.Gender?.name}</TableCell>
               <TableCell>{row.Category?.name}</TableCell>
               <TableCell>
                 {moment(row.createdAt).format("YYYY-MM-DD")}
@@ -298,7 +345,7 @@ function ProductsDashboard() {
             </CustomTableRow>
           ))}
       </TableCard>
-    </Box>
+    </CustomContainer>
   );
 }
 

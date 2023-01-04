@@ -1,7 +1,6 @@
 import { Box, MenuItem, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import Header from "../../components/Header";
 import { Formik } from "formik";
 import * as yup from "yup";
 import FormCard from "../../components/Forms/FormCard";
@@ -11,23 +10,23 @@ import FormButton from "../../components/Forms/FormButton";
 import axios from "axios";
 import { toast } from "react-toastify";
 import CustomAccordion from "../../components/CustomAccordion";
-import { tokens } from "../../Theme";
 import { useNavigate } from "react-router-dom";
 import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload, sendAttr } from "../../utils/functions";
+import CustomContainer from "../global/CustomContainer";
 
 function ProductDetails() {
   const { name } = useParams();
   const { state } = useLocation();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { editable } = state;
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [loading, setLoading] = useState(false);
   const [add, setAdd] = useState(false);
   const [product, setProduct] = useState(false);
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [gender, setGender] = useState([]);
   const [imageFile, setimageFile] = useState();
   const [serverErrors, setServerErrors] = useState(null);
   const [imageFileerror, setimageFileerror] = useState("");
@@ -89,36 +88,35 @@ function ProductDetails() {
       }
     }
     let result = checkCount(attributesData);
-    if (attributesData.length === 0) {
-      setServerErrors("You have to add at least one attribute");
-      return;
-    } else if (result.check) {
+
+     
+    if (result.check) {
       setServerErrors("Fill the count field at row " + (result.index + 1));
       setindexcount(result.index);
       return;
     }
     setLoading(true);
-    const { name, price, category } = values;
+    const { name, price, category ,gender} = values;
     if (imageFile) {
       form_data.append("image", imageFile);
     }
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("categoryId", category);
-
+    form_data.append("genderId", gender);
     try {
       setServerErrors("");
       const res = await axios.patch(
         `${process.env.REACT_APP_API_URL}/products/${product.id}`,
         form_data
       );
-      if (res.statusText != "OK") return;
+      if (res.statusText !== "OK") return;
 
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/products/${res.data.editedProduct.name}/additem`,
         attributesData
       );
-      if (result.statusText == "OK") {
+      if (result.statusText === "OK") {
         toast("Product edited successfully");
         getProduct();
       }
@@ -131,17 +129,25 @@ function ProductDetails() {
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
     category: yup.string().ensure().required("category is required!"),
+    gender: yup.string().ensure().required("gender is required!"),
   });
   const getProduct = async () => {
     setLoading(true);
     try {
-      const product = await axios.get(`${process.env.REACT_APP_API_URL}/products/${name}`);
+      const product = await axios.get(
+        `${process.env.REACT_APP_API_URL}/products/${name}`
+      );
       setProduct(product.data);
       if (editable) {
         const categoriesdata = await axios.get(
           `${process.env.REACT_APP_API_URL}/category`
         );
         setCategories(categoriesdata.data);
+
+        const genderData = await axios.get(
+          `${process.env.REACT_APP_API_URL}/gender`
+        );
+        setGender(genderData.data);
       }
       setItems(product.data.productItems);
     } catch (err) {
@@ -150,7 +156,9 @@ function ProductDetails() {
     setLoading(false);
   };
   const getattributes = async () => {
-    const attributesdata = await axios.get(`${process.env.REACT_APP_API_URL}/attribute`);
+    const attributesdata = await axios.get(
+      `${process.env.REACT_APP_API_URL}/attribute`
+    );
     setallattributes(attributesdata.data);
   };
   useEffect(() => {
@@ -177,17 +185,17 @@ function ProductDetails() {
     name: product ? product.name : "",
     price: product ? product.price : 0,
     category: product ? product.categoryId : "",
+    gender: product ? product.genderId : "",
   };
 
   return (
-    <Box mx="20px">
-      <Header
-        onClick={() => navigate("/Products")}
-        title={"BOGO PRODUCTS"}
-        subtitle={
-          editable ? "Editing your bogo product!" : "Viewing your bogo product!"
-        }
-      />
+    <CustomContainer
+      title={"BOGO PRODUCTS"}
+      subtitle={
+        editable ? "Editing your bogo product!" : "Viewing your bogo product!"
+      }
+      onClick={() => navigate("/Products")}
+    >
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -251,6 +259,25 @@ function ProductDetails() {
               ))}
             </CustomTextField>
 
+            <CustomTextField
+              type={"text"}
+              name="gender"
+              label={"Product gender"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.gender}
+              touched={touched.gender}
+              errors={errors.gender}
+              select={editable}
+              disabled={!editable}
+              variant={editable ? "filled" : "standard"}
+            >
+              {gender.map((item) => (
+                <MenuItem key={item.id} value={item?.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </CustomTextField>
             <ImageFileUpload
               add={add}
               editable={editable}
@@ -304,6 +331,7 @@ function ProductDetails() {
                 setattributesData={setattributesData}
               />
             )}
+
             {/* <Stack direction={"row"} spacing={2} justifyContent={"center"}>
               <Button
                 disableRipple
@@ -349,7 +377,7 @@ function ProductDetails() {
           </FormCard>
         )}
       </Formik>
-    </Box>
+    </CustomContainer>
   );
 }
 
