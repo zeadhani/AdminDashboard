@@ -74,7 +74,10 @@ function ProductsDashboard() {
   const [filteredGneder, setFilteredGender] = useState(
     searchParams.get("gender") ? searchParams.get("gender") : ""
   );
-
+  const [filteredBrand, setfilteredBrand] = useState(
+    searchParams.get("brand") ? searchParams.get("brand") : ""
+  );
+  const [brands, setBrands] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [gender, setGender] = useState([]);
@@ -106,13 +109,16 @@ function ProductsDashboard() {
   const handleFilterGenderChange = (e) => {
     setFilteredGender(e.target.value);
   };
+  const handleFilterBrandChange = (e) => {
+    setfilteredBrand(e.target.value);
+  };
   const getProducts = async () => {
     setLoading(true);
     try {
       const products = await axios.get(
         `${process.env.REACT_APP_API_URL}/products?limit=${rowsPerPage}&page=${
           page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}`
+        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}&brand=${filteredBrand}`
       );
 
       setProducts(products.data.data.data);
@@ -143,6 +149,7 @@ function ProductsDashboard() {
         orderBy,
         search,
         gender: filteredGneder,
+        brand: filteredBrand,
         filtered: [filtered],
       })}`,
     });
@@ -156,24 +163,20 @@ function ProductsDashboard() {
     search,
     filtered,
     filteredGneder,
+    filteredBrand,
   ]);
 
   useEffect(() => {
-    const getCategories = async () => {
-      const categoriesdata = await axios.get(
-        `${process.env.REACT_APP_API_URL}/category`
+    const getFilteredData = async () => {
+      const brandsData = await axios.get(
+        `${process.env.REACT_APP_API_URL}/products/filter/all`
       );
-      setCategories(categoriesdata.data);
-    };
-    const getGender = async () => {
-      const genderData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/gender`
-      );
-      setGender(genderData.data);
+      setCategories(brandsData.data.categories);
+      setGender(brandsData.data.gender);
+      setBrands(brandsData.data.brands);
     };
 
-    getCategories();
-    getGender();
+    getFilteredData();
   }, []);
 
   const columns = [
@@ -181,6 +184,7 @@ function ProductsDashboard() {
     { id: "image", label: "Image" },
     { id: "name", label: "Name" },
     { id: "price", label: "Price" },
+    { id: "brand", label: "Brand" },
     { id: "gender", label: "Gender" },
     { id: "category", label: "Category" },
     { id: "created_at", label: "Created_At" },
@@ -201,7 +205,7 @@ function ProductsDashboard() {
         }}
       >
         <Stack direction={"row"} spacing={2} width={"100%"}>
-          <FormControl sx={{minWidth:"250px" }}>
+          <FormControl sx={{ minWidth: "250px" }}>
             <Box
               display="flex"
               backgroundColor={colors.primary[400]}
@@ -219,7 +223,7 @@ function ProductsDashboard() {
               </IconButton>
             </Box>
           </FormControl>
-          <FormControl sx={{minWidth:"150px" }}>
+          <FormControl sx={{ minWidth: "150px" }}>
             <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -238,7 +242,7 @@ function ProductsDashboard() {
               </MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{minWidth:"150px" }}>
+          <FormControl sx={{ minWidth: "150px" }}>
             <InputLabel id="demo-simple-select-label">Order by</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -254,7 +258,7 @@ function ProductsDashboard() {
               </MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{minWidth:"150px" }}>
+          <FormControl sx={{ minWidth: "150px" }}>
             <InputLabel id="demo-simple-select-label">Gender</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -262,9 +266,7 @@ function ProductsDashboard() {
               value={filteredGneder}
               onChange={handleFilterGenderChange}
             >
-              <MenuItem  value={""}>
-                 All Genders
-                </MenuItem>
+              <MenuItem value={""}>All Genders</MenuItem>
               {gender.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
                   {item.name}
@@ -272,8 +274,24 @@ function ProductsDashboard() {
               ))}
             </Select>
           </FormControl>
-          <FormControl sx={{  flex:1}}>
-            <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
+          <FormControl sx={{ minWidth: "150px" }}>
+            <InputLabel id="demo-simple-select-label">Brand</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={filteredBrand}
+              onChange={handleFilterBrandChange}
+            >
+              <MenuItem value={""}>All Brands</MenuItem>
+              {brands.map((item) => (
+                <MenuItem key={item.id} value={item?.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
             <Select
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
@@ -323,6 +341,7 @@ function ProductsDashboard() {
               <TableImage image={row.image} />
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.price} EGP</TableCell>
+              <TableCell>{row.Brands?.name}</TableCell>
               <TableCell>{row.Gender?.name}</TableCell>
               <TableCell>{row.Category?.name}</TableCell>
               <TableCell>

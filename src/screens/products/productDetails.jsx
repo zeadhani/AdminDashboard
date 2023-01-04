@@ -32,6 +32,7 @@ function ProductDetails() {
   const [imageFileerror, setimageFileerror] = useState("");
   const [allattributes, setallattributes] = useState([]);
   const [attributesData, setattributesData] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [indexcount, setindexcount] = useState();
   let form_data = new FormData();
   const [expanded, setExpanded] = React.useState();
@@ -89,21 +90,21 @@ function ProductDetails() {
     }
     let result = checkCount(attributesData);
 
-     
     if (result.check) {
       setServerErrors("Fill the count field at row " + (result.index + 1));
       setindexcount(result.index);
       return;
     }
     setLoading(true);
-    const { name, price, category ,gender} = values;
+    const { name, price, category, gender, brand } = values;
     if (imageFile) {
       form_data.append("image", imageFile);
     }
     form_data.append("name", name);
     form_data.append("price", price);
-    form_data.append("categoryId", category);
-    form_data.append("genderId", gender);
+    form_data.append("category", category);
+    form_data.append("gender", gender);
+    form_data.append("brand", brand);
     try {
       setServerErrors("");
       const res = await axios.patch(
@@ -130,6 +131,7 @@ function ProductDetails() {
     price: yup.number().integer().min(1).required("price is required"),
     category: yup.string().ensure().required("category is required!"),
     gender: yup.string().ensure().required("gender is required!"),
+    brand: yup.string().ensure().required("brand is required!"),
   });
   const getProduct = async () => {
     setLoading(true);
@@ -138,32 +140,31 @@ function ProductDetails() {
         `${process.env.REACT_APP_API_URL}/products/${name}`
       );
       setProduct(product.data);
-      if (editable) {
-        const categoriesdata = await axios.get(
-          `${process.env.REACT_APP_API_URL}/category`
-        );
-        setCategories(categoriesdata.data);
-
-        const genderData = await axios.get(
-          `${process.env.REACT_APP_API_URL}/gender`
-        );
-        setGender(genderData.data);
-      }
       setItems(product.data.productItems);
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
     setLoading(false);
   };
-  const getattributes = async () => {
-    const attributesdata = await axios.get(
-      `${process.env.REACT_APP_API_URL}/attribute`
+  // const getattributes = async () => {
+  //   const attributesdata = await axios.get(
+  //     `${process.env.REACT_APP_API_URL}/attribute`
+  //   );
+  //   setallattributes(attributesdata.data);
+  // };
+  const getFilteredData = async () => {
+    const brandsData = await axios.get(
+      `${process.env.REACT_APP_API_URL}/products/filter/all`
     );
-    setallattributes(attributesdata.data);
+    setCategories(brandsData.data.categories);
+    setGender(brandsData.data.gender);
+    setallattributes(brandsData.data.attributes);
+    setBrands(brandsData.data.brands);
   };
   useEffect(() => {
     getProduct();
-    getattributes();
+    // getattributes();
+    getFilteredData();
   }, []);
 
   async function handleDelete(name) {
@@ -181,11 +182,13 @@ function ProductDetails() {
       setServerErrors(err);
     }
   }
+
   const initialValues = {
     name: product ? product.name : "",
     price: product ? product.price : 0,
-    category: product ? product.categoryId : "",
-    gender: product ? product.genderId : "",
+    category: product ? product.Category.name : "",
+    gender: product ? product.Gender.name : "",
+    brand: product ? product.Brands.name : "",
   };
 
   return (
@@ -253,7 +256,7 @@ function ProductDetails() {
               variant={editable ? "filled" : "standard"}
             >
               {categories.map((item) => (
-                <MenuItem key={item.id} value={item?.id}>
+                <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
               ))}
@@ -273,11 +276,34 @@ function ProductDetails() {
               variant={editable ? "filled" : "standard"}
             >
               {gender.map((item) => (
-                <MenuItem key={item.id} value={item?.id}>
+                <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
               ))}
             </CustomTextField>
+
+            <CustomTextField
+              type={"text"}
+              name="brand"
+              label={"Product Brand"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.brand}
+              touched={touched.brand}
+              errors={errors.brand}
+              select={editable}
+              disabled={!editable}
+              variant={editable ? "filled" : "standard"}
+            >
+              {brands.map((item) => (
+                <MenuItem key={item.id} value={item?.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </CustomTextField>
+
+    
+
             <ImageFileUpload
               add={add}
               editable={editable}

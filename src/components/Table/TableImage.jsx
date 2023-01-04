@@ -7,7 +7,7 @@ function TableImage({image}) {
       <img
         height={40}
         style={{ borderRadius: 5 }}
-        src={`https://drive.google.com/uc?export=view&id=${image}`}
+        src={`${process.env.REACT_APP_DRIVE_URL}${image}`}
       />
     </TableCell>
   );

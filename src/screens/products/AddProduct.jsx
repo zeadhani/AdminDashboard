@@ -28,6 +28,7 @@ function AddProduct() {
   const [loading, setLoading] = useState(false);
   const [allattributes, setallattributes] = useState([]);
   const [attributesData, setattributesData] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [indexcount, setindexcount] = useState();
 
   // const checkCount = (items) => {
@@ -69,12 +70,13 @@ function AddProduct() {
       return;
     }
     setLoading(true);
-    const { name, price, category, gender } = values;
+    const { name, price, category, gender, brand } = values;
 
     form_data.append("name", name);
     form_data.append("price", price);
-    form_data.append("categoryId", category);
-    form_data.append("genderId", gender);
+    form_data.append("category", category);
+    form_data.append("gender", gender);
+    form_data.append("brand", brand);
     form_data.append("image", imageFile);
 
     try {
@@ -105,28 +107,17 @@ function AddProduct() {
   };
 
   useEffect(() => {
-    const getCategories = async () => {
-      const categoriesdata = await axios.get(
-        `${process.env.REACT_APP_API_URL}/category`
+    const getFilteredData = async () => {
+      const brandsData = await axios.get(
+        `${process.env.REACT_APP_API_URL}/products/filter/all`
       );
-      setCategories(categoriesdata.data);
-    };
-    const getattributes = async () => {
-      const attributesdata = await axios.get(
-        `${process.env.REACT_APP_API_URL}/attribute`
-      );
-      setallattributes(attributesdata.data);
-    };
-    const getgender = async () => {
-      const genderData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/gender`
-      );
-      setGender(genderData.data);
+      setCategories(brandsData.data.categories);
+      setGender(brandsData.data.gender);
+      setallattributes(brandsData.data.attributes);
+      setBrands(brandsData.data.brands);
     };
     setLoading(true);
-    getCategories();
-    getattributes();
-    getgender();
+    getFilteredData();
     setLoading(false);
   }, []);
 
@@ -134,12 +125,15 @@ function AddProduct() {
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
     category: yup.string().ensure().required("category is required!"),
+    gender: yup.string().ensure().required("gender is required!"),
+    brand: yup.string().ensure().required("brand is required!"),
   });
   const initialValues = {
     name: "",
     price: 0,
     category: "",
     gender: "",
+    brand: "",
   };
 
   return (
@@ -198,7 +192,7 @@ function AddProduct() {
               select
             >
               {categories.map((item) => (
-                <MenuItem key={item.id} value={item?.id}>
+                <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
               ))}
@@ -215,7 +209,25 @@ function AddProduct() {
               select
             >
               {gender.map((item) => (
-                <MenuItem key={item.id} value={item?.id}>
+                <MenuItem key={item.id} value={item?.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </CustomTextField>
+
+            <CustomTextField
+              type={"text"}
+              name="brand"
+              label={"Product Brand"}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              value={values.brand}
+              touched={touched.brand}
+              errors={errors.brand}
+              select
+            >
+              {brands.map((item) => (
+                <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
               ))}
