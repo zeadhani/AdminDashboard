@@ -1,46 +1,27 @@
 import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import { useTheme } from "@mui/material/styles";
-import { IconButton, InputBase } from "@mui/material";
 import {
   useNavigate,
   createSearchParams,
   useSearchParams,
 } from "react-router-dom";
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  Paper,
-  Select,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { tokens } from "../../Theme";
 import { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
 import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment/moment";
 import TableCard from "../../components/Table/TableCard";
-import { Search } from "@mui/icons-material";
-import { Stack } from "@mui/system";
 import LinearProg from "../../components/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 import TableImage from "../../components/Table/TableImage";
 import CustomTableRow from "../../components/Table/TableRow";
 import CustomContainer from "../global/CustomContainer";
+import CustomFilter from "../../components/filters/CustomSingleFilter";
+import FilterContainer from "../../components/filters/FilterContainer";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
+const sortArray = ["createdAt", "price", "name"];
 function ProductsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -56,7 +37,7 @@ function ProductsDashboard() {
   const [rowsPerPage, setRowsPerPage] = useState(
     searchParams.get("rowsPerPage")
       ? parseInt(searchParams.get("rowsPerPage"))
-      : 5
+      : 10
   );
   const [count, setCount] = useState(0);
 
@@ -75,7 +56,7 @@ function ProductsDashboard() {
     searchParams.get("gender") ? searchParams.get("gender") : ""
   );
   const [filteredBrand, setfilteredBrand] = useState(
-    searchParams.get("brand") ? searchParams.get("brand") : ""
+    searchParams.get("brand") ? searchParams.get("brand").split(",") : []
   );
   const [brands, setBrands] = useState([]);
   const [products, setProducts] = useState([]);
@@ -110,7 +91,10 @@ function ProductsDashboard() {
     setFilteredGender(e.target.value);
   };
   const handleFilterBrandChange = (e) => {
-    setfilteredBrand(e.target.value);
+    const {
+      target: { value },
+    } = e;
+    setfilteredBrand(typeof value === "string" ? value.split(",") : value);
   };
   const getProducts = async () => {
     setLoading(true);
@@ -131,6 +115,7 @@ function ProductsDashboard() {
   };
 
   const handleDeleteProduct = async (id) => {
+    setLoading(true);
     try {
       await axios.delete(`${process.env.REACT_APP_API_URL}/products/${id}`);
       getProducts();
@@ -138,8 +123,16 @@ function ProductsDashboard() {
     } catch (err) {
       setError(true);
     }
+    setLoading(false);
   };
-
+  const handleRestFilters = () => {
+    setFiltered([]);
+    setfilteredBrand([]);
+    setFilteredGender("");
+    setOrderBy("asc");
+    setSort("createdAt");
+    setSearch("");
+  };
   useEffect(() => {
     navigate({
       search: `?${createSearchParams({
@@ -149,7 +142,7 @@ function ProductsDashboard() {
         orderBy,
         search,
         gender: filteredGneder,
-        brand: filteredBrand,
+        brand: [filteredBrand],
         filtered: [filtered],
       })}`,
     });
@@ -168,21 +161,20 @@ function ProductsDashboard() {
 
   useEffect(() => {
     const getFilteredData = async () => {
-      const brandsData = await axios.get(
+      const filterData = await axios.get(
         `${process.env.REACT_APP_API_URL}/products/filter/all`
       );
-      setCategories(brandsData.data.categories);
-      setGender(brandsData.data.gender);
-      setBrands(brandsData.data.brands);
+      setCategories(filterData.data.categories);
+      setGender(filterData.data.gender);
+      setBrands(filterData.data.brands);
     };
 
     getFilteredData();
   }, []);
 
   const columns = [
-    { id: "id", label: "Id" },
-    { id: "image", label: "Image" },
     { id: "name", label: "Name" },
+    { id: "image", label: "Image" },
     { id: "price", label: "Price" },
     { id: "brand", label: "Brand" },
     { id: "gender", label: "Gender" },
@@ -195,133 +187,49 @@ function ProductsDashboard() {
       title={"BOGO PRODUCTS"}
       subtitle={"Managing bogo products!"}
     >
-      <Stack
-        direction={"row"}
-        width={"100%"}
-        spacing={3}
-        sx={{
-          paddingTop: "20px",
-          paddingBottom: "20px",
-        }}
+      <FilterContainer
+        handleRestFilters={handleRestFilters}
+        name={"product"}
+        theme={theme}
+        addNav={() => navigate("/products/add-product")}
+        colors={colors}
+        search={search}
+        handleSearchChange={handleSearchChange}
+        handleSortChange={handleSortChange}
+        sort={sort}
+        handleOrderByChange={handleOrderByChange}
+        orderBy={orderBy}
+        sortArray={sortArray}
       >
-        <Stack direction={"row"} spacing={2} width={"100%"}>
-          <FormControl sx={{ minWidth: "250px" }}>
-            <Box
-              display="flex"
-              backgroundColor={colors.primary[400]}
-              borderRadius="6px"
-              height={"55px"}
-            >
-              <InputBase
-                sx={{ ml: 2, flex: 1 }}
-                placeholder="Search"
-                value={search}
-                onChange={handleSearchChange}
-              />
-              <IconButton type="button" sx={{ p: 1 }} disableRipple>
-                <Search />
-              </IconButton>
-            </Box>
-          </FormControl>
-          <FormControl sx={{ minWidth: "150px" }}>
-            <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={sort}
-              onChange={handleSortChange}
-            >
-              <MenuItem value={"createdAt"} key={"createdAt"}>
-                Created At
-              </MenuItem>
-              <MenuItem value={"price"} key={"price"}>
-                Price
-              </MenuItem>
-              <MenuItem value={"name"} key={"name"}>
-                Name
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: "150px" }}>
-            <InputLabel id="demo-simple-select-label">Order by</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={orderBy}
-              onChange={handleOrderByChange}
-            >
-              <MenuItem value={"asc"} key={"asc"}>
-                Ascending
-              </MenuItem>
-              <MenuItem value={"desc"} key={"desc"}>
-                Descending
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: "150px" }}>
-            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={filteredGneder}
-              onChange={handleFilterGenderChange}
-            >
-              <MenuItem value={""}>All Genders</MenuItem>
-              {gender.map((item) => (
-                <MenuItem key={item.id} value={item?.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: "150px" }}>
-            <InputLabel id="demo-simple-select-label">Brand</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={filteredBrand}
-              onChange={handleFilterBrandChange}
-            >
-              <MenuItem value={""}>All Brands</MenuItem>
-              {brands.map((item) => (
-                <MenuItem key={item.id} value={item?.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ flex: 1 }}>
-            <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
-            <Select
-              labelId="demo-multiple-chip-label"
-              id="demo-multiple-chip"
-              multiple
-              value={filtered}
-              onChange={handleFilterChange}
-              MenuProps={MenuProps}
-            >
-              {categories.map((item) => (
-                <MenuItem key={item.id} value={item?.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-        <Box>
-          <Button
-            variant="outlined"
-            sx={{ height: "100%" }}
-            color={theme.palette.mode === "dark" ? "secondary" : "primary"}
-            onClick={() => navigate("/products/add-product")}
-          >
-            Add
-          </Button>
-        </Box>
-      </Stack>
+        <CustomFilter
+          label={"Gender"}
+          filterArray={gender}
+          onChange={handleFilterGenderChange}
+          multiple={false}
+          value={filteredGneder}
+          itemItself={false}
+        />
+        <CustomFilter
+          label={"Category"}
+          value={filtered}
+          filterArray={categories}
+          onChange={handleFilterChange}
+          itemItself={false}
+          multiple={true}
+        />
+        <CustomFilter
+          label={"Brands"}
+          value={filteredBrand}
+          filterArray={brands}
+          onChange={handleFilterBrandChange}
+          itemItself={false}
+          multiple={true}
+          sx={{ flex: 1 }}
+        />
+      </FilterContainer>
+
       <LinearProg loading={loading} />
       <TableCard
-        component={Paper}
         columns={columns}
         count={count}
         rowsPerPage={rowsPerPage}
@@ -337,9 +245,8 @@ function ProductsDashboard() {
         {!error &&
           products.map((row, index) => (
             <CustomTableRow colors={colors} key={row.id}>
-              <TableCell>{row.id}</TableCell>
-              <TableImage image={row.image} />
               <TableCell>{row.name}</TableCell>
+              <TableImage image={row.image} />
               <TableCell>{row.price} EGP</TableCell>
               <TableCell>{row.Brands?.name}</TableCell>
               <TableCell>{row.Gender?.name}</TableCell>

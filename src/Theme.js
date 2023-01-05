@@ -156,7 +156,7 @@ export const tokens = (mode) => ({
                 light: colors.grey[100],
               },
               background: {
-                default: "#fcfcfc",
+                default: "#f5f5f5",
               },
             }),
       },

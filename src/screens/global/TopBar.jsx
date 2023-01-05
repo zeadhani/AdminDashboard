@@ -1,27 +1,29 @@
 import React from "react";
 import { useContext } from "react";
-import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../Theme";
+import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import { ColorModeContext } from "../../Theme";
 import { LightModeOutlined } from "@mui/icons-material";
 import { DarkModeOutlined } from "@mui/icons-material";
 import { NotificationsOutlined } from "@mui/icons-material";
 import { SettingsOutlined } from "@mui/icons-material";
 import { PersonOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import Header from "../../components/Header";
 
-function TopBar() {
+function TopBar({ title, subtitle, onClick }) {
   const theme = useTheme();
   // const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   return (
-    <Box display={"flex"} justifyContent={"space-between"} p={2}>
-  
+    <Box display={"flex"} justifyContent={"space-between"} pt={2}>
       <Box>
-        <Typography variant="h3" fontWeight={"bold"} letterSpacing={2} sx={{cursor:"pointer"}}>
-          LOGO
-        </Typography>
+        <Header title={title} subtitle={subtitle} onClick={onClick} />
       </Box>
-      <Box display={"flex"} justifyContent={"flex-end"}>
+      <Box
+        display={"flex"}
+        justifyContent={"flex-end"}
+        alignSelf={"flex-start"}
+      >
         <Tooltip title={theme.palette.mode === "dark" ? "Light" : "Dark"}>
           <IconButton onClick={() => colorMode.toggleColorMode()}>
             {theme.palette.mode === "dark" ? (
@@ -52,3 +54,8 @@ function TopBar() {
 }
 
 export default TopBar;
+{
+  /* <Typography variant="h3" fontWeight={"bold"} letterSpacing={2} sx={{cursor:"pointer"}}>
+  LOGO
+</Typography> */
+}

@@ -1,9 +1,10 @@
-import { Box, Button, TableCell } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { Box, Button, IconButton, TableCell } from "@mui/material";
 import React from "react";
 
 function ActionsButtonsTable({ deleteAction, editAction, viewAction, colors }) {
   return (
-    <TableCell sx={{ textAlign: "center" }}>
+    <TableCell>
       <Box display={"flex"} justifyContent={"center"}>
         {deleteAction && (
           <Button

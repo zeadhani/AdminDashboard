@@ -32,7 +32,7 @@ function TableCard({
   }));
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: "67vh" }}>
+    <TableContainer component={Paper} sx={{ maxHeight: "73vh" }}>
       <Table stickyHeader sx={{ minWidth: 1200 }}>
         <TableHead>
           <TableRow>
@@ -54,7 +54,7 @@ function TableCard({
         >
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 25, 50]}
+              rowsPerPageOptions={[10, 25, 50]}
               count={count}
               rowsPerPage={rowsPerPage}
               page={page}
