@@ -11,7 +11,6 @@ import { tokens } from "../../Theme";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import moment from "moment/moment";
 import TableCard from "../../components/Table/TableCard";
 import LinearProg from "../../components/global/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
@@ -20,6 +19,8 @@ import CustomTableRow from "../../components/Table/TableRow";
 import CustomContainer from "../global/CustomContainer";
 import CustomFilter from "../../components/filters/CustomSingleFilter";
 import FilterContainer from "../../components/filters/FilterContainer";
+import RowIdentifier from "../../components/Table/rowIdentifier";
+import DateCell from "../../components/Table/DateCell";
 
 const sortArray = ["createdAt", "price", "name"];
 function ProductsDashboard() {
@@ -245,15 +246,13 @@ function ProductsDashboard() {
         {!error &&
           products.map((row, index) => (
             <CustomTableRow colors={colors} key={row.id}>
-              <TableCell>{row.name}</TableCell>
+              <RowIdentifier>{row.name}</RowIdentifier>
               <TableImage image={row.image} />
               <TableCell>{row.price} EGP</TableCell>
               <TableCell>{row.Brands?.name}</TableCell>
               <TableCell>{row.Gender?.name}</TableCell>
               <TableCell>{row.Category?.name}</TableCell>
-              <TableCell>
-                {moment(row.createdAt).format("YYYY-MM-DD")}
-              </TableCell>
+              <DateCell date={row.createdAt} />
               <ActionsButtonsTable
                 deleteAction={() => handleDeleteProduct(row.id)}
                 editAction={() =>

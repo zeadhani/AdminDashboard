@@ -12,11 +12,12 @@ import CustomTableRow from "../../components/Table/TableRow";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../Theme";
 import TableImage from "../../components/Table/TableImage";
-import moment from "moment";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 
 import FilterContainer from "../../components/filters/FilterContainer";
 import CustomFilter from "../../components/filters/CustomSingleFilter";
+import RowIdentifier from "../../components/Table/rowIdentifier";
+import DateCell from "../../components/Table/DateCell";
 const sortArray = ["createdAt", "name"];
 function BrandsDashboard() {
   const theme = useTheme();
@@ -185,10 +186,10 @@ function BrandsDashboard() {
         {!error &&
           brands.map((row, index) => (
             <CustomTableRow colors={colors} key={row.id}>
-              <TableCell>{row.name}</TableCell>
+              <RowIdentifier>{row.name}</RowIdentifier>
               <TableImage image={row.image} />
               <TableCell>{row.Preferences.name}</TableCell>
-              <TableCell
+              <DateCell
                 sx={{
                   color:
                     new Date() > row.contrat_Expire
@@ -196,12 +197,9 @@ function BrandsDashboard() {
                       : colors.greenAccent[500],
                   fontWeight: "bold",
                 }}
-              >
-                {moment(row.contrat_Expire).format("YYYY-MM-DD")}
-              </TableCell>
-              <TableCell>
-                {moment(row.createdAt).format("YYYY-MM-DD")}
-              </TableCell>
+                date={row.contrat_Expire}
+              />
+              <DateCell date={row.createdAt} />
               <ActionsButtonsTable
                 deleteAction={() => handleDeleteBrand(row.name)}
                 editAction={() =>
