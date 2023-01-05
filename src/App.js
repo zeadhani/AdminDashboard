@@ -8,7 +8,7 @@ import UsersDashboard from "./screens/Users/Index";
 import ProductsDashboard from "./screens/products";
 import ProductDetails from "./screens/products/productDetails";
 import AddProduct from "./screens/products/AddProduct";
-import ToastMessage from "./components/ToastMessage";
+import ToastMessage from "./components/global/ToastMessage";
 import BrandsDashboard from "./screens/brands";
 
 function App() {

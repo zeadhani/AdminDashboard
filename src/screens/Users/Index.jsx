@@ -22,7 +22,7 @@ import {
 import { mockDataTeam } from "../../data/mockData";
 import { tokens } from "../../Theme";
 import { useState } from "react";
-import Header from "../../components/Header";
+import Header from "../../components/global/Header";
 import MenuItem from "@mui/material/MenuItem";
 
 const ITEM_HEIGHT = 48;

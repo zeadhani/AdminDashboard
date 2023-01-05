@@ -1,16 +1,27 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import LinearProg from "../LinearProg";
+import LinearProg from "../global/LinearProg";
 import { Stack } from "@mui/system";
 
 function FormCard({ children, serverErrors, loading, handleSubmit }) {
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ width: "55%", margin: "auto", paddingTop: "20px",paddingBottom:"20px" }}
+      style={{
+        width: "55%",
+        margin: "auto",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+      }}
     >
       {serverErrors && (
-        <Typography my={2} textAlign={"center"} variant="h5" color={"#d32f2f"}   fontWeight={'bold'}>
+        <Typography
+          my={2}
+          textAlign={"center"}
+          variant="h5"
+          color={"#d32f2f"}
+          fontWeight={"bold"}
+        >
           {serverErrors}
         </Typography>
       )}

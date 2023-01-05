@@ -7,9 +7,9 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import Dialogue from "./Dialogue";
-import CustomTextField from "./Forms/CustomTextField";
-import { tokens } from "../Theme";
+import Dialogue from "../global/Dialogue";
+import CustomTextField from "../Forms/CustomTextField";
+import { tokens } from "../../Theme";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -166,16 +166,18 @@ function CustomAccordion({
                   >
                     Edit
                   </Button>
-                  <Button
-                    endIcon={<Delete />}
-                    color={"primary"}
-                    variant="contained"
-                    size="small"
-                    disableElevation
-                    onClick={() => deleteItem(name)}
-                  >
-                    Delete
-                  </Button>
+                  {Object.entries(attr).length !== 0 && (
+                    <Button
+                      endIcon={<Delete />}
+                      color={"primary"}
+                      variant="contained"
+                      size="small"
+                      disableElevation
+                      onClick={() => deleteItem(name)}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </Stack>
               )}
             </Box>

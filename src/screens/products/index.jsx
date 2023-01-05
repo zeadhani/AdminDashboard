@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment/moment";
 import TableCard from "../../components/Table/TableCard";
-import LinearProg from "../../components/LinearProg";
+import LinearProg from "../../components/global/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 import TableImage from "../../components/Table/TableImage";
 import CustomTableRow from "../../components/Table/TableRow";

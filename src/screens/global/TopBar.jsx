@@ -8,7 +8,7 @@ import { NotificationsOutlined } from "@mui/icons-material";
 import { SettingsOutlined } from "@mui/icons-material";
 import { PersonOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import Header from "../../components/Header";
+import Header from "../../components/global/Header";
 
 function TopBar({ title, subtitle, onClick }) {
   const theme = useTheme();

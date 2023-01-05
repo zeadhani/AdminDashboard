@@ -12,8 +12,17 @@ import React from "react";
 import LinearProg from "./LinearProg";
 
 function Dialogue(props) {
-  const { open, onClose, submit, children, title, theme, colors, loading ,serverErrors } =
-    props;
+  const {
+    open,
+    onClose,
+    submit,
+    children,
+    title,
+    theme,
+    colors,
+    loading,
+    serverErrors,
+  } = props;
   return (
     <>
       <Dialog

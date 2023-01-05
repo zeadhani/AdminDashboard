@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { tokens } from "../Theme";
+import { tokens } from "../../Theme";
 
 function Header(props) {
   const { title, subtitle } = props;

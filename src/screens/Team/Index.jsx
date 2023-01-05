@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React from "react";
-import Header from "../../components/Header";
+import Header from "../../components/global/Header";
 import { useTheme } from "@mui/system";
 import { tokens } from "../../Theme";
 import { mockDataTeam } from "../../data/mockData";
@@ -85,7 +85,7 @@ function TeamDashboard() {
   return (
     <Box mx="20px">
       <Header title={"TEAM MEMBERS"} subtitle={"Managing the team members!"} />
-      <Table rowData={mockDataTeam} ColumnData={columns}  />
+      <Table rowData={mockDataTeam} ColumnData={columns} />
     </Box>
   );
 }

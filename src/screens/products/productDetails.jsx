@@ -9,7 +9,7 @@ import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import FormButton from "../../components/Forms/FormButton";
 import axios from "axios";
 import { toast } from "react-toastify";
-import CustomAccordion from "../../components/CustomAccordion";
+import CustomAccordion from "../../components/products/CustomAccordion";
 import { useNavigate } from "react-router-dom";
 import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload, sendAttr } from "../../utils/functions";
@@ -301,8 +301,6 @@ function ProductDetails() {
                 </MenuItem>
               ))}
             </CustomTextField>
-
-    
 
             <ImageFileUpload
               add={add}
