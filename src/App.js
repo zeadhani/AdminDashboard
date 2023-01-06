@@ -29,7 +29,7 @@ function App() {
               <Route path="/Users" element={<UsersDashboard />} />
               <Route exact path="/Products" element={<ProductsDashboard />} />
               <Route path="/Products/add-product" element={<AddProduct />} />
-              <Route path="/Products/:name" element={<ProductDetails />} />
+              <Route path="/Products/:id" element={<ProductDetails />} />
               <Route exact path="/Merchants" element={<BrandsDashboard />} />
             </Routes>
             <ToastMessage />

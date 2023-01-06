@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MenuItem, useTheme } from "@mui/material";
+import {
+  FormControlLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  useTheme,
+} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
@@ -14,6 +20,7 @@ import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
+import Checkbox from "@mui/material/Checkbox";
 
 function AddProduct() {
   const theme = useTheme();
@@ -26,33 +33,11 @@ function AddProduct() {
   const [imageFileerror, setimageFileerror] = useState("");
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [hasAttributes, setHasAttributes] = useState(false);
   const [allattributes, setallattributes] = useState([]);
   const [attributesData, setattributesData] = useState([]);
   const [brands, setBrands] = useState([]);
   const [indexcount, setindexcount] = useState();
-
-  // const checkCount = (items) => {
-  //   let result = { check: false, index: null };
-  //   for (var i = 0; i < items.length; i++) {
-  //     if (items[i].count === "" || items[i].count === null) {
-  //       result.check = true;
-  //       result.index = i;
-  //       break;
-  //     }
-  //   }
-  //   return result;
-  // };
-  // const handleImageUpload = (e) => {
-  //   setimageFileerror("");
-  //   setimageFile(null);
-  //   const file = e.target.files[0];
-
-  //   if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
-  //     setimageFileerror("Not Supported file type");
-  //     return;
-  //   }
-  //   setimageFile(file);
-  // };
 
   const handleFormSubmit = async (values) => {
     setServerErrors("");
@@ -60,17 +45,22 @@ function AddProduct() {
       setimageFileerror("Image is required");
       return;
     }
-    let result = checkCount(attributesData);
-    if (attributesData.length === 0) {
-      setServerErrors("You have to add at least one attribute");
-      return;
-    } else if (result.check) {
-      setServerErrors("Fill the count field at row " + (result.index + 1));
-      setindexcount(result.index);
-      return;
+    const { name, price, category, gender, brand, count } = values;
+    if (hasAttributes) {
+      let result = checkCount(attributesData);
+      if (attributesData.length === 0) {
+        setServerErrors("You have to add at least one attribute");
+        return;
+      } else if (result.check) {
+        setServerErrors("Fill the count field at row " + (result.index + 1));
+        setindexcount(result.index);
+        return;
+      }
+    } else {
+      form_data.append("count", count);
     }
+
     setLoading(true);
-    const { name, price, category, gender, brand } = values;
 
     form_data.append("name", name);
     form_data.append("price", price);
@@ -78,6 +68,7 @@ function AddProduct() {
     form_data.append("gender", gender);
     form_data.append("brand", brand);
     form_data.append("image", imageFile);
+    form_data.append("hasAttributes", hasAttributes);
 
     try {
       // setServerErrors("");
@@ -86,7 +77,11 @@ function AddProduct() {
         form_data
       );
       if (res.statusText !== "OK") return;
-
+      if (!hasAttributes) {
+        toast("Product added successfully");
+        setLoading(false);
+        return;
+      }
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/products/${res.data.createdProduct.name}/additem`,
         attributesData
@@ -124,6 +119,7 @@ function AddProduct() {
   const formValidation = yup.object().shape({
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
+    count: yup.number().integer().min(0).required("Count is required"),
     category: yup.string().ensure().required("category is required!"),
     gender: yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
@@ -134,13 +130,20 @@ function AddProduct() {
     category: "",
     gender: "",
     brand: "",
+    count: 0,
+  };
+  const handleTitleClick = () => {
+    navigate("/Products");
+  };
+  const handleCheckChange = (e) => {
+    setHasAttributes(e.target.checked);
   };
 
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
       subtitle={"Add new bogo product!"}
-      onClick={() => navigate("/Products")}
+      onClick={handleTitleClick}
     >
       <Formik
         onSubmit={handleFormSubmit}
@@ -250,28 +253,39 @@ function AddProduct() {
               />
             )}
 
-            {/* {attributesData.map((item, index) => (
-              <Stack key={item} direction={"row"} spacing={2}>
-                {Object.keys(item).map((itemkey) => (
-                  <TextField
-                    key={itemkey}
-                    label={itemkey}
-                    error={itemkey === "count" && index === indexcount}
-                    onChange={(e) =>
-                      handleChangeattribute(e.target.value, index, itemkey)
-                    }
-                  />
-                ))}
-              </Stack>
-            ))} */}
-
-            <AddAttributes
-              attributesData={attributesData}
-              handleChangeattribute={handleChangeattribute}
-              indexcount={indexcount}
-              allattributes={allattributes}
-              setattributesData={setattributesData}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="info"
+                  value={hasAttributes}
+                  checked={hasAttributes}
+                  onChange={handleCheckChange}
+                />
+              }
+              label="Does this product has attributes ?"
             />
+            {!hasAttributes && (
+              <CustomTextField
+                type={"text"}
+                name="count"
+                label={"Product count"}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                value={values.count}
+                touched={touched.count}
+                errors={errors.count}
+              />
+            )}
+
+            {hasAttributes && (
+              <AddAttributes
+                attributesData={attributesData}
+                handleChangeattribute={handleChangeattribute}
+                indexcount={indexcount}
+                allattributes={allattributes}
+                setattributesData={setattributesData}
+              />
+            )}
 
             {/* <Stack direction={"row"} spacing={2} justifyContent={"center"}>
             <Button

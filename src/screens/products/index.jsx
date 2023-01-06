@@ -105,7 +105,6 @@ function ProductsDashboard() {
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}&brand=${filteredBrand}`
       );
-
       setProducts(products.data.data.data);
       setCount(products.data.data.totalCount);
       setError(false);
@@ -182,7 +181,19 @@ function ProductsDashboard() {
     { id: "category", label: "Category" },
     { id: "created_at", label: "Created_At" },
   ];
-
+  const addNavFilter = () => {
+    navigate("/products/add-product");
+  };
+  const editAction = (name) => {
+    navigate(`/Products/${name}`, {
+      state: { editable: true },
+    });
+  };
+  const viewAction = (name) => {
+    navigate(`/Products/${name}`, {
+      state: { editable: false },
+    });
+  };
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
@@ -192,7 +203,7 @@ function ProductsDashboard() {
         handleRestFilters={handleRestFilters}
         name={"product"}
         theme={theme}
-        addNav={() => navigate("/products/add-product")}
+        addNav={addNavFilter}
         colors={colors}
         search={search}
         handleSearchChange={handleSearchChange}
@@ -246,25 +257,17 @@ function ProductsDashboard() {
         {!error &&
           products.map((row, index) => (
             <CustomTableRow colors={colors} key={row.id}>
-              <RowIdentifier>{row.name}</RowIdentifier>
-              <TableImage image={row.image} />
-              <TableCell>{row.price} EGP</TableCell>
+              <RowIdentifier>{row?.name}</RowIdentifier>
+              <TableImage image={row?.image} />
+              <TableCell>{row?.price} EGP</TableCell>
               <TableCell>{row.Brands?.name}</TableCell>
               <TableCell>{row.Gender?.name}</TableCell>
               <TableCell>{row.Category?.name}</TableCell>
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
                 deleteAction={() => handleDeleteProduct(row.id)}
-                editAction={() =>
-                  navigate(`/Products/${row.name}`, {
-                    state: { editable: true },
-                  })
-                }
-                viewAction={() =>
-                  navigate(`/Products/${row.name}`, {
-                    state: { editable: false },
-                  })
-                }
+                editAction={() => editAction(row?.id)}
+                viewAction={() => viewAction(row?.id)}
                 colors={colors}
               />
             </CustomTableRow>

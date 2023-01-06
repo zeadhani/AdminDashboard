@@ -141,6 +141,22 @@ function BrandsDashboard() {
     { id: "contract", label: "Contract Expire" },
     { id: "created_at", label: "Created_At" },
   ];
+
+  const handleTitleClick = () => {
+    navigate("/Merchants/add-brand")
+  };
+
+  const editAction = (name) => {
+    navigate(`/Merchants/${name}`, {
+      state: { editable: true },
+    })
+  };
+  const viewAction = (name) => {
+    navigate(`/Merchants/${name}`, {
+      state: { editable: false },
+    })
+  };
+
   return (
     <CustomContainer
       title={"BOGO MERCHANTS"}
@@ -150,7 +166,7 @@ function BrandsDashboard() {
         handleRestFilters={handleRestFilters}
         name={"Brand"}
         theme={theme}
-        addNav={() => navigate("/Merchants/add-brand")}
+        addNav={handleTitleClick}
         colors={colors}
         search={search}
         handleSearchChange={handleSearchChange}
@@ -202,16 +218,8 @@ function BrandsDashboard() {
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
                 deleteAction={() => handleDeleteBrand(row.name)}
-                editAction={() =>
-                  navigate(`/Merchants/${row.name}`, {
-                    state: { editable: true },
-                  })
-                }
-                viewAction={() =>
-                  navigate(`/Merchants/${row.name}`, {
-                    state: { editable: false },
-                  })
-                }
+                editAction={() => editAction(row?.name)}
+                viewAction={() => viewAction(row?.name)}
                 colors={colors}
               />
             </CustomTableRow>

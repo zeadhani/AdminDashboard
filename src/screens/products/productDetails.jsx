@@ -16,7 +16,7 @@ import { checkCount, handleImageUpload, sendAttr } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
 
 function ProductDetails() {
-  const { name } = useParams();
+  let { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
   const { editable } = state;
@@ -36,17 +36,7 @@ function ProductDetails() {
   const [indexcount, setindexcount] = useState();
   let form_data = new FormData();
   const [expanded, setExpanded] = React.useState();
-  // const checkCount = (items) => {
-  //   let result = { check: false, index: null };
-  //   for (var i = 0; i < items.length; i++) {
-  //     if (items[i].count === "" || items[i].count === null) {
-  //       result.check = true;
-  //       result.index = i;
-  //       break;
-  //     }
-  //   }
-  //   return result;
-  // };
+
   const handleChangeattribute = (value, index, itemkey) => {
     setindexcount(null);
     setServerErrors("");
@@ -59,27 +49,6 @@ function ProductDetails() {
   const handleChangeExpansion = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  // const handleImageUpload = (e) => {
-  //   setimageFileerror("");
-  //   setimageFile(null);
-  //   const file = e.target.files[0];
-
-  //   if (!SUPPORTED_FORMATS.find((type) => type === file.type)) {
-  //     setimageFileerror("Not Supported file type");
-  //     return;
-  //   }
-  //   setimageFile(file);
-  // };
-
-  // const sendAttr = (item) => {
-  //   let attr = {};
-  //   item.ProductAttributesValues.map((single) => {
-  //     attr[single.attribute.name] = single.value;
-  //   });
-
-  //   return attr;
-  // };
-
   const handleFormSubmit = async (values) => {
     if (!editable) return;
     if (add) {
@@ -88,23 +57,32 @@ function ProductDetails() {
         return;
       }
     }
-    let result = checkCount(attributesData);
 
-    if (result.check) {
-      setServerErrors("Fill the count field at row " + (result.index + 1));
-      setindexcount(result.index);
-      return;
-    }
-    setLoading(true);
-    const { name, price, category, gender, brand } = values;
+    const { name, price, category, gender, brand, count } = values;
     if (imageFile) {
       form_data.append("image", imageFile);
     }
+    if (!product.hasAttributes) {
+      form_data.append("count", count);
+    } else {
+      let result = checkCount(attributesData);
+
+      if (result.check) {
+        setServerErrors("Fill the count field at row " + (result.index + 1));
+        setindexcount(result.index);
+        return;
+      }
+    }
+    setLoading(true);
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
     form_data.append("gender", gender);
     form_data.append("brand", brand);
+    form_data.append(
+      "hasAttributes",
+      product.hasAttributes === 1 ? true : false
+    );
     try {
       setServerErrors("");
       const res = await axios.patch(
@@ -112,14 +90,20 @@ function ProductDetails() {
         form_data
       );
       if (res.statusText !== "OK") return;
-
+      if (!product.hasAttributes) {
+        toast("Product edited successfully");
+        setLoading(false);
+        return;
+      }
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/products/${res.data.editedProduct.name}/additem`,
         attributesData
       );
       if (result.statusText === "OK") {
         toast("Product edited successfully");
-        getProduct();
+        if (product.hasAttributes) {
+          getProduct();
+        }
       }
     } catch (err) {
       setServerErrors(err.response.data.error);
@@ -132,12 +116,13 @@ function ProductDetails() {
     category: yup.string().ensure().required("category is required!"),
     gender: yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
+    count: yup.number().integer().min(0).required("brand is required!"),
   });
   const getProduct = async () => {
     setLoading(true);
     try {
       const product = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products/${name}`
+        `${process.env.REACT_APP_API_URL}/products/${id}`
       );
       setProduct(product.data);
       setItems(product.data.productItems);
@@ -146,12 +131,7 @@ function ProductDetails() {
     }
     setLoading(false);
   };
-  // const getattributes = async () => {
-  //   const attributesdata = await axios.get(
-  //     `${process.env.REACT_APP_API_URL}/attribute`
-  //   );
-  //   setallattributes(attributesdata.data);
-  // };
+
   const getFilteredData = async () => {
     const brandsData = await axios.get(
       `${process.env.REACT_APP_API_URL}/products/filter/all`
@@ -163,7 +143,6 @@ function ProductDetails() {
   };
   useEffect(() => {
     getProduct();
-    // getattributes();
     getFilteredData();
   }, []);
 
@@ -189,6 +168,11 @@ function ProductDetails() {
     category: product ? product.Category.name : "",
     gender: product ? product.Gender.name : "",
     brand: product ? product.Brands.name : "",
+    count: product ? product.count : 0,
+  };
+
+  const handleTitleClick = () => {
+    navigate("/Products");
   };
 
   return (
@@ -197,7 +181,7 @@ function ProductDetails() {
       subtitle={
         editable ? "Editing your bogo product!" : "Viewing your bogo product!"
       }
-      onClick={() => navigate("/Products")}
+      onClick={handleTitleClick}
     >
       <Formik
         onSubmit={handleFormSubmit}
@@ -330,73 +314,49 @@ function ProductDetails() {
               />
             )}
 
-            <Box>
-              {items?.map((item) => (
-                <CustomAccordion
-                  getProduct={getProduct}
-                  name={item.name}
-                  handleChange={handleChangeExpansion}
-                  expanded={expanded}
-                  count={item.count}
-                  attr={sendAttr(item)}
-                  editable={editable}
-                  deleteItem={handleDelete}
-                  key={item.name}
-                  title={product.name}
-                />
-              ))}
-            </Box>
-            {editable && (
-              <AddAttributes
-                attributesData={attributesData}
-                handleChangeattribute={handleChangeattribute}
-                indexcount={indexcount}
-                allattributes={allattributes}
-                setattributesData={setattributesData}
+            {product?.hasAttributes ? (
+              <>
+                <Box>
+                  {items?.map((item) => (
+                    <CustomAccordion
+                      getProduct={getProduct}
+                      name={item.name}
+                      handleChange={handleChangeExpansion}
+                      expanded={expanded}
+                      count={item.count}
+                      attr={sendAttr(item)}
+                      editable={editable}
+                      deleteItem={handleDelete}
+                      key={item.name}
+                      title={product.name}
+                    />
+                  ))}
+                </Box>
+                {editable && product?.hasAttributes && (
+                  <AddAttributes
+                    attributesData={attributesData}
+                    handleChangeattribute={handleChangeattribute}
+                    indexcount={indexcount}
+                    allattributes={allattributes}
+                    setattributesData={setattributesData}
+                  />
+                )}
+              </>
+            ) : (
+              <CustomTextField
+                type={"text"}
+                name="count"
+                label={"Product count"}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                value={values.count}
+                touched={touched.count}
+                errors={errors.count}
+                disabled={!editable}
+                variant={editable ? "filled" : "standard"}
               />
             )}
 
-            {/* <Stack direction={"row"} spacing={2} justifyContent={"center"}>
-              <Button
-                disableRipple
-                onClick={() => {
-                  let newarray = [...attributesData];
-                  let obj = {};
-                  allattributes.map((item) => {
-                    obj[item.name] = null;
-                  });
-                  obj["count"] = null;
-                  newarray.push(obj);
-                  setattributesData(newarray);
-                }}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-                color="info"
-              >
-                Add attribute
-              </Button>
-              {attributesData.length > 0 && (
-                <Button
-                  disableRipple
-                  onClick={() => {
-                    let newarray = [...attributesData];
-                    newarray.pop();
-                    setattributesData(newarray);
-                  }}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "transparent",
-                    },
-                  }}
-                  color="error"
-                >
-                  Remove
-                </Button>
-              )}
-            </Stack> */}
             {editable && <FormButton theme={theme}>Save</FormButton>}
           </FormCard>
         )}

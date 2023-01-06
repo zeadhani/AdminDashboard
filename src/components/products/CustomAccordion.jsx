@@ -70,6 +70,9 @@ function CustomAccordion({
     const state = { ...formState, [key]: e.target.value };
     setFormState(state);
   };
+  const handleCountInputCange = (e) => {
+    setCount(e.target.value);
+  };
   React.useEffect(() => {
     setFormState(attr);
     setCount(count);
@@ -210,7 +213,7 @@ function CustomAccordion({
             <CustomTextField
               value={countState}
               label={"count"}
-              onChange={(e) => setCount(e.target.value)}
+              onChange={handleCountInputCange}
             />
           </Stack>
         </Dialogue>
