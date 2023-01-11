@@ -12,6 +12,7 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.17",
     "@mui/x-data-grid": "^5.17.14",
+    "@mui/x-date-pickers": "^5.0.13",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
     "@nivo/geo": "^0.80.0",
@@ -21,6 +22,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.1",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",
     "moment": "^2.29.4",
@@ -57,7 +59,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-    
   }
- 
 }

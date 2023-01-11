@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  FormControlLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  useTheme,
-} from "@mui/material";
+import { FormControlLabel, MenuItem, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
@@ -21,7 +15,7 @@ import AddAttributes from "../../components/Forms/addAttributes";
 import { checkCount, handleImageUpload } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
 import Checkbox from "@mui/material/Checkbox";
-
+import { handleTitleClick } from "../../utils/functions";
 function AddProduct() {
   const theme = useTheme();
 
@@ -71,7 +65,6 @@ function AddProduct() {
     form_data.append("hasAttributes", hasAttributes);
 
     try {
-      // setServerErrors("");
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/products`,
         form_data
@@ -103,13 +96,13 @@ function AddProduct() {
 
   useEffect(() => {
     const getFilteredData = async () => {
-      const brandsData = await axios.get(
+      const productData = await axios.get(
         `${process.env.REACT_APP_API_URL}/products/filter/all`
       );
-      setCategories(brandsData.data.categories);
-      setGender(brandsData.data.gender);
-      setallattributes(brandsData.data.attributes);
-      setBrands(brandsData.data.brands);
+      setCategories(productData.data.categories);
+      setGender(productData.data.gender);
+      setallattributes(productData.data.attributes);
+      setBrands(productData.data.brands);
     };
     setLoading(true);
     getFilteredData();
@@ -132,9 +125,6 @@ function AddProduct() {
     brand: "",
     count: 0,
   };
-  const handleTitleClick = () => {
-    navigate("/Products");
-  };
   const handleCheckChange = (e) => {
     setHasAttributes(e.target.checked);
   };
@@ -143,7 +133,7 @@ function AddProduct() {
     <CustomContainer
       title={"BOGO PRODUCTS"}
       subtitle={"Add new bogo product!"}
-      onClick={handleTitleClick}
+      onClick={() => handleTitleClick(navigate, "Products")}
     >
       <Formik
         onSubmit={handleFormSubmit}
@@ -200,6 +190,7 @@ function AddProduct() {
                 </MenuItem>
               ))}
             </CustomTextField>
+
             <CustomTextField
               type={"text"}
               name="gender"
@@ -286,49 +277,6 @@ function AddProduct() {
                 setattributesData={setattributesData}
               />
             )}
-
-            {/* <Stack direction={"row"} spacing={2} justifyContent={"center"}>
-            <Button
-              disableRipple
-              onClick={() => {
-                let newarray = [...attributesData];
-                let obj = {};
-                allattributes.map((item) => {
-                  obj[item.name] = null;
-                });
-                obj["count"] = null;
-                newarray.push(obj);
-                setattributesData(newarray);
-              }}
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
-              color="info"
-            >
-              Add attribute
-            </Button>
-            {attributesData.length > 0 && (
-              <Button
-                disableRipple
-                onClick={() => {
-                  let newarray = [...attributesData];
-                  newarray.pop();
-                  setattributesData(newarray);
-                }}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-                color="error"
-              >
-                Remove
-              </Button>
-            )}
-          </Stack> */}
-
             <FormButton theme={theme}>Create new product</FormButton>
           </FormCard>
         )}

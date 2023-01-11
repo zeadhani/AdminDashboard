@@ -10,6 +10,7 @@ import ProductDetails from "./screens/products/productDetails";
 import AddProduct from "./screens/products/AddProduct";
 import ToastMessage from "./components/global/ToastMessage";
 import BrandsDashboard from "./screens/brands";
+import AddBrand from "./screens/brands/AddBrand";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -31,6 +32,11 @@ function App() {
               <Route path="/Products/add-product" element={<AddProduct />} />
               <Route path="/Products/:id" element={<ProductDetails />} />
               <Route exact path="/Merchants" element={<BrandsDashboard />} />
+              <Route
+                exact
+                path="/Merchants/:add-brand"
+                element={<AddBrand />}
+              />
             </Routes>
             <ToastMessage />
           </main>

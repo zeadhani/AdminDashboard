@@ -1,5 +1,5 @@
 import { Box, MenuItem, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -12,7 +12,12 @@ import { toast } from "react-toastify";
 import CustomAccordion from "../../components/products/CustomAccordion";
 import { useNavigate } from "react-router-dom";
 import AddAttributes from "../../components/Forms/addAttributes";
-import { checkCount, handleImageUpload, sendAttr } from "../../utils/functions";
+import {
+  checkCount,
+  handleImageUpload,
+  handleTitleClick,
+  sendAttr,
+} from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
 
 function ProductDetails() {
@@ -21,6 +26,7 @@ function ProductDetails() {
   const navigate = useNavigate();
   const { editable } = state;
   const theme = useTheme();
+  const ref = useRef(null);
   const [loading, setLoading] = useState(false);
   const [add, setAdd] = useState(false);
   const [product, setProduct] = useState(false);
@@ -47,7 +53,12 @@ function ProductDetails() {
   };
 
   const handleChangeExpansion = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+    if (newExpanded) {
+      ref.current?.scrollIntoView({ behavior: "smooth" });
+      setExpanded(panel);
+    } else {
+      setExpanded(false);
+    }
   };
   const handleFormSubmit = async (values) => {
     if (!editable) return;
@@ -171,17 +182,13 @@ function ProductDetails() {
     count: product ? product.count : 0,
   };
 
-  const handleTitleClick = () => {
-    navigate("/Products");
-  };
-
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
       subtitle={
         editable ? "Editing your bogo product!" : "Viewing your bogo product!"
       }
-      onClick={handleTitleClick}
+      onClick={() => handleTitleClick(navigate, "Products")}
     >
       <Formik
         onSubmit={handleFormSubmit}
@@ -361,6 +368,7 @@ function ProductDetails() {
           </FormCard>
         )}
       </Formik>
+      <Box ref={ref} sx={{marginBottom:10}}></Box>
     </CustomContainer>
   );
 }

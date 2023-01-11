@@ -90,13 +90,13 @@ function BrandsDashboard() {
   const getBrands = async () => {
     setLoading(true);
     try {
-      const products = await axios.get(
+      const brands = await axios.get(
         `${process.env.REACT_APP_API_URL}/brand?limit=${rowsPerPage}&page=${
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
       );
-      setBrands(products.data.data.data);
-      setCount(products.data.data.totalCount);
+      setBrands(brands.data.data.data);
+      setCount(brands.data.data.totalCount);
       setError(false);
     } catch (err) {
       setError(true);
@@ -143,18 +143,18 @@ function BrandsDashboard() {
   ];
 
   const handleTitleClick = () => {
-    navigate("/Merchants/add-brand")
+    navigate("/Merchants/add-brand");
   };
 
   const editAction = (name) => {
     navigate(`/Merchants/${name}`, {
       state: { editable: true },
-    })
+    });
   };
   const viewAction = (name) => {
     navigate(`/Merchants/${name}`, {
       state: { editable: false },
-    })
+    });
   };
 
   return (
