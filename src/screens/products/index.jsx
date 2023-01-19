@@ -21,6 +21,8 @@ import CustomFilter from "../../components/filters/CustomSingleFilter";
 import FilterContainer from "../../components/filters/FilterContainer";
 import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
+import usePage from "../../components/hooks/usePage";
+import useFilteredData from "../../components/hooks/products/useFilteredData";
 
 const sortArray = ["createdAt", "price", "name"];
 function ProductsDashboard() {
@@ -28,24 +30,17 @@ function ProductsDashboard() {
   const colors = tokens(theme.palette.mode);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
+    usePage();
+  const {brands,categories,gender} = useFilteredData();
 
-  const [page, setPage] = useState(
-    searchParams.get("page") ? parseInt(searchParams.get("page")) : 0
-  );
   const [search, setSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
   );
-  const [rowsPerPage, setRowsPerPage] = useState(
-    searchParams.get("rowsPerPage")
-      ? parseInt(searchParams.get("rowsPerPage"))
-      : 10
-  );
   const [count, setCount] = useState(0);
-
   const [sort, setSort] = useState(
     searchParams.get("sort") ? searchParams.get("sort") : "createdAt"
   );
-
   const [orderBy, setOrderBy] = useState(
     searchParams.get("orderBy") ? searchParams.get("orderBy") : "asc"
   );
@@ -59,10 +54,8 @@ function ProductsDashboard() {
   const [filteredBrand, setfilteredBrand] = useState(
     searchParams.get("brand") ? searchParams.get("brand").split(",") : []
   );
-  const [brands, setBrands] = useState([]);
+
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [gender, setGender] = useState([]);
   const [error, setError] = useState(false);
 
   const handleOrderByChange = (event) => {
@@ -79,14 +72,6 @@ function ProductsDashboard() {
       target: { value },
     } = event;
     setFiltered(typeof value === "string" ? value.split(",") : value);
-  };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
   };
   const handleFilterGenderChange = (e) => {
     setFilteredGender(e.target.value);
@@ -133,6 +118,7 @@ function ProductsDashboard() {
     setSort("createdAt");
     setSearch("");
   };
+
   useEffect(() => {
     navigate({
       search: `?${createSearchParams({
@@ -159,18 +145,7 @@ function ProductsDashboard() {
     filteredBrand,
   ]);
 
-  useEffect(() => {
-    const getFilteredData = async () => {
-      const filterData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products/filter/all`
-      );
-      setCategories(filterData.data.categories);
-      setGender(filterData.data.gender);
-      setBrands(filterData.data.brands);
-    };
 
-    getFilteredData();
-  }, []);
 
   const columns = [
     { id: "name", label: "Name" },
