@@ -21,8 +21,10 @@ import CustomFilter from "../../components/filters/CustomSingleFilter";
 import FilterContainer from "../../components/filters/FilterContainer";
 import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
-import usePage from "../../components/hooks/usePage";
+import usePage from "../../components/hooks/general/usePage";
 import useFilteredData from "../../components/hooks/products/useFilteredData";
+import useProduct from "../../components/hooks/products/useProduct";
+import useSort from "../../components/hooks/general/useSort";
 
 const sortArray = ["createdAt", "price", "name"];
 function ProductsDashboard() {
@@ -32,14 +34,11 @@ function ProductsDashboard() {
   const navigate = useNavigate();
   const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
     usePage();
-  const {brands,categories,gender} = useFilteredData();
+  const { brands, categories, gender } = useFilteredData();
+  const { sort, handleSortChange ,setSort } = useSort();
 
   const [search, setSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
-  );
-  const [count, setCount] = useState(0);
-  const [sort, setSort] = useState(
-    searchParams.get("sort") ? searchParams.get("sort") : "createdAt"
   );
   const [orderBy, setOrderBy] = useState(
     searchParams.get("orderBy") ? searchParams.get("orderBy") : "asc"
@@ -54,19 +53,14 @@ function ProductsDashboard() {
   const [filteredBrand, setfilteredBrand] = useState(
     searchParams.get("brand") ? searchParams.get("brand").split(",") : []
   );
-
-  const [products, setProducts] = useState([]);
   const [error, setError] = useState(false);
-
   const handleOrderByChange = (event) => {
     setOrderBy(event.target.value);
   };
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
+
   const handleFilterChange = (event) => {
     const {
       target: { value },
@@ -82,23 +76,34 @@ function ProductsDashboard() {
     } = e;
     setfilteredBrand(typeof value === "string" ? value.split(",") : value);
   };
-  const getProducts = async () => {
-    setLoading(true);
-    try {
-      const products = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products?limit=${rowsPerPage}&page=${
-          page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}&brand=${filteredBrand}`
-      );
-      setProducts(products.data.data.data);
-      setCount(products.data.data.totalCount);
-      setError(false);
-    } catch (err) {
-      setError(true);
-    }
-    setLoading(false);
-  };
-
+  // const getProducts = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const products = await axios.get(
+  //       `${process.env.REACT_APP_API_URL}/products?limit=${rowsPerPage}&page=${
+  //         page + 1
+  //       }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}&brand=${filteredBrand}`
+  //     );
+  //     setProducts(products.data.data.data);
+  //     setCount(products.data.data.totalCount);
+  //     setError(false);
+  //   } catch (err) {
+  //     setError(true);
+  //   }
+  //   setLoading(false);
+  // };
+  const { products, count, getProducts } = useProduct(
+    rowsPerPage,
+    page,
+    sort,
+    orderBy,
+    search,
+    filtered,
+    filteredGneder,
+    filteredBrand,
+    setLoading,
+    setError
+  );
   const handleDeleteProduct = async (id) => {
     setLoading(true);
     try {
@@ -119,33 +124,31 @@ function ProductsDashboard() {
     setSearch("");
   };
 
-  useEffect(() => {
-    navigate({
-      search: `?${createSearchParams({
-        rowsPerPage,
-        page,
-        sort,
-        orderBy,
-        search,
-        gender: filteredGneder,
-        brand: [filteredBrand],
-        filtered: [filtered],
-      })}`,
-    });
-    getProducts();
-  }, [
-    rowsPerPage,
-    page,
-    count,
-    sort,
-    orderBy,
-    search,
-    filtered,
-    filteredGneder,
-    filteredBrand,
-  ]);
-
-
+  // useEffect(() => {
+  //   navigate({
+  //     search: `?${createSearchParams({
+  //       rowsPerPage,
+  //       page,
+  //       sort,
+  //       orderBy,
+  //       search,
+  //       gender: filteredGneder,
+  //       brand: [filteredBrand],
+  //       filtered: [filtered],
+  //     })}`,
+  //   });
+  //   getProducts();
+  // }, [
+  //   rowsPerPage,
+  //   page,
+  //   count,
+  //   sort,
+  //   orderBy,
+  //   search,
+  //   filtered,
+  //   filteredGneder,
+  //   filteredBrand,
+  // ]);
 
   const columns = [
     { id: "name", label: "Name" },

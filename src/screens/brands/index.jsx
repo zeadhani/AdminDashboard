@@ -18,6 +18,8 @@ import FilterContainer from "../../components/filters/FilterContainer";
 import CustomFilter from "../../components/filters/CustomSingleFilter";
 import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
+
+
 const sortArray = ["createdAt", "name"];
 function BrandsDashboard() {
   const theme = useTheme();
