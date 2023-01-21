@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CustomContainer from "../global/CustomContainer";
 import TableCard from "../../components/Table/TableCard";
 import { Box, TableCell } from "@mui/material";
 import {
-  createSearchParams,
   useNavigate,
-  useSearchParams,
 } from "react-router-dom";
 import axios from "axios";
 import CustomTableRow from "../../components/Table/TableRow";
@@ -13,71 +11,54 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../../Theme";
 import TableImage from "../../components/Table/TableImage";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
-
 import FilterContainer from "../../components/filters/FilterContainer";
 import CustomFilter from "../../components/filters/CustomSingleFilter";
 import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
+import usePage from "../../components/hooks/general/usePage";
+import useCommonFilters from "../../components/hooks/general/useCommonFilters";
+import useBrands from "../../components/hooks/merchants/useBrands";
+import usePreferences from "../../components/hooks/merchants/usepreferences";
+import useBrandFilters from "../../components/hooks/merchants/useBrandFilters";
 
-
+const columns = [
+  { id: "name", label: "Name" },
+  { id: "image", label: "Image" },
+  { id: "preference", label: "Preference" },
+  { id: "contract", label: "Contract Expire" },
+  { id: "created_at", label: "Created_At" },
+];
 const sortArray = ["createdAt", "name"];
 function BrandsDashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
-  const [page, setPage] = useState(
-    searchParams.get("page") ? parseInt(searchParams.get("page")) : 0
-  );
-  const [rowsPerPage, setRowsPerPage] = useState(
-    searchParams.get("rowsPerPage")
-      ? parseInt(searchParams.get("rowsPerPage"))
-      : 10
-  );
-  const [search, setSearch] = useState(
-    searchParams.get("search") ? searchParams.get("search") : ""
-  );
-
-  const [sort, setSort] = useState(
-    searchParams.get("sort") ? searchParams.get("sort") : "createdAt"
-  );
-  const [orderBy, setOrderBy] = useState(
-    searchParams.get("orderBy") ? searchParams.get("orderBy") : "asc"
-  );
+  const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
+    usePage();
+  const {
+    sort,
+    search,
+    orderBy,
+    handleOrderByChange,
+    handleSearchChange,
+    resetCommonFilters,
+    handleSortChange,
+  } = useCommonFilters();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [count, setCount] = useState(0);
-  const [brands, setBrands] = useState([]);
-  const [pref, setPref] = useState([]);
-  const [preferencesFilter, setPrefFilter] = useState(
-    searchParams.get("preferences")
-      ? searchParams.get("preferences").split(",")
-      : []
+  const { pref } = usePreferences();
+  const { preferencesFilter, handleFilterPrefChange, resetBrandFilters } =
+    useBrandFilters();
+  const { brands, count, getBrands } = useBrands(
+    setLoading,
+    rowsPerPage,
+    page,
+    sort,
+    orderBy,
+    search,
+    setError,
+    preferencesFilter
   );
-  const handleFilterPrefChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setPrefFilter(typeof value === "string" ? value.split(",") : value);
-  };
-
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
-  const handleOrderByChange = (event) => {
-    setOrderBy(event.target.value);
-  };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
   const handleDeleteBrand = async (name) => {
     setLoading(true);
     try {
@@ -89,65 +70,13 @@ function BrandsDashboard() {
     }
     setLoading(false);
   };
-  const getBrands = async () => {
-    setLoading(true);
-    try {
-      const brands = await axios.get(
-        `${process.env.REACT_APP_API_URL}/brand?limit=${rowsPerPage}&page=${
-          page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
-      );
-      setBrands(brands.data.data.data);
-      setCount(brands.data.data.totalCount);
-      setError(false);
-    } catch (err) {
-      setError(true);
-    }
-    setLoading(false);
-  };
-  useEffect(() => {
-    navigate({
-      search: `?${createSearchParams({
-        rowsPerPage,
-        page,
-        sort,
-        orderBy,
-        search,
-        preferences: [preferencesFilter],
-      })}`,
-    });
-    getBrands();
-  }, [rowsPerPage, page, count, sort, orderBy, search, preferencesFilter]);
-
-  useEffect(() => {
-    const getFilteredData = async () => {
-      const filterData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/pref`
-      );
-      setPref(filterData.data);
-    };
-    getFilteredData();
-  }, []);
-
   const handleRestFilters = () => {
-    setPrefFilter([]);
-    setOrderBy("asc");
-    setSort("createdAt");
-    setSearch("");
+    resetBrandFilters();
+    resetCommonFilters();
   };
-
-  const columns = [
-    { id: "name", label: "Name" },
-    { id: "image", label: "Image" },
-    { id: "preference", label: "Preference" },
-    { id: "contract", label: "Contract Expire" },
-    { id: "created_at", label: "Created_At" },
-  ];
-
   const handleTitleClick = () => {
     navigate("/Merchants/add-brand");
   };
-
   const editAction = (name) => {
     navigate(`/Merchants/${name}`, {
       state: { editable: true },

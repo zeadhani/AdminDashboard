@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FormControlLabel, MenuItem, useTheme } from "@mui/material";
 import { Formik } from "formik";
@@ -16,23 +16,22 @@ import { checkCount, handleImageUpload } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
 import Checkbox from "@mui/material/Checkbox";
 import { handleTitleClick } from "../../utils/functions";
+import useFilteredData from "../../components/hooks/products/useFilteredData";
+
+
+
 function AddProduct() {
   const theme = useTheme();
-
   const navigate = useNavigate();
   let form_data = new FormData();
-  const [categories, setCategories] = useState([]);
-  const [gender, setGender] = useState([]);
+  const { brands, categories, gender ,allattributes} = useFilteredData();
   const [imageFile, setimageFile] = useState();
   const [imageFileerror, setimageFileerror] = useState("");
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasAttributes, setHasAttributes] = useState(false);
-  const [allattributes, setallattributes] = useState([]);
   const [attributesData, setattributesData] = useState([]);
-  const [brands, setBrands] = useState([]);
   const [indexcount, setindexcount] = useState();
-
   const handleFormSubmit = async (values) => {
     setServerErrors("");
     if (!imageFile || imageFileerror) {
@@ -93,21 +92,6 @@ function AddProduct() {
     targetObject[itemkey] = value;
     setattributesData(newarray);
   };
-
-  useEffect(() => {
-    const getFilteredData = async () => {
-      const productData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products/filter/all`
-      );
-      setCategories(productData.data.categories);
-      setGender(productData.data.gender);
-      setallattributes(productData.data.attributes);
-      setBrands(productData.data.brands);
-    };
-    setLoading(true);
-    getFilteredData();
-    setLoading(false);
-  }, []);
 
   const formValidation = yup.object().shape({
     name: yup.string().required("name is required"),

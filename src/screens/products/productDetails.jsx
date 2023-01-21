@@ -1,5 +1,5 @@
 import { Box, MenuItem, useTheme } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -19,6 +19,8 @@ import {
   sendAttr,
 } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
+import useFilteredData from "../../components/hooks/products/useFilteredData";
+import useSingleProduct from "../../components/hooks/products/useSingleProduct";
 
 function ProductDetails() {
   let { id } = useParams();
@@ -28,17 +30,18 @@ function ProductDetails() {
   const theme = useTheme();
   const ref = useRef(null);
   const [loading, setLoading] = useState(false);
-  const [add, setAdd] = useState(false);
-  const [product, setProduct] = useState(false);
-  const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [gender, setGender] = useState([]);
-  const [imageFile, setimageFile] = useState();
   const [serverErrors, setServerErrors] = useState(null);
+  const { brands, categories, gender, allattributes } = useFilteredData();
+  const { items, product, getProduct, newItems } = useSingleProduct(
+    setServerErrors,
+    id,
+    setLoading
+  );
+
+  const [add, setAdd] = useState(false);
+  const [imageFile, setimageFile] = useState();
   const [imageFileerror, setimageFileerror] = useState("");
-  const [allattributes, setallattributes] = useState([]);
   const [attributesData, setattributesData] = useState([]);
-  const [brands, setBrands] = useState([]);
   const [indexcount, setindexcount] = useState();
   let form_data = new FormData();
   const [expanded, setExpanded] = React.useState();
@@ -129,44 +132,16 @@ function ProductDetails() {
     brand: yup.string().ensure().required("brand is required!"),
     count: yup.number().integer().min(0).required("brand is required!"),
   });
-  const getProduct = async () => {
-    setLoading(true);
-    try {
-      const product = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products/${id}`
-      );
-      setProduct(product.data);
-      setItems(product.data.productItems);
-    } catch (err) {
-      setServerErrors(err.response.data.error);
-    }
-    setLoading(false);
-  };
-
-  const getFilteredData = async () => {
-    const brandsData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/products/filter/all`
-    );
-    setCategories(brandsData.data.categories);
-    setGender(brandsData.data.gender);
-    setallattributes(brandsData.data.attributes);
-    setBrands(brandsData.data.brands);
-  };
-  useEffect(() => {
-    getProduct();
-    getFilteredData();
-  }, []);
 
   async function handleDelete(name) {
     try {
       const deleteItem = await axios.delete(
         `${process.env.REACT_APP_API_URL}/products/${product.name}/item/${name}`
       );
-
       if (deleteItem.status === 200) {
         const newArray = [...items];
         const resullt = newArray.filter((item) => item.name !== name);
-        setItems(resullt);
+        newItems(resullt);
       }
     } catch (err) {
       setServerErrors(err);
@@ -368,7 +343,7 @@ function ProductDetails() {
           </FormCard>
         )}
       </Formik>
-      <Box ref={ref} sx={{marginBottom:10}}></Box>
+      <Box ref={ref} sx={{ marginBottom: 10 }}></Box>
     </CustomContainer>
   );
 }
