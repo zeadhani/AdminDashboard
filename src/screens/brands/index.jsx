@@ -20,6 +20,7 @@ import useCommonFilters from "../../components/hooks/general/useCommonFilters";
 import useBrands from "../../components/hooks/merchants/useBrands";
 import usePreferences from "../../components/hooks/merchants/usepreferences";
 import useBrandFilters from "../../components/hooks/merchants/useBrandFilters";
+import LinearProg from "../../components/global/LinearProg";
 
 const columns = [
   { id: "name", label: "Name" },
@@ -117,6 +118,7 @@ function BrandsDashboard() {
           sx={{ flex: 1 }}
         />
       </FilterContainer>
+      <LinearProg loading={loading} />
       <TableCard
         columns={columns}
         count={count}

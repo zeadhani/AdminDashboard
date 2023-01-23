@@ -55,7 +55,7 @@ function TableCard({
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[10, 25, 50]}
-              count={count}
+              count={count?count:0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
