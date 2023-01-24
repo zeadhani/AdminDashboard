@@ -18,13 +18,19 @@ import Checkbox from "@mui/material/Checkbox";
 import { handleTitleClick } from "../../utils/functions";
 import useFilteredData from "../../components/hooks/products/useFilteredData";
 
-
-
+const initialValues = {
+  name: "",
+  price: 0,
+  category: "",
+  gender: "",
+  brand: "",
+  count: 0,
+};
 function AddProduct() {
   const theme = useTheme();
   const navigate = useNavigate();
   let form_data = new FormData();
-  const { brands, categories, gender ,allattributes} = useFilteredData();
+  const { brands, categories, gender, allattributes } = useFilteredData();
   const [imageFile, setimageFile] = useState();
   const [imageFileerror, setimageFileerror] = useState("");
   const [serverErrors, setServerErrors] = useState(null);
@@ -101,14 +107,7 @@ function AddProduct() {
     gender: yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
   });
-  const initialValues = {
-    name: "",
-    price: 0,
-    category: "",
-    gender: "",
-    brand: "",
-    count: 0,
-  };
+
   const handleCheckChange = (e) => {
     setHasAttributes(e.target.checked);
   };
