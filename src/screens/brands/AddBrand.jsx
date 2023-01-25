@@ -10,11 +10,10 @@ import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import axios from "axios";
-import useCategories from "../../components/hooks/merchants/useCategories";
-import usePreferences from "../../components/hooks/merchants/usepreferences";
 import CustomSelect from "../../components/Forms/CustomSelect";
 import { toast } from "react-toastify";
 import CustomDateSelector from "../../components/Forms/CustomDateSelector";
+import useBrandData from "../../components/hooks/merchants/useBrandData";
 
 const initialValues = {
   name: "",
@@ -30,8 +29,7 @@ function AddBrand() {
 
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { pref } = usePreferences();
-  const { categories } = useCategories();
+  const { categories, pref } = useBrandData();
   const [imageFile, setimageFile] = useState();
   const [dateValue, setDateValue] = useState();
   const [brandError, setBrandError] = useState(false);

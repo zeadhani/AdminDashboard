@@ -78,13 +78,13 @@ function BrandsDashboard() {
   const handleTitleClick = () => {
     navigate("/Merchants/add-brand");
   };
-  const editAction = (name) => {
-    navigate(`/Merchants/${name}`, {
+  const editAction = (id) => {
+    navigate(`/Merchants/${id}`, {
       state: { editable: true },
     });
   };
-  const viewAction = (name) => {
-    navigate(`/Merchants/${name}`, {
+  const viewAction = (id) => {
+    navigate(`/Merchants/${id}`, {
       state: { editable: false },
     });
   };
@@ -151,8 +151,8 @@ function BrandsDashboard() {
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
                 deleteAction={() => handleDeleteBrand(row.name)}
-                editAction={() => editAction(row?.name)}
-                viewAction={() => viewAction(row?.name)}
+                editAction={() => editAction(row?.id)}
+                viewAction={() => viewAction(row?.id)}
                 colors={colors}
               />
             </CustomTableRow>
