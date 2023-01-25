@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import {
   Sidebar,
@@ -16,7 +16,7 @@ import {
   Stack,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { ColorModeContext, tokens } from "../../Theme";
+import {  tokens } from "../../Theme";
 import {
   HomeOutlined,
   CalendarMonthOutlined,
@@ -55,7 +55,7 @@ function SideBar() {
   );
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
+
   return (
     <Sidebar
       transitionDuration={100}

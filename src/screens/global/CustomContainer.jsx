@@ -12,6 +12,4 @@ function CustomContainer({ title, subtitle, onClick, children }) {
 }
 
 export default CustomContainer;
-{
-  /* <Header title={title} subtitle={subtitle} onClick={onClick} /> */
-}
+
