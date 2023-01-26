@@ -21,7 +21,7 @@ function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box m="20px">
+    <Box mx="20px" my={"15px"}>
       <Box
         display="flex"
         justifyContent="space-between"
