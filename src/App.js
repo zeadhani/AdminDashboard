@@ -13,7 +13,7 @@ import BrandsDashboard from "./screens/brands";
 import AddBrand from "./screens/brands/AddBrand";
 import BrandDetails from "./screens/brands/BrandDetails";
 import Login from "./screens/auth/Login";
-import Register from "./screens/auth/Register";
+
 import Profile from "./screens/profile/Profile";
 
 function App() {
@@ -37,7 +37,6 @@ function App() {
               <Route path="/Products/:id" element={<ProductDetails />} />
               <Route exact path="/Merchants" element={<BrandsDashboard />} />
               <Route path="/Auth/Login" element={<Login />} />
-              <Route path="/Auth/Register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route
                 exact
