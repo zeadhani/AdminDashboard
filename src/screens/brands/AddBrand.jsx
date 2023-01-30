@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CustomContainer from "../global/CustomContainer";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { handleImageUpload, handleTitleClick } from "../../utils/functions";
+import { handleTitleClick } from "../../utils/functions";
 import FormCard from "../../components/Forms/FormCard";
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
@@ -14,6 +14,8 @@ import CustomSelect from "../../components/Forms/CustomSelect";
 import { toast } from "react-toastify";
 import CustomDateSelector from "../../components/Forms/CustomDateSelector";
 import useBrandData from "../../components/hooks/merchants/useBrandData";
+import useImage from "../../components/hooks/general/useImage";
+import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 
 const initialValues = {
   name: "",
@@ -30,10 +32,10 @@ function AddBrand() {
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const { categories, pref } = useBrandData();
-  const [imageFile, setimageFile] = useState();
+  const { handleImageUpload, imageFile, imageFileerror, changeImageFileError } =
+    useImage();
   const [dateValue, setDateValue] = useState();
   const [brandError, setBrandError] = useState(false);
-  const [imageFileerror, setimageFileerror] = useState("");
 
   const handleFormSubmit = async (values) => {
     setServerErrors("");
@@ -46,7 +48,7 @@ function AddBrand() {
       return;
     }
     if (!imageFile || imageFileerror) {
-      setimageFileerror("Image is required");
+      changeImageFileError("Image is required");
       return;
     }
     const { name, email, prefrence, categories } = values;
@@ -159,20 +161,11 @@ function AddBrand() {
             />
             <ImageFileUpload
               add={true}
-              handleImageUpload={(e) =>
-                handleImageUpload(e, setimageFile, setimageFileerror)
-              }
+              handleImageUpload={(e) => handleImageUpload(e)}
               imageFileerror={imageFileerror}
               label={"Brand Image"}
             />
-            {imageFile && (
-              <img
-                alt="Choosen img"
-                width={80}
-                style={{ borderRadius: 5 }}
-                src={URL.createObjectURL(imageFile)}
-              />
-            )}
+            <ImageFileDisplay imageFile={imageFile} />
 
             <FormButton theme={theme}>Create new brand</FormButton>
           </FormCard>

@@ -3,15 +3,16 @@ import React from "react";
 import CustomTextField from "./CustomTextField";
 
 function ImageFileUpload(props) {
-  const {
-    label,
-    handleImageUpload,
-    imageFileerror,
-    add,
-    image,
-    editable,
-    triggerAdd,
-  } = props;
+  const { label, handleImageUpload, imageFileerror, add, image, editable ,changeImageFileError ,setAdd,resetImageFile} =
+    props;
+
+  const triggerAdd = () => {
+    setAdd((prev) => !prev);
+    if (!add) {
+      resetImageFile();
+      changeImageFileError("");
+    }
+  };
   return (
     <Stack spacing={2}>
       <Stack spacing={2} direction={"row"}>
@@ -20,7 +21,7 @@ function ImageFileUpload(props) {
         </Typography>
         {editable && (
           <Button
-          disableRipple
+            disableRipple
             variant="text"
             color={add ? "error" : "success"}
             onClick={triggerAdd}

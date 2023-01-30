@@ -61,7 +61,7 @@ function SideBar() {
     <>
       {isLoggedIn && (
         <Sidebar
-        defaultCollapsed
+          defaultCollapsed
           transitionDuration={100}
           rootStyles={{
             [`.${sidebarClasses.container}`]: {

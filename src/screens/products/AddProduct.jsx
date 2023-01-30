@@ -12,11 +12,13 @@ import CustomTextField from "../../components/Forms/CustomTextField";
 import FormCard from "../../components/Forms/FormCard";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import AddAttributes from "../../components/Forms/addAttributes";
-import { checkCount, handleImageUpload } from "../../utils/functions";
+import { checkCount } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
 import Checkbox from "@mui/material/Checkbox";
 import { handleTitleClick } from "../../utils/functions";
 import useFilteredData from "../../components/hooks/products/useFilteredData";
+import useImage from "../../components/hooks/general/useImage";
+import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 
 const initialValues = {
   name: "",
@@ -31,8 +33,12 @@ function AddProduct() {
   const navigate = useNavigate();
   let form_data = new FormData();
   const { brands, categories, gender, allattributes } = useFilteredData();
-  const [imageFile, setimageFile] = useState();
-  const [imageFileerror, setimageFileerror] = useState("");
+  const {
+    handleImageUpload,
+    imageFile,
+    imageFileerror,
+    changeImageFileError,
+  } = useImage();
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasAttributes, setHasAttributes] = useState(false);
@@ -41,7 +47,7 @@ function AddProduct() {
   const handleFormSubmit = async (values) => {
     setServerErrors("");
     if (!imageFile || imageFileerror) {
-      setimageFileerror("Image is required");
+      changeImageFileError("Image is required");
       return;
     }
     const { name, price, category, gender, brand, count } = values;
@@ -212,20 +218,11 @@ function AddProduct() {
 
             <ImageFileUpload
               add={true}
-              handleImageUpload={(e) =>
-                handleImageUpload(e, setimageFile, setimageFileerror)
-              }
+              handleImageUpload={(e) => handleImageUpload(e)}
               imageFileerror={imageFileerror}
               label={"product Image"}
             />
-            {imageFile && (
-              <img
-                alt="Choosen img"
-                width={80}
-                style={{ borderRadius: 5 }}
-                src={URL.createObjectURL(imageFile)}
-              />
-            )}
+           <ImageFileDisplay imageFile={imageFile}/>
 
             <FormControlLabel
               control={

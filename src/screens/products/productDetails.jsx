@@ -1,5 +1,5 @@
 import { Box, MenuItem, useTheme } from "@mui/material";
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -12,15 +12,12 @@ import { toast } from "react-toastify";
 import CustomAccordion from "../../components/products/CustomAccordion";
 import { useNavigate } from "react-router-dom";
 import AddAttributes from "../../components/Forms/addAttributes";
-import {
-  checkCount,
-  handleImageUpload,
-  handleTitleClick,
-  sendAttr,
-} from "../../utils/functions";
+import { checkCount, handleTitleClick, sendAttr } from "../../utils/functions";
 import CustomContainer from "../global/CustomContainer";
 import useFilteredData from "../../components/hooks/products/useFilteredData";
 import useSingleProduct from "../../components/hooks/products/useSingleProduct";
+import useImage from "../../components/hooks/general/useImage";
+import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 
 function ProductDetails() {
   let { id } = useParams();
@@ -39,8 +36,14 @@ function ProductDetails() {
   );
 
   const [add, setAdd] = useState(false);
-  const [imageFile, setimageFile] = useState();
-  const [imageFileerror, setimageFileerror] = useState("");
+  const {
+    handleImageUpload,
+    imageFile,
+    imageFileerror,
+    resetImageFile,
+    changeImageFileError,
+  } = useImage();
+
   const [attributesData, setattributesData] = useState([]);
   const [indexcount, setindexcount] = useState();
   let form_data = new FormData();
@@ -67,7 +70,7 @@ function ProductDetails() {
     if (!editable) return;
     if (add) {
       if (!imageFile || imageFileerror) {
-        setimageFileerror("Image is required");
+        changeImageFileError("Image is required");
         return;
       }
     }
@@ -148,6 +151,8 @@ function ProductDetails() {
     }
   }
 
+  const triggerAdd = () => {};
+
   const initialValues = {
     name: product ? product.name : "",
     price: product ? product.price : 0,
@@ -188,37 +193,34 @@ function ProductDetails() {
               type={"text"}
               name="name"
               label={"product Name"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+              handleBlur={editable && handleBlur}
+              handleChange={editable && handleChange}
               value={values.name}
               touched={touched.name}
               errors={errors.name}
-              disabled={!editable}
               variant={editable ? "filled" : "standard"}
             />
             <CustomTextField
               type={"text"}
               name="price"
               label={"Product price"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+              handleBlur={editable && handleBlur}
+              handleChange={editable && handleChange}
               value={values.price}
               touched={touched.price}
               errors={errors.price}
-              disabled={!editable}
               variant={editable ? "filled" : "standard"}
             />
             <CustomTextField
               type={"text"}
               name="category"
               label={"Product Category"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+              handleBlur={editable && handleBlur}
+              handleChange={editable && handleChange}
               value={values.category}
               touched={touched.category}
               errors={errors.category}
               select={editable}
-              disabled={!editable}
               variant={editable ? "filled" : "standard"}
             >
               {categories.map((item) => (
@@ -232,13 +234,12 @@ function ProductDetails() {
               type={"text"}
               name="gender"
               label={"Product gender"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+              handleBlur={editable && handleBlur}
+              handleChange={editable && handleChange}
               value={values.gender}
               touched={touched.gender}
               errors={errors.gender}
               select={editable}
-              disabled={!editable}
               variant={editable ? "filled" : "standard"}
             >
               {gender.map((item) => (
@@ -252,13 +253,12 @@ function ProductDetails() {
               type={"text"}
               name="brand"
               label={"Product Brand"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+              handleBlur={editable && handleBlur}
+              handleChange={editable && handleChange}
               value={values.brand}
               touched={touched.brand}
               errors={errors.brand}
               select={editable}
-              disabled={!editable}
               variant={editable ? "filled" : "standard"}
             >
               {brands.map((item) => (
@@ -271,31 +271,19 @@ function ProductDetails() {
             <ImageFileUpload
               add={add}
               editable={editable}
-              triggerAdd={() => {
-                setAdd((prev) => !prev);
-                if (!add) {
-                  setimageFile("");
-                  setimageFileerror("");
-                }
-              }}
+              setAdd={setAdd}
+              resetImageFile={resetImageFile}
               image={product?.image}
-              handleImageUpload={(e) =>
-                handleImageUpload(e, setimageFile, setimageFileerror)
-              }
+              handleImageUpload={(e) => handleImageUpload(e)}
               imageFileerror={imageFileerror}
               label={"product Image"}
               disabled={!editable}
               variant={editable ? "filled" : "standard"}
             />
-            {imageFile && add && (
-              <img
-                alt={`${values.name}`}
-                width={80}
-                style={{ borderRadius: 5 }}
-                src={URL.createObjectURL(imageFile)}
-              />
-            )}
 
+            {add && (
+              <ImageFileDisplay imageFile={imageFile} alt={values.name} />
+            )}
             {product?.hasAttributes ? (
               <>
                 <Box>
@@ -329,12 +317,11 @@ function ProductDetails() {
                 type={"text"}
                 name="count"
                 label={"Product count"}
-                handleBlur={handleBlur}
-                handleChange={handleChange}
+                handleBlur={editable && handleBlur}
+                handleChange={editable && handleChange}
                 value={values.count}
                 touched={touched.count}
                 errors={errors.count}
-                disabled={!editable}
                 variant={editable ? "filled" : "standard"}
               />
             )}
