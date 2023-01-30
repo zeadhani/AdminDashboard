@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CustomContainer from "../global/CustomContainer";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { handleTitleClick } from "../../utils/functions";
+import {  handleTitleClick } from "../../utils/functions";
 import FormCard from "../../components/Forms/FormCard";
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";

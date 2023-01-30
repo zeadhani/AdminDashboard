@@ -19,6 +19,7 @@ import useSingleProduct from "../../components/hooks/products/useSingleProduct";
 import useImage from "../../components/hooks/general/useImage";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 
+
 function ProductDetails() {
   let { id } = useParams();
   const { state } = useLocation();
@@ -29,6 +30,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
   const { brands, categories, gender, allattributes } = useFilteredData();
+
   const { items, product, getProduct, newItems } = useSingleProduct(
     setServerErrors,
     id,
@@ -150,8 +152,6 @@ function ProductDetails() {
       setServerErrors(err);
     }
   }
-
-  const triggerAdd = () => {};
 
   const initialValues = {
     name: product ? product.name : "",

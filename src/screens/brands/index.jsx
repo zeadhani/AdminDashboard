@@ -141,7 +141,7 @@ function BrandsDashboard() {
               <DateCell
                 sx={{
                   color:
-                    new Date() > row.contrat_Expire
+                    new Date().toISOString() > row.contrat_Expire
                       ? colors.redAccent[500]
                       : colors.greenAccent[500],
                   fontWeight: "bold",
