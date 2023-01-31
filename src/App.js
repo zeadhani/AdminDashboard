@@ -15,6 +15,7 @@ import BrandDetails from "./screens/brands/BrandDetails";
 import Login from "./screens/auth/Login";
 
 import Profile from "./screens/profile/Profile";
+import BrandOffers from "./screens/brands/offers";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -36,6 +37,10 @@ function App() {
               <Route path="/Products/add-product" element={<AddProduct />} />
               <Route path="/Products/:id" element={<ProductDetails />} />
               <Route exact path="/Merchants" element={<BrandsDashboard />} />
+              <Route
+                path="/Merchants/:id/offers"
+                element={<BrandOffers />}
+              />
               <Route path="/Auth/Login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
               <Route

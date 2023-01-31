@@ -1,4 +1,4 @@
-import { MenuItem, useTheme } from "@mui/material";
+import { Button, MenuItem, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useImage from "../../components/hooks/general/useImage";
@@ -18,12 +18,13 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useEffect } from "react";
+import { ArrowRight } from "@mui/icons-material";
 function BrandDetails() {
   let { id } = useParams();
   const { state } = useLocation();
   const { categories, pref } = useBrandData();
   const navigate = useNavigate();
-  const { editable } = state;
+  const { editable } = state ? state : { editable: false };
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
@@ -101,6 +102,11 @@ function BrandDetails() {
     prefrence: brandPreferences ? brandPreferences : "",
     categories: brandCtegories ? brandCtegories : [],
   };
+  const handleViewOffers = () => {
+    navigate(`offers`, {
+      state: { brandName: brand.name },
+    });
+  };
   return (
     <CustomContainer
       title={"BOGO MERCHANTS"}
@@ -128,6 +134,14 @@ function BrandDetails() {
             loading={loading}
             handleSubmit={handleSubmit}
           >
+            <Button
+              component="a"
+              variant="contained"
+              onClick={handleViewOffers}
+              endIcon={<ArrowRight color="secondary" />}
+            >
+              view offers
+            </Button>
             <CustomTextField
               type={"text"}
               name="name"

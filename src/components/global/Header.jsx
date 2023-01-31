@@ -11,12 +11,19 @@ function Header(props) {
       <Typography
         variant="h2"
         color={colors.grey[100]}
-        sx={{ mb: "5px", cursor: "pointer", maxWidth: "300px" }}
+        sx={{
+          mb: "5px",
+          cursor: "pointer",
+          maxWidth: "300px",
+          textTransform: "uppercase",
+        }}
         {...props}
       >
         {title}
       </Typography>
-      <Typography color={colors.grey[100]}>{subtitle}</Typography>
+      <Typography color={colors.grey[100]} textTransform={"uppercase"}>
+        {subtitle}
+      </Typography>
     </Box>
   );
 }
