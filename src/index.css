@@ -40,10 +40,10 @@ body,
 /* Define the animation */
 @keyframes scroll {
   from {
-      transform: translateY(0);
+    transform: translateY(0);
   }
   to {
-      transform: translateY(-100%);
+    transform: translateY(-100%);
   }
 }
 /* Apply the animation to the element */
@@ -51,11 +51,14 @@ body,
   animation: scroll 15s linear infinite;
 }
 
+.offerItem {
+  transition: all 0.2s ease-in-out;
+}
 
-
-
-
-
+.offerItem:hover {
+  background-color: rgba(62, 205, 174, 0.826);
+  transform: scale(0.97);
+}
 /* .css-wc9pnx-muidatagrid-root .muidatagrid-columnheader:focus-within,
 .css-wc9pnx-muidatagrid-root .muidatagrid-cell:focus-within {
   outline: none !important;

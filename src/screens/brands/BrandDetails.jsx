@@ -138,7 +138,8 @@ function BrandDetails() {
               component="a"
               variant="contained"
               onClick={handleViewOffers}
-              endIcon={<ArrowRight color="secondary" />}
+              color="info"
+              endIcon={<ArrowRight color="primary" />}
             >
               view offers
             </Button>

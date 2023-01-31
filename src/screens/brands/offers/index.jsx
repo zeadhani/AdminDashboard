@@ -8,6 +8,8 @@ import StateBox from "../../../components/global/stateBox";
 import { tokens } from "../../../Theme";
 import { MoneyOff, PeopleTwoTone, ShoppingBag } from "@mui/icons-material";
 import useBrandOffers from "../../../components/hooks/merchants/offers/useBrandOffers";
+import OfferItem from "../../../components/offers/OfferItem";
+import OfferContainer from "../../../components/offers/offerContainer";
 
 function BrandOffers() {
   const { state } = useLocation();
@@ -18,6 +20,7 @@ function BrandOffers() {
   const { id } = useParams();
   const { offers, offersNumber, ordersNumber, requestsNumber } =
     useBrandOffers(id);
+
   return (
     <CustomContainer
       title={brandName}
@@ -25,69 +28,78 @@ function BrandOffers() {
       onClick={() => handleTitleClick(navigate, `Merchants/${id}`)}
     >
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-        py={3}
+        display={"flex"}
+        flexDirection={"column"}
+        height={"85vh"}
+        overflow={"hidden"}
       >
         <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="140px"
+          gap="20px"
+          py={3}
         >
-          <StateBox
-            title={requestsNumber}
-            subtitle="Total Requests Submitted"
-            progress="0.25"
-            increase="+12%"
-            icon={
-              <PeopleTwoTone
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
+          <Box
+            gridColumn="span 4"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <StateBox
+              title={requestsNumber}
+              subtitle="Total Requests Submitted"
+              progress="0.25"
+              increase="+12%"
+              icon={
+                <PeopleTwoTone
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+          <Box
+            gridColumn="span 4"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <StateBox
+              title={offersNumber}
+              subtitle="Total Offers"
+              progress="0.25"
+              increase="+12%"
+              icon={
+                <MoneyOff
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+          <Box
+            gridColumn="span 4"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <StateBox
+              title={ordersNumber}
+              subtitle="Total Orders"
+              progress="0.25"
+              increase="+12%"
+              icon={
+                <ShoppingBag
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
         </Box>
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StateBox
-            title={offersNumber}
-            subtitle="Total Offers"
-            progress="0.25"
-            increase="+12%"
-            icon={
-              <MoneyOff
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StateBox
-            title={ordersNumber}
-            subtitle="Total Orders"
-            progress="0.25"
-            increase="+12%"
-            icon={
-              <ShoppingBag
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
+
+        <OfferContainer offers={offers} colors={colors} />
       </Box>
     </CustomContainer>
   );

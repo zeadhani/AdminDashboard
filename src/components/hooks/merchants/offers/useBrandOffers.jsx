@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -12,6 +12,7 @@ function useBrandOffers(id) {
     const offersData = await axios.get(
       `${process.env.REACT_APP_API_URL}/offer/${id}`
     );
+    console.log(offersData.data);
     setOffers(offersData.data);
     setOffersNumber(offersData.data.length);
     setOrdersNumber(
