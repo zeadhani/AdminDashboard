@@ -54,6 +54,7 @@ function CustomAccordion({
   editable,
   deleteItem,
   title,
+  id,
   getProduct,
 }) {
   const theme = useTheme();
@@ -103,20 +104,10 @@ function CustomAccordion({
 
     try {
       const res = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/products/${title}/item/${name}`,
+        `${process.env.REACT_APP_API_URL}/products/${id}/item/${name}`,
         data
       );
       if (res.status === 200) {
-        // setCount(res.data.count);
-        // Object.keys(formState).map((key) => {
-        //   for (let i = 0; i < res.data.ProductAttributesValues.length; i++) {
-
-        //   if(key=== res.data.ProductAttributesValues[i].attribute.name){
-        //    setFormState({...formState,[key]:res.data.ProductAttributesValues[i].value})
-        //   };
-        //   }
-        // });
-        // console.log(formState);
         getProduct();
         setOpen(false);
         toast("edited");

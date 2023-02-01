@@ -31,6 +31,7 @@ function ProductDetails() {
   const [serverErrors, setServerErrors] = useState(null);
   const { brands, categories, gender, allattributes } = useFilteredData();
   const [offers, setOffers] = useState();
+
   const { items, product, getProduct, newItems } = useSingleProduct(
     setServerErrors,
     id,
@@ -103,6 +104,7 @@ function ProductDetails() {
       product.hasAttributes === 1 ? true : false
     );
     form_data.append("offer", offer);
+
     try {
       setServerErrors("");
       const res = await axios.patch(
@@ -116,7 +118,7 @@ function ProductDetails() {
         return;
       }
       const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/products/${res.data.editedProduct.name}/additem`,
+        `${process.env.REACT_APP_API_URL}/products/${res.data.editedProduct.id}/additem`,
         attributesData
       );
       if (result.statusText === "OK") {
@@ -140,10 +142,10 @@ function ProductDetails() {
     offer: yup.string().ensure().required("offer is required!"),
   });
 
-  async function handleDelete(name) {
+  const handleDelete = async (name) => {
     try {
       const deleteItem = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/products/${product.name}/item/${name}`
+        `${process.env.REACT_APP_API_URL}/products/${id}/item/${name}`
       );
       if (deleteItem.status === 200) {
         const newArray = [...items];
@@ -151,12 +153,12 @@ function ProductDetails() {
         newItems(resullt);
       }
     } catch (err) {
-      setServerErrors(err);
+      setServerErrors(err.response.data.error);
     }
-  }
+  };
   const handleOffer = async (e, id) => {
-    console.log(id);
     if (!id) return;
+
     try {
       const offersData = await axios.get(
         `${process.env.REACT_APP_API_URL}/offer/${id}`
@@ -285,9 +287,6 @@ function ProductDetails() {
                     value={item?.name}
                     onClick={(e) => {
                       handleOffer(e, item?.id);
-                      if (!offers.length > 0) {
-                        values.offer = "";
-                      }
                     }}
                   >
                     {item.name}
@@ -301,12 +300,13 @@ function ProductDetails() {
                 label={
                   offers?.length === 0 ? "no available offers" : "choose offer"
                 }
-                handleBlur={handleBlur}
-                handleChange={handleChange}
-                value={ values.offer }
-                touched={offers?.length > 0 && touched.offer}
-                errors={offers?.length > 0 && errors.offer}
-                select={offers?.length}
+                handleBlur={editable && handleBlur}
+                handleChange={editable && handleChange}
+                value={values.offer}
+                touched={editable && touched.offer}
+                errors={editable && errors.offer}
+                select={editable}
+                variant={editable ? "filled" : "standard"}
               >
                 {offers?.map((item) => (
                   <MenuItem key={item.id} value={item?.name}>
@@ -347,6 +347,7 @@ function ProductDetails() {
                       deleteItem={handleDelete}
                       key={item.name}
                       title={product.name}
+                      id={product.id}
                     />
                   ))}
                 </Box>

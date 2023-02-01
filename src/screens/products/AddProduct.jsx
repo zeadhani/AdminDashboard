@@ -87,7 +87,7 @@ function AddProduct() {
         return;
       }
       const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/products/${res.data.createdProduct.name}/additem`,
+        `${process.env.REACT_APP_API_URL}/products/${res.data.createdProduct.id}/additem`,
         attributesData
       );
       if (result.statusText === "OK") toast("Product added successfully");
