@@ -1,29 +1,66 @@
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Delete, Edit } from "@mui/icons-material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import React, { useState } from "react";
 
 function OfferItem({ offer, colors }) {
+  const [hovered, setHovered] = useState(false);
+  const handleHover = () => {
+    setHovered((prev) => !prev);
+  };
+
   return (
     <Box
       m={3}
-      px={4}
-      py={2}
       borderRadius={4}
       bgcolor={colors.blueAccent[400]}
       sx={{ cursor: "pointer" }}
       className="offerItem"
       textAlign={"center"}
       height={"120px"}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
+      position={"relative"}
     >
-      <Typography variant="h4" fontWeight={"bold"} sx={{ marginBottom: "5px" }}>
-        {offer.name}
-      </Typography>
-
-      <Typography variant="h5" sx={{ marginBottom: "5px" }}>
-        {offer.OfferRange.lowestPrice} - {offer.OfferRange.highestPrice} EGP
-      </Typography>
-      <Typography variant="body1" sx={{ marginBottom: "5px" }}>
-        {offer._count.requests} Requests
-      </Typography>
+      <Box
+        sx={{ opacity: hovered && 0.1 }}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        height={"100%"}
+        gap={0.5}
+      >
+        <Typography variant="h4" fontWeight={"bold"}>
+          {offer.name}
+        </Typography>
+        <Typography variant="h5">
+          {offer.OfferRange.lowestPrice} - {offer.OfferRange.highestPrice} EGP
+        </Typography>
+        <Typography variant="body1">
+          {offer._count.requests} Requests
+        </Typography>
+      </Box>
+      {hovered && (
+        <Box
+          position={"absolute"}
+          top={"50%"}
+          left={"50%"}
+          sx={{ transform: "translateX(-50%) translateY(-50%)" }}
+          display={"flex"}
+          gap={2}
+        >
+          <Tooltip title="Edit Offer" placement="left">
+            <IconButton sx={{ border: "1px solid " }} size="large">
+              <Edit />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete Offer" placement="right">
+            <IconButton sx={{ border: "1px solid " }} size="large">
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
     </Box>
   );
 }

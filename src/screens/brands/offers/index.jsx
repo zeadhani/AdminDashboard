@@ -6,9 +6,14 @@ import { useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import StateBox from "../../../components/global/stateBox";
 import { tokens } from "../../../Theme";
-import { MoneyOff, PeopleTwoTone, ShoppingBag } from "@mui/icons-material";
+import {
+  MoneyOff,
+  PeopleTwoTone,
+  Shop2Outlined,
+  ShoppingBag,
+} from "@mui/icons-material";
 import useBrandOffers from "../../../components/hooks/merchants/offers/useBrandOffers";
-import OfferItem from "../../../components/offers/OfferItem";
+
 import OfferContainer from "../../../components/offers/offerContainer";
 
 function BrandOffers() {
@@ -18,7 +23,7 @@ function BrandOffers() {
   const colors = tokens(theme.palette.mode);
   const { brandName } = state;
   const { id } = useParams();
-  const { offers, offersNumber, ordersNumber, requestsNumber } =
+  const { offers, offersNumber, ordersNumber, requestsNumber, productsNumber } =
     useBrandOffers(id);
 
   return (
@@ -41,7 +46,7 @@ function BrandOffers() {
           py={3}
         >
           <Box
-            gridColumn="span 4"
+            gridColumn="span 3"
             backgroundColor={colors.primary[400]}
             display="flex"
             alignItems="center"
@@ -60,7 +65,7 @@ function BrandOffers() {
             />
           </Box>
           <Box
-            gridColumn="span 4"
+            gridColumn="span 3"
             backgroundColor={colors.primary[400]}
             display="flex"
             alignItems="center"
@@ -79,7 +84,7 @@ function BrandOffers() {
             />
           </Box>
           <Box
-            gridColumn="span 4"
+            gridColumn="span 3"
             backgroundColor={colors.primary[400]}
             display="flex"
             alignItems="center"
@@ -92,6 +97,25 @@ function BrandOffers() {
               increase="+12%"
               icon={
                 <ShoppingBag
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <StateBox
+              title={productsNumber}
+              subtitle="Total Products"
+              progress="0.25"
+              increase="+12%"
+              icon={
+                <Shop2Outlined
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }

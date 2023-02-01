@@ -18,7 +18,7 @@ import useFilteredData from "../../components/hooks/products/useFilteredData";
 import useSingleProduct from "../../components/hooks/products/useSingleProduct";
 import useImage from "../../components/hooks/general/useImage";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
-
+import { useEffect } from "react";
 
 function ProductDetails() {
   let { id } = useParams();
@@ -30,7 +30,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
   const { brands, categories, gender, allattributes } = useFilteredData();
-
+  const [offers, setOffers] = useState();
   const { items, product, getProduct, newItems } = useSingleProduct(
     setServerErrors,
     id,
@@ -77,7 +77,7 @@ function ProductDetails() {
       }
     }
 
-    const { name, price, category, gender, brand, count } = values;
+    const { name, price, category, gender, brand, count, offer } = values;
     if (imageFile) {
       form_data.append("image", imageFile);
     }
@@ -102,6 +102,7 @@ function ProductDetails() {
       "hasAttributes",
       product.hasAttributes === 1 ? true : false
     );
+    form_data.append("offer", offer);
     try {
       setServerErrors("");
       const res = await axios.patch(
@@ -136,6 +137,7 @@ function ProductDetails() {
     gender: yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
     count: yup.number().integer().min(0).required("brand is required!"),
+    offer: yup.string().ensure().required("offer is required!"),
   });
 
   async function handleDelete(name) {
@@ -152,6 +154,21 @@ function ProductDetails() {
       setServerErrors(err);
     }
   }
+  const handleOffer = async (e, id) => {
+    console.log(id);
+    if (!id) return;
+    try {
+      const offersData = await axios.get(
+        `${process.env.REACT_APP_API_URL}/offer/${id}`
+      );
+      setOffers(offersData.data);
+    } catch (err) {
+      setServerErrors(err);
+    }
+  };
+  useEffect(() => {
+    handleOffer("", product?.brandsId);
+  }, [product]);
 
   const initialValues = {
     name: product ? product.name : "",
@@ -160,8 +177,8 @@ function ProductDetails() {
     gender: product ? product.Gender.name : "",
     brand: product ? product.Brands.name : "",
     count: product ? product.count : 0,
+    offer: product ? product.offers?.name : "",
   };
-
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
@@ -249,24 +266,55 @@ function ProductDetails() {
               ))}
             </CustomTextField>
 
-            <CustomTextField
-              type={"text"}
-              name="brand"
-              label={"Product Brand"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
-              value={values.brand}
-              touched={touched.brand}
-              errors={errors.brand}
-              select={editable}
-              variant={editable ? "filled" : "standard"}
-            >
-              {brands.map((item) => (
-                <MenuItem key={item.id} value={item?.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </CustomTextField>
+            <Box display={"flex"} gap={1}>
+              <CustomTextField
+                type={"text"}
+                name="brand"
+                label={"Product Brand"}
+                handleBlur={editable && handleBlur}
+                handleChange={editable && handleChange}
+                value={values.brand}
+                touched={touched.brand}
+                errors={errors.brand}
+                select={editable}
+                variant={editable ? "filled" : "standard"}
+              >
+                {brands.map((item) => (
+                  <MenuItem
+                    key={item.id}
+                    value={item?.name}
+                    onClick={(e) => {
+                      handleOffer(e, item?.id);
+                      if (!offers.length > 0) {
+                        values.offer = "";
+                      }
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </CustomTextField>
+
+              <CustomTextField
+                type={"text"}
+                name="offer"
+                label={
+                  offers?.length === 0 ? "no available offers" : "choose offer"
+                }
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                value={ values.offer }
+                touched={offers?.length > 0 && touched.offer}
+                errors={offers?.length > 0 && errors.offer}
+                select={offers?.length}
+              >
+                {offers?.map((item) => (
+                  <MenuItem key={item.id} value={item?.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </CustomTextField>
+            </Box>
 
             <ImageFileUpload
               add={add}
