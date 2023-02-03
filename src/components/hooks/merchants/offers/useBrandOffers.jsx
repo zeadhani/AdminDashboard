@@ -10,12 +10,14 @@ function useBrandOffers(id) {
   const [requestsNumber, setRequestsNumber] = useState(0);
   const [productsNumber, setProductsNumber] = useState(0);
 
+  console.log(offers);
   const setData = (model) => {
     setOffers(model);
     setOffersNumber(model.length);
     setOrdersNumber(model.reduce((n, { _count }) => n + _count.Order, 0));
     setRequestsNumber(model.reduce((n, { _count }) => n + _count.requests, 0));
     setProductsNumber(model.reduce((n, { _count }) => n + _count.products, 0));
+
   };
 
   const getBrandOffers = async () => {

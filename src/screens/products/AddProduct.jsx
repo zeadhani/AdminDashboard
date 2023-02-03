@@ -30,6 +30,7 @@ const initialValues = {
   count: 0,
   offer: "",
 };
+
 function AddProduct() {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ function AddProduct() {
   const [offers, setOffers] = useState();
   const [attributesData, setattributesData] = useState([]);
   const [indexcount, setindexcount] = useState();
+  
   const handleFormSubmit = async (values) => {
     setServerErrors("");
     if (!imageFile || imageFileerror) {
@@ -129,6 +131,7 @@ function AddProduct() {
       setServerErrors(err);
     }
   };
+
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}

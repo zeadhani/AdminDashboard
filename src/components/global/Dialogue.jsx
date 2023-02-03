@@ -5,11 +5,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Slide,
   Typography,
 } from "@mui/material";
 
 import React from "react";
 import LinearProg from "./LinearProg";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 function Dialogue(props) {
   const {
@@ -26,6 +32,7 @@ function Dialogue(props) {
   return (
     <>
       <Dialog
+      TransitionComponent={Transition}
         open={open}
         onClose={onClose}
         PaperProps={{

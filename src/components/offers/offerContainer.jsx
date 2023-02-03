@@ -1,55 +1,47 @@
-import { Box, Fab, Tooltip, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
-import OfferItem from "./OfferItem";
-import { Add } from "@mui/icons-material";
+import { Add, RemoveRedEye } from "@mui/icons-material";
+import { useState } from "react";
+import OffersItems from "./offersItems";
+import OfferDetails from "./OfferDetails";
+import CustomFloatingButton from "../global/CustomFloatingButton";
 
-function OfferContainer({ offers, colors,deletOffer }) {
+function OfferContainer({ offers, colors, deletOffer }) {
+  const [showOffers, setshowOffers] = useState(true);
+  const handleClick = () => {
+    setshowOffers(!showOffers);
+  };
+
   return (
     <Box
-      overflow={"scroll"}
       position={"relative"}
       flex={1}
       backgroundColor={colors.primary[400]}
-      display={offers.length > 0 ? "grid" : "flex"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      gridTemplateColumns={"1fr 1fr 1fr"}
-      gridAutoRows="140px"
-      rowGap="10px"
       sx={{
         borderRadius: "10px",
         height: "100%",
+        overflowY: "scroll",
+        overflowX: "hidden",
       }}
     >
-      <Tooltip title="Add" placement="left-start">
-        <Fab
-          color="primary"
-          aria-label="add"
-          sx={{
-            position: "absolute",
-            bottom: "0px",
-            right: "10px",
-            bgcolor: colors.greenAccent[500],
-            color: colors.grey[100],
-            boxShadow: "none",
-            "&:hover": {
-              bgcolor: colors.greenAccent[700],
-            },
-          }}
-        >
-          <Add />
-        </Fab>
-      </Tooltip>
+      {!showOffers && <OfferDetails showOffers={showOffers} />}
 
-      {offers.length > 0 &&
-        offers?.map((item) => (
-          <OfferItem key={item.name} offer={item} colors={colors} deletOffer={deletOffer}/>
-        ))}
-      {offers.length === 0 && (
-        <Typography variant="h1" textTransform={"capitalize"}>
-          No Offers click the <Add /> To add some Offers
-        </Typography>
+      {showOffers && (
+        <OffersItems
+          offers={offers}
+          colors={colors}
+          deletOffer={deletOffer}
+          showOffers={showOffers}
+        />
       )}
+
+      <CustomFloatingButton
+        colors={colors}
+        handleClick={handleClick}
+        showOffers={showOffers}
+      >
+        {showOffers ? <Add /> : <RemoveRedEye />}
+      </CustomFloatingButton>
     </Box>
   );
 }

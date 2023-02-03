@@ -69,6 +69,7 @@ function ProductDetails() {
       setExpanded(false);
     }
   };
+
   const handleFormSubmit = async (values) => {
     if (!editable) return;
     if (add) {
@@ -168,6 +169,8 @@ function ProductDetails() {
       setServerErrors(err);
     }
   };
+
+  
   useEffect(() => {
     handleOffer("", product?.brandsId);
   }, [product]);

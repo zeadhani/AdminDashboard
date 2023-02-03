@@ -23,6 +23,7 @@ function BrandOffers() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
+
   const colors = tokens(theme.palette.mode);
   const { brandName } = state;
   const [loading, setLoading] = useState(false);
