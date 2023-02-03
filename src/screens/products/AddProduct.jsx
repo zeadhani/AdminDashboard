@@ -44,7 +44,7 @@ function AddProduct() {
   const [offers, setOffers] = useState();
   const [attributesData, setattributesData] = useState([]);
   const [indexcount, setindexcount] = useState();
-  
+
   const handleFormSubmit = async (values) => {
     setServerErrors("");
     if (!imageFile || imageFileerror) {
@@ -244,10 +244,10 @@ function AddProduct() {
                       : "choose offer"
                   }
                   handleBlur={handleBlur}
-                  handleChange={handleChange}
+                  handleChange={offers?.length > 0 && handleChange}
                   value={values.offer}
-                  touched={offers?.length > 0 && touched.offer}
-                  errors={offers?.length > 0 && errors.offer}
+                  touched={touched.offer}
+                  errors={errors.offer}
                   select={offers?.length}
                 >
                   {offers?.map((item) => (
