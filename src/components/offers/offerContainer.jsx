@@ -3,7 +3,7 @@ import React from "react";
 import OfferItem from "./OfferItem";
 import { Add } from "@mui/icons-material";
 
-function OfferContainer({ offers, colors }) {
+function OfferContainer({ offers, colors,deletOffer }) {
   return (
     <Box
       overflow={"scroll"}
@@ -43,7 +43,7 @@ function OfferContainer({ offers, colors }) {
 
       {offers.length > 0 &&
         offers?.map((item) => (
-          <OfferItem key={item.name} offer={item} colors={colors}  />
+          <OfferItem key={item.name} offer={item} colors={colors} deletOffer={deletOffer}/>
         ))}
       {offers.length === 0 && (
         <Typography variant="h1" textTransform={"capitalize"}>

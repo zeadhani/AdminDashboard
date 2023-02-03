@@ -1,8 +1,8 @@
 import { Delete, Edit } from "@mui/icons-material";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-function OfferItem({ offer, colors }) {
+function OfferItem({ offer, colors, deletOffer }) {
   const [hovered, setHovered] = useState(false);
   const handleHover = () => {
     setHovered((prev) => !prev);
@@ -36,9 +36,29 @@ function OfferItem({ offer, colors }) {
         <Typography variant="h5">
           {offer.OfferRange.lowestPrice} - {offer.OfferRange.highestPrice} EGP
         </Typography>
-        <Typography variant="body1">
-          {offer._count.requests} Requests
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "fit-content",
+            color: "text.secondary",
+            "& hr": {
+              mx: 1,
+            },
+          }}
+        >
+          <Typography variant="body1">
+            {offer._count.requests} Requests
+          </Typography>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ border: "1px solid" }}
+          />
+          <Typography variant="body1">
+            {offer._count.products} products
+          </Typography>
+        </Box>
       </Box>
       {hovered && (
         <Box
@@ -55,7 +75,11 @@ function OfferItem({ offer, colors }) {
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete Offer" placement="right">
-            <IconButton sx={{ border: "1px solid " }} size="large">
+            <IconButton
+              sx={{ border: "1px solid " }}
+              size="large"
+              onClick={() => deletOffer(offer.id)}
+            >
               <Delete />
             </IconButton>
           </Tooltip>

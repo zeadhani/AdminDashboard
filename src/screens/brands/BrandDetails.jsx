@@ -84,7 +84,7 @@ function BrandDetails() {
         form_data
       );
       if (res.statusText !== "OK") return;
-      toast("Product added successfully");
+      toast("Brand edited successfully");
     } catch (error) {
       setServerErrors(error.response.data.error);
     }

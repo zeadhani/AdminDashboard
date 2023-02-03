@@ -66,7 +66,7 @@ function AddBrand() {
         form_data
       );
       if (res.statusText !== "OK") return;
-      toast("Product added successfully");
+      toast("Brand added successfully");
     } catch (error) {
       setServerErrors(error.response.data.error);
     }

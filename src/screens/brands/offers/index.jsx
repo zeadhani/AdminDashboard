@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CustomContainer from "../../global/CustomContainer";
 import { handleTitleClick } from "../../../utils/functions";
@@ -15,6 +15,9 @@ import {
 import useBrandOffers from "../../../components/hooks/merchants/offers/useBrandOffers";
 
 import OfferContainer from "../../../components/offers/offerContainer";
+import axios from "axios";
+import LinearProg from "../../../components/global/LinearProg";
+import { toast } from "react-toastify";
 
 function BrandOffers() {
   const { state } = useLocation();
@@ -22,10 +25,33 @@ function BrandOffers() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { brandName } = state;
-  const { id } = useParams();
-  const { offers, offersNumber, ordersNumber, requestsNumber, productsNumber } =
-    useBrandOffers(id);
+  const [loading, setLoading] = useState(false);
 
+  const { id } = useParams();
+  const {
+    offers,
+    offersNumber,
+    ordersNumber,
+    requestsNumber,
+    productsNumber,
+    setNewOffers,
+  } = useBrandOffers(id);
+  const deletOffer = async (id) => {
+    setLoading(true);
+    try {
+      const deleteItem = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/offer/${id}`
+      );
+      if (deleteItem.status === 200) {
+        const newArray = [...offers];
+        const resullt = newArray.filter((item) => item.id !== id);
+        setNewOffers(resullt);
+      }
+    } catch (err) {
+      toast(err.response.data.error);
+    }
+    setLoading(false);
+  };
   return (
     <CustomContainer
       title={brandName}
@@ -122,8 +148,12 @@ function BrandOffers() {
             />
           </Box>
         </Box>
-
-        <OfferContainer offers={offers} colors={colors} />
+        <LinearProg loading={loading} />
+        <OfferContainer
+          offers={offers}
+          colors={colors}
+          deletOffer={deletOffer}
+        />
       </Box>
     </CustomContainer>
   );
