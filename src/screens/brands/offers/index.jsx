@@ -18,12 +18,13 @@ import OfferContainer from "../../../components/offers/offerContainer";
 import axios from "axios";
 import LinearProg from "../../../components/global/LinearProg";
 import { toast } from "react-toastify";
+import useOfferFilters from "../../../components/hooks/merchants/offers/useOfferFilters";
 
 function BrandOffers() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
-
+  const { offerType, offerRange } = useOfferFilters();
   const colors = tokens(theme.palette.mode);
   const { brandName } = state;
   const [loading, setLoading] = useState(false);
@@ -154,6 +155,8 @@ function BrandOffers() {
           offers={offers}
           colors={colors}
           deletOffer={deletOffer}
+          offerType={offerType}
+          offerRange={offerRange}
         />
       </Box>
     </CustomContainer>

@@ -1,6 +1,6 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
-import CustomTextField from "./CustomTextField";
+
 
 function ImageFileUpload(props) {
   const { label, handleImageUpload, imageFileerror, add, image, editable ,changeImageFileError ,setAdd,resetImageFile} =
@@ -32,7 +32,7 @@ function ImageFileUpload(props) {
         )}
       </Stack>
       {add && (
-        <CustomTextField
+        <TextField
           sx={{ flex: 1 }}
           variant="standard"
           type="file"

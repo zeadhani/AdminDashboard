@@ -6,7 +6,7 @@ import OffersItems from "./offersItems";
 import OfferDetails from "./OfferDetails";
 import CustomFloatingButton from "../global/CustomFloatingButton";
 
-function OfferContainer({ offers, colors, deletOffer }) {
+function OfferContainer({ offers, colors, deletOffer, offerRange, offerType }) {
   const [showOffers, setshowOffers] = useState(true);
   const handleClick = () => {
     setshowOffers(!showOffers);
@@ -24,7 +24,13 @@ function OfferContainer({ offers, colors, deletOffer }) {
         overflowX: "hidden",
       }}
     >
-      {!showOffers && <OfferDetails showOffers={showOffers} />}
+      {!showOffers && (
+        <OfferDetails
+          showOffers={showOffers}
+          offerType={offerType}
+          offerRange={offerRange}
+        />
+      )}
 
       {showOffers && (
         <OffersItems

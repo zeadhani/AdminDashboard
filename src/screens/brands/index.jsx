@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import CustomContainer from "../global/CustomContainer";
 import TableCard from "../../components/Table/TableCard";
 import { Box, TableCell } from "@mui/material";
-import {
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomTableRow from "../../components/Table/TableRow";
 import { useTheme } from "@emotion/react";
@@ -111,14 +109,17 @@ function BrandsDashboard() {
         <CustomFilter
           label={"Preferences"}
           value={preferencesFilter}
-          filterArray={pref}
+          filterarray={pref}
           onChange={handleFilterPrefChange}
-          itemItself={false}
           multiple={true}
           sx={{ flex: 1 }}
         />
       </FilterContainer>
       <LinearProg loading={loading} />
+      {error && <Box p={2}>Error , could not fetch data</Box>}
+      {brands.length === 0 && !error && !loading && (
+        <Box p={2}>No items Found</Box>
+      )}
       <TableCard
         columns={columns}
         count={count}
@@ -127,11 +128,6 @@ function BrandsDashboard() {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       >
-        {error && <Box p={2}>Error , could not fetch data</Box>}
-        {brands.length === 0 && !error && !loading && (
-          <Box p={2}>No items Found</Box>
-        )}
-
         {!error &&
           brands.map((row, index) => (
             <CustomTableRow colors={colors} key={row.id}>

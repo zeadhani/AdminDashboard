@@ -2,7 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React from "react";
 
 function CustomFilter(props) {
-  const { label, value, onChange, filterArray, multiple, itemItself } = props;
+  const { label, value, onChange, filterarray, multiple, itemitself } = props;
   return (
     <FormControl sx={{ minWidth: "150px" }} {...props}>
       <InputLabel id="demo-simple-select-label">{label}</InputLabel>
@@ -13,12 +13,12 @@ function CustomFilter(props) {
         multiple={multiple}
         onChange={onChange}
       >
-        {filterArray.map((item) => (
+        {filterarray?.map((item) => (
           <MenuItem
-            key={itemItself ? item : item.id}
-            value={itemItself ? item : item.name}
+            key={itemitself ? item : item.id}
+            value={itemitself ? item : item.name}
           >
-            {itemItself ? item : item.name}
+            {itemitself ? item : item.name}
           </MenuItem>
         ))}
       </Select>

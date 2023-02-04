@@ -10,7 +10,7 @@ function useBrandOffers(id) {
   const [requestsNumber, setRequestsNumber] = useState(0);
   const [productsNumber, setProductsNumber] = useState(0);
 
-  console.log(offers);
+  
   const setData = (model) => {
     setOffers(model);
     setOffersNumber(model.length);

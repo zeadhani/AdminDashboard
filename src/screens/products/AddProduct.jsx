@@ -160,8 +160,6 @@ function AddProduct() {
               type={"text"}
               name="name"
               label={"product Name"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
               value={values.name}
               touched={touched.name}
               errors={errors.name}
@@ -170,8 +168,6 @@ function AddProduct() {
               type={"text"}
               name="price"
               label={"Product price"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
               value={values.price}
               touched={touched.price}
               errors={errors.price}
@@ -180,8 +176,6 @@ function AddProduct() {
               type={"text"}
               name="category"
               label={"Product Category"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
               value={values.category}
               touched={touched.category}
               errors={errors.category}
@@ -198,8 +192,6 @@ function AddProduct() {
               type={"text"}
               name="gender"
               label={"Product Gender"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
               value={values.gender}
               touched={touched.gender}
               errors={errors.gender}
@@ -217,8 +209,6 @@ function AddProduct() {
                 type={"text"}
                 name="brand"
                 label={"Product Brand"}
-                handleBlur={handleBlur}
-                handleChange={handleChange}
                 value={values.brand}
                 touched={touched.brand}
                 errors={errors.brand}
@@ -243,8 +233,6 @@ function AddProduct() {
                       ? "no available offers"
                       : "choose offer"
                   }
-                  handleBlur={handleBlur}
-                  handleChange={offers?.length > 0 && handleChange}
                   value={values.offer}
                   touched={touched.offer}
                   errors={errors.offer}
@@ -278,13 +266,12 @@ function AddProduct() {
               }
               label="Does this product has attributes ?"
             />
+
             {!hasAttributes && (
               <CustomTextField
                 type={"text"}
                 name="count"
                 label={"Product count"}
-                handleBlur={handleBlur}
-                handleChange={handleChange}
                 value={values.count}
                 touched={touched.count}
                 errors={errors.count}

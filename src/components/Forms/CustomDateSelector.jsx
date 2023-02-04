@@ -1,7 +1,8 @@
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React from "react";
-import CustomTextField from "./CustomTextField";
+
+import { TextField } from "@mui/material";
 
 function CustomDateSelector({ dateValue, setDateValue, editable }) {
   return (
@@ -12,10 +13,7 @@ function CustomDateSelector({ dateValue, setDateValue, editable }) {
         value={dateValue}
         onChange={(value) => setDateValue(value)}
         renderInput={(params) => (
-          <CustomTextField
-            variant={editable ? "filled" : "standard"}
-            {...params}
-          />
+          <TextField variant={editable ? "filled" : "standard"} {...params} />
         )}
       />
     </LocalizationProvider>

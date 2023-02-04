@@ -107,8 +107,7 @@ function AddBrand() {
               type={"text"}
               name="name"
               label={"Brand Name"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+            
               value={values.name}
               touched={touched.name}
               errors={errors.name}
@@ -117,8 +116,7 @@ function AddBrand() {
               type={"text"}
               name="email"
               label={"Brand Email"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+             
               value={values.email}
               touched={touched.email}
               errors={errors.email}
@@ -127,8 +125,7 @@ function AddBrand() {
               type={"text"}
               name="prefrence"
               label={"Product Preference"}
-              handleBlur={handleBlur}
-              handleChange={handleChange}
+             
               value={values.prefrence}
               touched={touched.prefrence}
               errors={errors.prefrence}

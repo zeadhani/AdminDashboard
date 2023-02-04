@@ -120,31 +120,32 @@ function ProductsDashboard() {
       >
         <CustomFilter
           label={"Gender"}
-          filterArray={gender}
+          filterarray={gender}
           onChange={handleFilterGenderChange}
           multiple={false}
           value={filteredGneder}
-          itemItself={false}
         />
         <CustomFilter
           label={"Category"}
           value={filtered}
-          filterArray={categories}
+          filterarray={categories}
           onChange={handleFilterChange}
-          itemItself={false}
           multiple={true}
         />
         <CustomFilter
           label={"Brands"}
           value={filteredBrand}
-          filterArray={brands}
+          filterarray={brands}
           onChange={handleFilterBrandChange}
-          itemItself={false}
           multiple={true}
           sx={{ flex: 1 }}
         />
       </FilterContainer>
       <LinearProg loading={loading} />
+      {error && <Box p={2}>Error , could not fetch data</Box>}
+      {products.length === 0 && !error && !loading && (
+        <Box p={2}>No items Found</Box>
+      )}
       <TableCard
         columns={columns}
         count={count}
@@ -153,11 +154,6 @@ function ProductsDashboard() {
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       >
-        {error && <Box p={2}>Error , could not fetch data</Box>}
-        {products.length === 0 && !error && !loading && (
-          <Box p={2}>No items Found</Box>
-        )}
-
         {!error &&
           products.map((row, index) => (
             <CustomTableRow colors={colors} key={row.id}>

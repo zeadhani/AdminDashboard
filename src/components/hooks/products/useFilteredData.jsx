@@ -15,6 +15,7 @@ function useFilteredData() {
       setGender(filterData.data.gender);
       setBrands(filterData.data.brands);
       setallattributes(filterData.data.attributes);
+
     };
 
     getFilteredData();

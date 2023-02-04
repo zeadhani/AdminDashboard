@@ -170,7 +170,6 @@ function ProductDetails() {
     }
   };
 
-  
   useEffect(() => {
     handleOffer("", product?.brandsId);
   }, [product]);
@@ -202,8 +201,7 @@ function ProductDetails() {
           values,
           errors,
           touched,
-          handleBlur,
-          handleChange,
+
           handleSubmit,
         }) => (
           <FormCard
@@ -215,8 +213,6 @@ function ProductDetails() {
               type={"text"}
               name="name"
               label={"product Name"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               value={values.name}
               touched={touched.name}
               errors={errors.name}
@@ -226,8 +222,6 @@ function ProductDetails() {
               type={"text"}
               name="price"
               label={"Product price"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               value={values.price}
               touched={touched.price}
               errors={errors.price}
@@ -237,8 +231,6 @@ function ProductDetails() {
               type={"text"}
               name="category"
               label={"Product Category"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               value={values.category}
               touched={touched.category}
               errors={errors.category}
@@ -256,8 +248,6 @@ function ProductDetails() {
               type={"text"}
               name="gender"
               label={"Product gender"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               value={values.gender}
               touched={touched.gender}
               errors={errors.gender}
@@ -276,8 +266,6 @@ function ProductDetails() {
                 type={"text"}
                 name="brand"
                 label={"Product Brand"}
-                handleBlur={editable && handleBlur}
-                handleChange={editable && handleChange}
                 value={values.brand}
                 touched={touched.brand}
                 errors={errors.brand}
@@ -303,19 +291,19 @@ function ProductDetails() {
                 label={
                   offers?.length === 0 ? "no available offers" : "choose offer"
                 }
-                handleBlur={editable && handleBlur}
-                handleChange={editable && handleChange}
                 value={values.offer}
                 touched={editable && touched.offer}
                 errors={editable && errors.offer}
                 select={editable}
                 variant={editable ? "filled" : "standard"}
               >
-                {offers?.map((item) => (
-                  <MenuItem key={item.id} value={item?.name}>
-                    {item.name}
-                  </MenuItem>
-                ))}
+                {!offers && <MenuItem>no offers</MenuItem>}
+                {offers &&
+                  offers.map((item) => (
+                    <MenuItem key={item.id} value={item?.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
               </CustomTextField>
             </Box>
 
@@ -369,8 +357,6 @@ function ProductDetails() {
                 type={"text"}
                 name="count"
                 label={"Product count"}
-                handleBlur={editable && handleBlur}
-                handleChange={editable && handleChange}
                 value={values.count}
                 touched={touched.count}
                 errors={errors.count}

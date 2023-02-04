@@ -147,8 +147,6 @@ function BrandDetails() {
               type={"text"}
               name="name"
               label={"Brand Name"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               value={values.name}
               touched={touched.name}
               errors={errors.name}
@@ -158,8 +156,6 @@ function BrandDetails() {
               type={"text"}
               name="email"
               label={"Brand Email"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               variant={editable ? "filled" : "standard"}
               value={values.email}
               touched={touched.email}
@@ -169,8 +165,6 @@ function BrandDetails() {
               type={"text"}
               name="prefrence"
               label={"Product Preference"}
-              handleBlur={editable && handleBlur}
-              handleChange={editable && handleChange}
               variant={editable ? "filled" : "standard"}
               touched={touched.prefrence}
               errors={errors.prefrence}

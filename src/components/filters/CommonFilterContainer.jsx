@@ -22,16 +22,16 @@ function CommonFilterContainer({
       />
       <CustomFilter
         label={"Sort By"}
-        filterArray={sortArray}
+        filterarray={sortArray}
         onChange={handleSortChange}
         value={sort}
         multiple={false}
-        itemItself={true}
+        itemitself="true"
       />
       <CustomFilter
         label={"Order By"}
-        itemItself={true}
-        filterArray={orderByArray}
+        itemitself="true"
+        filterarray={orderByArray}
         onChange={handleOrderByChange}
         value={orderBy}
       />
