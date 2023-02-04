@@ -21,10 +21,15 @@ import { useEffect } from "react";
 import { ArrowRight } from "@mui/icons-material";
 function BrandDetails() {
   let { id } = useParams();
-  const { state } = useLocation();
+  let { state } = useLocation();
   const { categories, pref } = useBrandData();
   const navigate = useNavigate();
-  const { editable } = state ? state : { editable: false };
+  if (!state) {
+    state = {
+      editable: "false",
+    };
+  }
+  const editable = state.editable === "true";
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
@@ -121,14 +126,7 @@ function BrandDetails() {
         validationSchema={formValidation}
         enableReinitialize={true}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
+        {({ values, errors, touched, handleChange, handleSubmit }) => (
           <FormCard
             serverErrors={serverErrors}
             loading={loading}
@@ -151,6 +149,7 @@ function BrandDetails() {
               touched={touched.name}
               errors={errors.name}
               variant={editable ? "filled" : "standard"}
+              disabled={!editable}
             />
             <CustomTextField
               type={"text"}
@@ -160,6 +159,7 @@ function BrandDetails() {
               value={values.email}
               touched={touched.email}
               errors={errors.email}
+              disabled={!editable}
             />
             <CustomTextField
               type={"text"}
@@ -170,6 +170,7 @@ function BrandDetails() {
               errors={errors.prefrence}
               value={values.prefrence}
               select={editable}
+              disabled={!editable}
             >
               {pref?.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
@@ -182,7 +183,7 @@ function BrandDetails() {
               label={"Product Categories"}
               value={values.categories}
               onChange={handleChange}
-              editable={editable}
+              editable={editable.toString()}
               error={brandError}
               name="categories"
             >

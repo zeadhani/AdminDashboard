@@ -16,23 +16,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function Dialogue({
+  open,
+  onClose,
+  handlesaveitem,
+  children,
+  title,
+  theme,
+  colors,
+  loading,
+  servererrors,
+  ...rest
+}) {
 
-function Dialogue(props) {
-  const {
-    open,
-    onClose,
-    submit,
-    children,
-    title,
-    theme,
-    colors,
-    loading,
-    serverErrors,
-  } = props;
+
   return (
     <>
       <Dialog
-      TransitionComponent={Transition}
+        TransitionComponent={Transition}
         open={open}
         onClose={onClose}
         PaperProps={{
@@ -41,9 +42,9 @@ function Dialogue(props) {
             borderRadius: 3,
           },
         }}
-        {...props}
+        {...rest}
       >
-        <LinearProg loading={loading} />
+        <LinearProg loading={loading === "true"} />
         <Box display={"flex"} justifyContent={"space-between"}>
           <DialogTitle
             id="dialogu-title"
@@ -52,7 +53,7 @@ function Dialogue(props) {
           >
             {title}
           </DialogTitle>
-          {serverErrors && (
+          {servererrors && (
             <Typography
               py={2}
               px={4}
@@ -60,14 +61,14 @@ function Dialogue(props) {
               color={"#d32f2f"}
               fontWeight={"bold"}
             >
-              {serverErrors}
+              {servererrors}
             </Typography>
           )}
         </Box>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button
-            onClick={submit}
+            onClick={handlesaveitem}
             variant="text"
             color={theme.palette.mode === "dark" ? "secondary" : "primary"}
             autoFocus

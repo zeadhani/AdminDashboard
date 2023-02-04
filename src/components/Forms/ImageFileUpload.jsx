@@ -10,7 +10,7 @@ function ImageFileUpload(props) {
     setAdd((prev) => !prev);
     if (!add) {
       resetImageFile();
-      changeImageFileError("");
+    //  changeImageFileError("");
     }
   };
   return (

@@ -181,7 +181,7 @@ function ProductDetails() {
     gender: product ? product.Gender.name : "",
     brand: product ? product.Brands.name : "",
     count: product ? product.count : 0,
-    offer: product ? product.offers?.name : "",
+    offer: offers?.length > 0 ? product.offers.name : "",
   };
   return (
     <CustomContainer
@@ -217,6 +217,7 @@ function ProductDetails() {
               touched={touched.name}
               errors={errors.name}
               variant={editable ? "filled" : "standard"}
+              disabled={!editable}
             />
             <CustomTextField
               type={"text"}
@@ -226,6 +227,7 @@ function ProductDetails() {
               touched={touched.price}
               errors={errors.price}
               variant={editable ? "filled" : "standard"}
+              disabled={!editable}
             />
             <CustomTextField
               type={"text"}
@@ -235,6 +237,7 @@ function ProductDetails() {
               touched={touched.category}
               errors={errors.category}
               select={editable}
+              disabled={!editable}
               variant={editable ? "filled" : "standard"}
             >
               {categories.map((item) => (
@@ -251,6 +254,7 @@ function ProductDetails() {
               value={values.gender}
               touched={touched.gender}
               errors={errors.gender}
+              disabled={!editable}
               select={editable}
               variant={editable ? "filled" : "standard"}
             >
@@ -268,6 +272,7 @@ function ProductDetails() {
                 label={"Product Brand"}
                 value={values.brand}
                 touched={touched.brand}
+                disabled={!editable}
                 errors={errors.brand}
                 select={editable}
                 variant={editable ? "filled" : "standard"}
@@ -295,6 +300,7 @@ function ProductDetails() {
                 touched={editable && touched.offer}
                 errors={editable && errors.offer}
                 select={editable}
+                disabled={!editable}
                 variant={editable ? "filled" : "standard"}
               >
                 {!offers && <MenuItem>no offers</MenuItem>}
@@ -360,6 +366,7 @@ function ProductDetails() {
                 value={values.count}
                 touched={touched.count}
                 errors={errors.count}
+                disabled={!editable}
                 variant={editable ? "filled" : "standard"}
               />
             )}

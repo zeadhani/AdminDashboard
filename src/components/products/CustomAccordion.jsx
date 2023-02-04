@@ -5,7 +5,7 @@ import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Stack, useTheme } from "@mui/material";
+import { Box, Button, Stack, TextField, useTheme } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import Dialogue from "../global/Dialogue";
 import CustomTextField from "../Forms/CustomTextField";
@@ -140,7 +140,7 @@ function CustomAccordion({
               >
                 {Object.entries(attr).map(([key, val]) => {
                   return (
-                    <Typography>
+                    <Typography key={key}>
                       {key} : {val}
                     </Typography>
                   );
@@ -183,17 +183,19 @@ function CustomAccordion({
         <Dialogue
           open={open}
           onClose={hanldeClose}
-          submit={handleSaveItem}
+          handlesaveitem={handleSaveItem}
           title={name}
           theme={theme}
           colors={colors}
-          loading={loading}
-          serverErrors={serverErrors}
+          loading={loading.toString()}
+          servererrors={serverErrors}
         >
           <Stack direction={"row"} spacing={1}>
             {Object.entries(attr).map(([key, val]) => {
               return (
-                <CustomTextField
+                <TextField
+                  variant="filled"
+                  key={key}
                   value={formState ? formState[key] : ""}
                   label={key}
                   onChange={(e) => handleChangeinputs(e, key)}
@@ -201,7 +203,8 @@ function CustomAccordion({
                 />
               );
             })}
-            <CustomTextField
+            <TextField
+              variant="filled"
               value={countState}
               label={"count"}
               onChange={handleCountInputCange}

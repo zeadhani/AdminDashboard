@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function useSingleProduct(setServerErrors, id, setLoading) {
   const [product, setProduct] = useState();

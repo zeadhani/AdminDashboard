@@ -78,12 +78,12 @@ function BrandsDashboard() {
   };
   const editAction = (id) => {
     navigate(`/Merchants/${id}`, {
-      state: { editable: true },
+      state: { editable: true.toString() },
     });
   };
   const viewAction = (id) => {
     navigate(`/Merchants/${id}`, {
-      state: { editable: false },
+      state: { editable: false.toString() },
     });
   };
 
