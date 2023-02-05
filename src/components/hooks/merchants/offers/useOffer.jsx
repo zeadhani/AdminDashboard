@@ -12,6 +12,7 @@ function useOffer(id, setServerErrors, setLoading) {
       );
 
       setOffer(offerData.data);
+      console.log(offerData.data)
     } catch (err) {
       setServerErrors(err.response.data.error);
     }

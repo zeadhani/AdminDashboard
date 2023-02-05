@@ -20,6 +20,7 @@ function OfferItem({ offer, colors, deletOffer, showOfferItemDetails }) {
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
       position={"relative"}
+      px={1}
     >
       <Box
         sx={{ opacity: hovered && 0.1 }}

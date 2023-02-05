@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CustomContainer from "../global/CustomContainer";
 import { Formik } from "formik";
 import * as yup from "yup";
-import {  handleTitleClick } from "../../utils/functions";
+import { handleTitleClick } from "../../utils/functions";
 import FormCard from "../../components/Forms/FormCard";
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
@@ -90,14 +90,7 @@ function AddBrand() {
         initialValues={initialValues}
         validationSchema={formValidation}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
+        {({ values, errors, touched, handleChange, handleSubmit }) => (
           <FormCard
             serverErrors={serverErrors}
             loading={loading}
@@ -107,7 +100,6 @@ function AddBrand() {
               type={"text"}
               name="name"
               label={"Brand Name"}
-            
               value={values.name}
               touched={touched.name}
               errors={errors.name}
@@ -116,7 +108,6 @@ function AddBrand() {
               type={"text"}
               name="email"
               label={"Brand Email"}
-             
               value={values.email}
               touched={touched.email}
               errors={errors.email}
@@ -125,7 +116,6 @@ function AddBrand() {
               type={"text"}
               name="prefrence"
               label={"Product Preference"}
-             
               value={values.prefrence}
               touched={touched.prefrence}
               errors={errors.prefrence}
@@ -139,11 +129,12 @@ function AddBrand() {
             </CustomTextField>
 
             <CustomSelect
+              name="categories"
               label={"Product Categories"}
               value={values.categories}
               onChange={handleChange}
               error={brandError}
-              name="categories"
+              editable="true"
             >
               {categories?.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
@@ -155,6 +146,7 @@ function AddBrand() {
             <CustomDateSelector
               dateValue={dateValue}
               setDateValue={setDateValue}
+              editable={true}
             />
             <ImageFileUpload
               add={true}

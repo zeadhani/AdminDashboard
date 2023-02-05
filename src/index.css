@@ -28,6 +28,7 @@ body,
 
 ::-webkit-scrollbar {
   width: 1px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {

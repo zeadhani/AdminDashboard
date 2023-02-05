@@ -94,6 +94,9 @@ function ProductDetails() {
         return;
       }
     }
+    const offerName = offer.split("/")[0];
+    const highestPrice = offer.split("to")[1];
+    const lowestPrice = offer.split("from")[1].split("to")[0];
     setLoading(true);
     form_data.append("name", name);
     form_data.append("price", price);
@@ -104,7 +107,9 @@ function ProductDetails() {
       "hasAttributes",
       product.hasAttributes === 1 ? true : false
     );
-    form_data.append("offer", offer);
+    form_data.append("offer", offerName);
+    form_data.append("lowestPrice", Number(lowestPrice));
+    form_data.append("highestPrice", Number(highestPrice));
 
     try {
       setServerErrors("");
@@ -157,21 +162,22 @@ function ProductDetails() {
       setServerErrors(err.response.data.error);
     }
   };
-  const handleOffer = async (e, id) => {
-    
-    if (!id) return;
-    try {
-      const offersData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/offer/${id}`
-      );
-      setOffers(offersData.data);
-    } catch (err) {
-      setServerErrors(err);
-    }
+  const handleOffer = (id) => {
+    return async () => {
+      if (!id) return;
+      try {
+        const offersData = await axios.get(
+          `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
+        );
+        setOffers(offersData.data);
+      } catch (err) {
+        setServerErrors(err);
+      }
+    };
   };
 
   useEffect(() => {
-    handleOffer("", product?.brandsId);
+    handleOffer(product?.brandsId)();
   }, [product]);
 
   const initialValues = {
@@ -181,7 +187,14 @@ function ProductDetails() {
     gender: product ? product.Gender.name : "",
     brand: product ? product.Brands.name : "",
     count: product ? product.count : 0,
-    offer: offers?.length > 0 ? product.offers.name : "",
+    offer:
+      offers?.length > 0
+        ? product.offers.name +
+          "/from" +
+          product?.offers.OfferRange.lowestPrice +
+          "to" +
+          product?.offers.OfferRange.highestPrice
+        : "",
   };
   return (
     <CustomContainer
@@ -280,10 +293,8 @@ function ProductDetails() {
                 {brands.map((item) => (
                   <MenuItem
                     key={item.id}
-                    value={item?.name}
-                    onClick={(e) => {
-                      handleOffer(e, item?.id);
-                    }}
+                    value={item.name}
+                    onClick={handleOffer(item?.id)}
                   >
                     {item.name}
                   </MenuItem>
@@ -296,7 +307,7 @@ function ProductDetails() {
                 label={
                   offers?.length === 0 ? "no available offers" : "choose offer"
                 }
-                value={values.offer}
+                // value={values.offer}
                 touched={editable && touched.offer}
                 errors={editable && errors.offer}
                 select={editable}
@@ -306,8 +317,21 @@ function ProductDetails() {
                 {!offers && <MenuItem>no offers</MenuItem>}
                 {offers &&
                   offers.map((item) => (
-                    <MenuItem key={item.id} value={item?.name}>
-                      {item.name}
+                    <MenuItem
+                      key={item.id}
+                      value={
+                        item.name +
+                        "/from" +
+                        item?.OfferRange.lowestPrice +
+                        "to" +
+                        item?.OfferRange.highestPrice
+                      }
+                    >
+                      {item.name +
+                        "/from" +
+                        item?.OfferRange.lowestPrice +
+                        "to" +
+                        item?.OfferRange.highestPrice}
                     </MenuItem>
                   ))}
               </CustomTextField>

@@ -38,6 +38,12 @@ function BrandOffers() {
     productsNumber,
     setNewOffers,
   } = useBrandOffers(id);
+
+  const addOffer = (offer) => {
+    const arr = [...offers];
+    const result = arr.push(offer);
+    setNewOffers(result);
+  };
   const deletOffer = (id) => {
     return async (e) => {
       setLoading(true);
@@ -84,7 +90,7 @@ function BrandOffers() {
           >
             <StateBox
               title={requestsNumber}
-              subtitle="Total Requests Submitted"
+              subtitle="Total Requests"
               progress="0.25"
               increase="+12%"
               icon={
@@ -157,8 +163,10 @@ function BrandOffers() {
           offers={offers}
           colors={colors}
           deletOffer={deletOffer}
+          addOffer={addOffer}
           offerType={offerType}
           offerRange={offerRange}
+          brandName={brandName}
         />
       </Box>
     </CustomContainer>

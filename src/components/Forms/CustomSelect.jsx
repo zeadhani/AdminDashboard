@@ -10,7 +10,8 @@ import React from "react";
 
 function CustomSelect(props) {
   const { label, onChange, value, children, name, error } = props;
-  const editable = props.editable === "true";
+ const editable = props.editable === "true";
+
   return (
     <FormControl sx={{ minWidth: "150px" }} {...props}>
       {!value?.length && (
@@ -18,9 +19,11 @@ function CustomSelect(props) {
       )}
       {editable && (
         <Box position={"relative"}>
-          <InputLabel sx={{ position: "absolute", top: "15px" }}>
-            {label}
-          </InputLabel>
+          {value?.length > 0 && (
+            <InputLabel sx={{ position: "absolute", top: "15px" }}>
+              {label}
+            </InputLabel>
+          )}
           <Select
             fullWidth
             name={name}

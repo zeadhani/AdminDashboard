@@ -16,11 +16,15 @@ function FormCard({ children, serverErrors, loading, handleSubmit }) {
     >
       {serverErrors && (
         <Box
-          
           borderRadius={3}
           px={10}
           mb={2}
-          sx={{ cursor: "pointer", width: "fit-content", marginX: "auto" ,border:"1px solid #d32f2f"}}
+          sx={{
+            cursor: "pointer",
+            width: "fit-content",
+            marginX: "auto",
+            border: "1px solid #d32f2f",
+          }}
         >
           <Typography
             my={2}

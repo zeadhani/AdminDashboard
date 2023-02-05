@@ -1,6 +1,8 @@
-import { Button, Stack } from "@mui/material";
-import React from "react";
+import { Button, IconButton, Stack } from "@mui/material";
+import React, { useEffect } from "react";
 import CommonFilterContainer from "./CommonFilterContainer";
+import { useState } from "react";
+import { Close, Menu } from "@mui/icons-material";
 
 function FilterContainer({
   children,
@@ -17,29 +19,77 @@ function FilterContainer({
   orderBy,
   sortArray,
 }) {
+  const [open, setOpen] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
   return (
     <Stack
       direction={"row"}
       width={"100%"}
+      position={"relative"}
       spacing={3}
       sx={{
         paddingTop: "20px",
         paddingBottom: "20px",
       }}
     >
-      <Stack direction={"row"} spacing={2} width={"100%"}>
-        <CommonFilterContainer
-          colors={colors}
-          search={search}
-          handleSearchChange={handleSearchChange}
-          handleSortChange={handleSortChange}
-          sort={sort}
-          handleOrderByChange={handleOrderByChange}
-          orderBy={orderBy}
-          sortArray={sortArray}
-        />
-        {children}
-      </Stack>
+      {width < 1200 && (
+        <IconButton sx={{ marginRight: "auto" }} onClick={handleOpen}>
+          {!open ? <Menu /> : <Close />}
+        </IconButton>
+      )}
+
+      {
+        <Stack
+          direction={width < 1200 ? "column" : "row"}
+          spacing={2}
+          width={"100%"}
+          sx={
+            width < 1200
+              ? {
+                  bgcolor: "rgba(0, 0, 20, 0.9)",
+                  position: "absolute",
+                  top: "100%",
+                
+                  padding: "50px",
+                  zIndex: "200",
+                  right: "1px",
+                  display: !open && "none",
+                  minWidth: "200px",
+                  overflowY: "scroll",
+                }
+              : {
+                  display: "flex",
+                }
+          }
+        >
+          <CommonFilterContainer
+            colors={colors}
+            search={search}
+            handleSearchChange={handleSearchChange}
+            handleSortChange={handleSortChange}
+            sort={sort}
+            handleOrderByChange={handleOrderByChange}
+            orderBy={orderBy}
+            sortArray={sortArray}
+          />
+          {children}
+        </Stack>
+      }
       <Stack direction={"row"} spacing={1}>
         <Button
           variant={"outlined"}

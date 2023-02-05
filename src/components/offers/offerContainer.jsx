@@ -6,7 +6,15 @@ import OffersItems from "./offersItems";
 import OfferDetails from "./OfferDetails";
 import CustomFloatingButton from "../global/CustomFloatingButton";
 
-function OfferContainer({ offers, colors, deletOffer, offerRange, offerType }) {
+function OfferContainer({
+  offers,
+  colors,
+  deletOffer,
+  offerRange,
+  brandName,
+  offerType,
+  addOffer
+}) {
   const [showOffers, setshowOffers] = useState(true);
   const [offerId, setOfferId] = useState("");
   const showOfferItemDetails = (id) => {
@@ -38,6 +46,8 @@ function OfferContainer({ offers, colors, deletOffer, offerRange, offerType }) {
           offerType={offerType}
           offerRange={offerRange}
           offerId={offerId}
+          brandName={brandName}
+          addOffer={addOffer}
         />
       )}
 

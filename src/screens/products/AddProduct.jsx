@@ -68,6 +68,10 @@ function AddProduct() {
 
     setLoading(true);
 
+    const offerName = offer.split("/")[0];
+    const highestPrice = offer.split("to")[1];
+    const lowestPrice = offer.split("from")[1].split("to")[0];
+  
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
@@ -75,7 +79,9 @@ function AddProduct() {
     form_data.append("brand", brand);
     form_data.append("image", imageFile);
     form_data.append("hasAttributes", hasAttributes);
-    form_data.append("offer", offer);
+    form_data.append("offer", offerName);
+    form_data.append("lowestPrice", Number(lowestPrice));
+    form_data.append("highestPrice", Number(highestPrice));
 
     try {
       const res = await axios.post(
@@ -121,15 +127,18 @@ function AddProduct() {
     setHasAttributes(e.target.checked);
   };
 
-  const handleOffer = async (e, id) => {
-    try {
-      const offersData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/offer/${id}`
-      );
-      setOffers(offersData.data);
-    } catch (err) {
-      setServerErrors(err);
-    }
+  const handleOffer = (id) => {
+    return async () => {
+      try {
+        const offersData = await axios.get(
+          `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
+        );
+        console.log(offersData.data);
+        setOffers(offersData.data);
+      } catch (err) {
+        setServerErrors(err);
+      }
+    };
   };
 
   return (
@@ -143,14 +152,7 @@ function AddProduct() {
         initialValues={initialValues}
         validationSchema={formValidation}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
+        {({ values, errors, touched, handleSubmit }) => (
           <FormCard
             serverErrors={serverErrors}
             loading={loading}
@@ -218,7 +220,7 @@ function AddProduct() {
                   <MenuItem
                     key={item.id}
                     value={item?.name}
-                    onClick={(e) => handleOffer(e, item.id)}
+                    onClick={handleOffer(item?.id)}
                   >
                     {item.name}
                   </MenuItem>
@@ -236,11 +238,24 @@ function AddProduct() {
                   value={values.offer}
                   touched={touched.offer}
                   errors={errors.offer}
-                  select={offers?.length}
+                  select={offers?.length > 0}
                 >
                   {offers?.map((item) => (
-                    <MenuItem key={item.id} value={item?.name}>
-                      {item.name}
+                    <MenuItem
+                      key={item.id}
+                      value={
+                        item.name +
+                        "/from" +
+                        item?.OfferRange.lowestPrice +
+                        "to" +
+                        item?.OfferRange.highestPrice
+                      }
+                    >
+                      {item.name +
+                        "/from" +
+                        item?.OfferRange.lowestPrice +
+                        "to" +
+                        item?.OfferRange.highestPrice}
                     </MenuItem>
                   ))}
                 </CustomTextField>

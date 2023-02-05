@@ -10,21 +10,25 @@ function useBrandOffers(id) {
   const [requestsNumber, setRequestsNumber] = useState(0);
   const [productsNumber, setProductsNumber] = useState(0);
 
-  
   const setData = (model) => {
     setOffers(model);
     setOffersNumber(model.length);
     setOrdersNumber(model.reduce((n, { _count }) => n + _count.Order, 0));
     setRequestsNumber(model.reduce((n, { _count }) => n + _count.requests, 0));
     setProductsNumber(model.reduce((n, { _count }) => n + _count.products, 0));
-
   };
 
   const getBrandOffers = async () => {
-    const offersData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
-    );
-    setData(offersData.data);
+    try {
+      const offersData = await axios.get(
+        `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
+      );
+
+      setData(offersData.data);
+    } catch (err) {
+      // console.log(err)
+      // console.log(err.response.data.error)
+    }
   };
   useEffect(() => {
     getBrandOffers();
