@@ -2,7 +2,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-function OfferItem({ offer, colors, deletOffer }) {
+function OfferItem({ offer, colors, deletOffer, showOfferItemDetails }) {
   const [hovered, setHovered] = useState(false);
   const handleHover = () => {
     setHovered((prev) => !prev);
@@ -70,7 +70,11 @@ function OfferItem({ offer, colors, deletOffer }) {
           gap={2}
         >
           <Tooltip title="Edit Offer" placement="left">
-            <IconButton sx={{ border: "1px solid " }} size="large">
+            <IconButton
+              sx={{ border: "1px solid " }}
+              size="large"
+              onClick={showOfferItemDetails(offer.id)}
+            >
               <Edit />
             </IconButton>
           </Tooltip>
@@ -78,7 +82,7 @@ function OfferItem({ offer, colors, deletOffer }) {
             <IconButton
               sx={{ border: "1px solid " }}
               size="large"
-              onClick={() => deletOffer(offer.id)}
+              onClick={deletOffer(offer.id)}
             >
               <Delete />
             </IconButton>

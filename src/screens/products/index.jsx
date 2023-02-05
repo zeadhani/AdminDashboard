@@ -71,16 +71,18 @@ function ProductsDashboard() {
     setLoading,
     setError
   );
-  const handleDeleteProduct = async (id) => {
-    setLoading(true);
-    try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/products/${id}`);
-      getProducts();
-      setError(false);
-    } catch (err) {
-      setError(true);
-    }
-    setLoading(false);
+  const handleDeleteProduct = (id) => {
+    return async (e) => {
+      setLoading(true);
+      try {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/products/${id}`);
+        getProducts();
+        setError(false);
+      } catch (err) {
+        setError(true);
+      }
+      setLoading(false);
+    };
   };
   const handleRestFilters = () => {
     resetProductFilters();
@@ -90,14 +92,18 @@ function ProductsDashboard() {
     navigate("/products/add-product");
   };
   const editAction = (name) => {
-    navigate(`/Products/${name}`, {
-      state: { editable: true },
-    });
+    return () => {
+      navigate(`/Products/${name}`, {
+        state: { editable: true },
+      });
+    };
   };
   const viewAction = (name) => {
-    navigate(`/Products/${name}`, {
-      state: { editable: false },
-    });
+    return () => {
+      navigate(`/Products/${name}`, {
+        state: { editable: false },
+      });
+    };
   };
   return (
     <CustomContainer
@@ -165,9 +171,9 @@ function ProductsDashboard() {
               <TableCell>{row.Category?.name}</TableCell>
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
-                deleteAction={() => handleDeleteProduct(row.id)}
-                editAction={() => editAction(row?.id)}
-                viewAction={() => viewAction(row?.id)}
+                deleteAction={handleDeleteProduct(row.id)}
+                editAction={editAction(row?.id)}
+                viewAction={viewAction(row?.id)}
                 colors={colors}
               />
             </CustomTableRow>

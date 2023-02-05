@@ -8,7 +8,15 @@ import CustomFloatingButton from "../global/CustomFloatingButton";
 
 function OfferContainer({ offers, colors, deletOffer, offerRange, offerType }) {
   const [showOffers, setshowOffers] = useState(true);
+  const [offerId, setOfferId] = useState("");
+  const showOfferItemDetails = (id) => {
+    return (e) => {
+      setOfferId(id);
+      setshowOffers(!showOffers);
+    };
+  };
   const handleClick = () => {
+    setOfferId("");
     setshowOffers(!showOffers);
   };
 
@@ -29,6 +37,7 @@ function OfferContainer({ offers, colors, deletOffer, offerRange, offerType }) {
           showOffers={showOffers}
           offerType={offerType}
           offerRange={offerRange}
+          offerId={offerId}
         />
       )}
 
@@ -38,6 +47,7 @@ function OfferContainer({ offers, colors, deletOffer, offerRange, offerType }) {
           colors={colors}
           deletOffer={deletOffer}
           showOffers={showOffers}
+          showOfferItemDetails={showOfferItemDetails}
         />
       )}
 

@@ -38,21 +38,23 @@ function BrandOffers() {
     productsNumber,
     setNewOffers,
   } = useBrandOffers(id);
-  const deletOffer = async (id) => {
-    setLoading(true);
-    try {
-      const deleteItem = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/offer/${id}`
-      );
-      if (deleteItem.status === 200) {
-        const newArray = [...offers];
-        const resullt = newArray.filter((item) => item.id !== id);
-        setNewOffers(resullt);
+  const deletOffer = (id) => {
+    return async (e) => {
+      setLoading(true);
+      try {
+        const deleteItem = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/offer/${id}`
+        );
+        if (deleteItem.status === 200) {
+          const newArray = [...offers];
+          const resullt = newArray.filter((item) => item.id !== id);
+          setNewOffers(resullt);
+        }
+      } catch (err) {
+        toast(err.response.data.error);
       }
-    } catch (err) {
-      toast(err.response.data.error);
-    }
-    setLoading(false);
+      setLoading(false);
+    };
   };
   return (
     <CustomContainer

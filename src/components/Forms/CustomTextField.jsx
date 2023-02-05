@@ -6,13 +6,9 @@ function CustomTextField(props) {
   const {
     label,
     name,
-    // handleBlur,
-    // handleChange,
-    value,
     type,
     children,
     errors,
-
     disabled,
     touched,
     select = false,
@@ -20,22 +16,6 @@ function CustomTextField(props) {
   } = props;
 
   return (
-    // <Field
-    //   fullWidth
-    //   variant="filled"
-    //   type={type}
-    //   label={label}
-    //   // onBlur={handleBlur}
-    //   // onChange={handleChange}
-    //   as={TextField}
-    //   value={value}
-    //   name={name}
-    //   error={!!touched && !!errors}
-    //   helperText={touched && errors}
-    //   {...props}
-    // >
-    //   {children}
-    // </Field>
     <Field
       name={name}
       type={type}
@@ -47,10 +27,6 @@ function CustomTextField(props) {
       helperText={Boolean(touched) && errors}
       disabled={disabled}
       select={select}
-      // SelectProps={{
-      //   // multiple: true,
-      //   value: [],
-      // }}
     >
       {children}
     </Field>

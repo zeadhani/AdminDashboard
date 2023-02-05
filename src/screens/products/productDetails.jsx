@@ -158,8 +158,8 @@ function ProductDetails() {
     }
   };
   const handleOffer = async (e, id) => {
+    
     if (!id) return;
-
     try {
       const offersData = await axios.get(
         `${process.env.REACT_APP_API_URL}/offer/${id}`

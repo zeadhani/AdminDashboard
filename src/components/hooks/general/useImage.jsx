@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg"];
 function useImage() {

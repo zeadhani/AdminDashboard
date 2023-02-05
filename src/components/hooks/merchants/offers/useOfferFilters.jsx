@@ -11,8 +11,16 @@ function useOfferFilters(setServerErrors) {
         `${process.env.REACT_APP_API_URL}/offer/filter/all`
       );
 
-      setOfferRange(filteredData.data.offerRange);
-      setOfferType(offerType.data.offerType);
+      setOfferRange(
+        filteredData.data.offerRange.map((item) => {
+          return item.lowestPrice + " - " + item.highestPrice + " EGP";
+        })
+      );
+      setOfferType(
+        filteredData.data.offerType?.map((item) => {
+          return item.name;
+        })
+      );
     } catch (error) {}
   };
   useEffect(() => {

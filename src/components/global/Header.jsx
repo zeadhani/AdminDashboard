@@ -14,7 +14,7 @@ function Header(props) {
         sx={{
           mb: "5px",
           cursor: "pointer",
-          maxWidth: "300px",
+          // maxWidth: "400px",
           textTransform: "uppercase",
         }}
         {...props}

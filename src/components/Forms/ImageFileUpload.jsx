@@ -1,16 +1,22 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 
-
 function ImageFileUpload(props) {
-  const { label, handleImageUpload, imageFileerror, add, image, editable ,changeImageFileError ,setAdd,resetImageFile} =
-    props;
+  const {
+    label,
+    handleImageUpload,
+    imageFileerror,
+    add,
+    image,
+    editable,
+    setAdd,
+    resetImageFile,
+  } = props;
 
   const triggerAdd = () => {
     setAdd((prev) => !prev);
     if (!add) {
       resetImageFile();
-    //  changeImageFileError("");
     }
   };
   return (

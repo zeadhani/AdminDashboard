@@ -3,7 +3,14 @@ import React from "react";
 import OfferItem from "./OfferItem";
 import { Add } from "@mui/icons-material";
 
-function OffersItems({ offers, colors, deletOffer, showOffers }) {
+
+function OffersItems({
+  offers,
+  colors,
+  deletOffer,
+  showOffers,
+  showOfferItemDetails,
+}) {
   return (
     <Box
       display={offers.length === 0 ? "flex" : "grid"}
@@ -23,6 +30,7 @@ function OffersItems({ offers, colors, deletOffer, showOffers }) {
                 offer={item}
                 colors={colors}
                 deletOffer={deletOffer}
+                showOfferItemDetails={showOfferItemDetails}
               />
             ))}
           {offers.length === 0 && (

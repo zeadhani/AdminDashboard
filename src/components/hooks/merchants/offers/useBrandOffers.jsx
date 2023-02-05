@@ -22,7 +22,7 @@ function useBrandOffers(id) {
 
   const getBrandOffers = async () => {
     const offersData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/offer/${id}`
+      `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
     );
     setData(offersData.data);
   };

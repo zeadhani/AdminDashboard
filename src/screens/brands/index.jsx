@@ -58,16 +58,18 @@ function BrandsDashboard() {
     setError,
     preferencesFilter
   );
-  const handleDeleteBrand = async (name) => {
-    setLoading(true);
-    try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/brand/${name}`);
-      getBrands();
-      setError(false);
-    } catch (err) {
-      setError(true);
-    }
-    setLoading(false);
+  const handleDeleteBrand = (name) => {
+    return async () => {
+      setLoading(true);
+      try {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/brand/${name}`);
+        getBrands();
+        setError(false);
+      } catch (err) {
+        setError(true);
+      }
+      setLoading(false);
+    };
   };
   const handleRestFilters = () => {
     resetBrandFilters();
@@ -77,14 +79,18 @@ function BrandsDashboard() {
     navigate("/Merchants/add-brand");
   };
   const editAction = (id) => {
-    navigate(`/Merchants/${id}`, {
-      state: { editable: true.toString() },
-    });
+    return () => {
+      navigate(`/Merchants/${id}`, {
+        state: { editable: true.toString() },
+      });
+    };
   };
   const viewAction = (id) => {
-    navigate(`/Merchants/${id}`, {
-      state: { editable: false.toString() },
-    });
+    return () => {
+      navigate(`/Merchants/${id}`, {
+        state: { editable: false.toString() },
+      });
+    };
   };
 
   return (
@@ -146,9 +152,9 @@ function BrandsDashboard() {
               />
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
-                deleteAction={() => handleDeleteBrand(row.name)}
-                editAction={() => editAction(row?.id)}
-                viewAction={() => viewAction(row?.id)}
+                deleteAction={handleDeleteBrand(row.name)}
+                editAction={editAction(row?.id)}
+                viewAction={viewAction(row?.id)}
                 colors={colors}
               />
             </CustomTableRow>
