@@ -11,7 +11,7 @@ function OffersItems({
   showOfferItemDetails,
 }) {
   return (
-    <Box height={"100%"}>
+    <Box height={"100%"} >
       <Slide in={showOffers} direction="left">
         <Box
           display={offers.length === 0 ? "flex" : "grid"}
@@ -25,7 +25,7 @@ function OffersItems({
           {offers.length > 0 &&
             offers?.map((item) => (
               <OfferItem
-                key={item.name}
+                key={item.name+item.OfferRange.lowestPrice+""+item.OfferRange.highestPrice}
                 offer={item}
                 colors={colors}
                 deletOffer={deletOffer}

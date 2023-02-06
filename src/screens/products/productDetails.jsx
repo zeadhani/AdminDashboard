@@ -1,4 +1,4 @@
-import { Box, MenuItem, useTheme } from "@mui/material";
+import { Box, Menu, MenuItem, TextField, useTheme } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Formik } from "formik";
@@ -79,7 +79,8 @@ function ProductDetails() {
       }
     }
 
-    const { name, price, category, gender, brand, count, offer } = values;
+    const { name, price, category, gender, brand, count, offer, select } =
+      values;
     if (imageFile) {
       form_data.append("image", imageFile);
     }
@@ -94,9 +95,11 @@ function ProductDetails() {
         return;
       }
     }
-    const offerName = offer.split("/")[0];
-    const highestPrice = offer.split("to")[1];
-    const lowestPrice = offer.split("from")[1].split("to")[0];
+    const offerName = select ? select.split("/")[0] : offer.split("/")[0];
+    const highestPrice = select ? select.split("to")[1] : offer.split("to")[1];
+    const lowestPrice = select
+      ? select.split("from")[1].split("to")[0]
+      : offer.split("from")[1].split("to")[0];
     setLoading(true);
     form_data.append("name", name);
     form_data.append("price", price);
@@ -146,6 +149,7 @@ function ProductDetails() {
     brand: yup.string().ensure().required("brand is required!"),
     count: yup.number().integer().min(0).required("brand is required!"),
     offer: yup.string().ensure().required("offer is required!"),
+    // select: yup.string().ensure().required("offer is required!"),
   });
 
   const handleDelete = async (name) => {
@@ -165,6 +169,7 @@ function ProductDetails() {
   const handleOffer = (id) => {
     return async () => {
       if (!id) return;
+
       try {
         const offersData = await axios.get(
           `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
@@ -187,14 +192,14 @@ function ProductDetails() {
     gender: product ? product.Gender.name : "",
     brand: product ? product.Brands.name : "",
     count: product ? product.count : 0,
-    offer:
-      offers?.length > 0
-        ? product.offers.name +
-          "/from" +
-          product?.offers.OfferRange.lowestPrice +
-          "to" +
-          product?.offers.OfferRange.highestPrice
-        : "",
+    offer: product
+      ? product.offers.name +
+        "/from" +
+        product?.offers.OfferRange.lowestPrice +
+        "to" +
+        product?.offers.OfferRange.highestPrice
+      : "",
+    select: "",
   };
   return (
     <CustomContainer
@@ -283,10 +288,11 @@ function ProductDetails() {
                 type={"text"}
                 name="brand"
                 label={"Product Brand"}
+                fullWidth
                 value={values.brand}
                 touched={touched.brand}
                 disabled={!editable}
-                errors={errors.brand}
+                error={errors.brand}
                 select={editable}
                 variant={editable ? "filled" : "standard"}
               >
@@ -303,19 +309,20 @@ function ProductDetails() {
 
               <CustomTextField
                 type={"text"}
-                name="offer"
-                label={
-                  offers?.length === 0 ? "no available offers" : "choose offer"
+                name={
+                  values.brand === product?.Brands.name && offers?.length > 0
+                    ? "offer"
+                    : "select"
                 }
-                // value={values.offer}
+                label={"choose offer"}
                 touched={editable && touched.offer}
                 errors={editable && errors.offer}
                 select={editable}
                 disabled={!editable}
                 variant={editable ? "filled" : "standard"}
               >
-                {!offers && <MenuItem>no offers</MenuItem>}
-                {offers &&
+                {offers?.length === 0 && <MenuItem>no offers</MenuItem>}
+                {offers?.length > 0 &&
                   offers.map((item) => (
                     <MenuItem
                       key={item.id}

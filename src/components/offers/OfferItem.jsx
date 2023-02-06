@@ -79,7 +79,10 @@ function OfferItem({ offer, colors, deletOffer, showOfferItemDetails }) {
               <Edit />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete Offer" placement="right">
+          <Tooltip
+            title="This will delete all products inside offer!!"
+            placement="right"
+          >
             <IconButton
               sx={{ border: "1px solid " }}
               size="large"

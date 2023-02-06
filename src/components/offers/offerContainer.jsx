@@ -13,7 +13,7 @@ function OfferContainer({
   offerRange,
   brandName,
   offerType,
-  addOffer
+  addOffer,
 }) {
   const [showOffers, setshowOffers] = useState(true);
   const [offerId, setOfferId] = useState("");
@@ -30,7 +30,6 @@ function OfferContainer({
 
   return (
     <Box
-      position={"relative"}
       flex={1}
       backgroundColor={colors.primary[400]}
       sx={{

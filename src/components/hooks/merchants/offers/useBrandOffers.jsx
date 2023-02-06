@@ -23,7 +23,7 @@ function useBrandOffers(id) {
       const offersData = await axios.get(
         `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
       );
-
+   
       setData(offersData.data);
     } catch (err) {
       // console.log(err)

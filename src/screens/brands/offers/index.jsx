@@ -41,7 +41,7 @@ function BrandOffers() {
 
   const addOffer = (offer) => {
     const arr = [...offers];
-    const result = arr.push(offer);
+    const result = arr.concat(offer);
     setNewOffers(result);
   };
   const deletOffer = (id) => {

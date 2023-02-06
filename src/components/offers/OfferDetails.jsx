@@ -22,6 +22,7 @@ function OfferDetails({
 }) {
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [newOfferName, setNewOfferName] = useState();
   const theme = useTheme();
 
   const formValidation = yup.object().shape({
@@ -56,20 +57,30 @@ function OfferDetails({
       brand: brandName,
     };
 
-    if (values.offer_percentage) {
+    if (values.offerType==="percentage") {
       data["offer_percentage"] = Number(values.offer_percentage.split("%")[0]);
     }
 
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/offer`,
-        data
-      );
-      if (res.statusText !== "OK") return;
-      // addOffer(res);
-      toast("offer added successfully");
+      if (!offerId) {
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_URL}/offer`,
+          data
+        );
+        if (res.statusText !== "OK") return;
+        addOffer(res.data);
+        toast("offer added successfully");
+      } else {
+        const res = await axios.patch(
+          `${process.env.REACT_APP_API_URL}/offer/${offerId}`,
+          data
+        );
+        if (res.statusText !== "OK") return;
+        setNewOfferName(res.data.name);
+        toast("offer edited successfully");
+      }
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
@@ -80,7 +91,7 @@ function OfferDetails({
   const initialValues = {
     total_people_buy_quantity: offer ? offer.total_people_buy_quantity : 0,
     total_people_get_quantity: offer ? offer.total_people_get_quantity : 0,
-    offer_percentage: offer ? offer.offer_percentage + "%" : "",
+    offer_percentage: offer ? offer.offer_percentage + "%" : "10%",
     offerType: offer ? offer.OfferType.name : "",
     offerRange: offer
       ? offer.OfferRange.lowestPrice +
@@ -111,7 +122,8 @@ function OfferDetails({
                   textAlign={"center"}
                   variant="h3"
                 >
-                  {loading ? "Loading" : offer?.name}
+                  {newOfferName && newOfferName}
+                  {!newOfferName && (loading ? "Loading" : offer?.name)}
                 </Typography>
 
                 <Box
