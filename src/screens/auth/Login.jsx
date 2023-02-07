@@ -12,11 +12,13 @@ import { useNavigate } from "react-router-dom";
 import { tokens } from "../../Theme";
 import * as yup from "yup";
 import { Formik } from "formik";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import FormCard from "../../components/Forms/FormCard";
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import { mockLoginData as itemData } from "../../data/mockData";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const initialValues = {
   email: "",
@@ -29,9 +31,30 @@ function Login() {
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const handleFormSubmit = () => {
-    dispatch(authActions.Login());
-    navigate("/");
+  const handleFormSubmit = async (values) => {
+    setServerErrors("");
+    const { email, password } = values;
+    setLoading(true);
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/login`,
+        { email, password }
+      );
+
+      if (res.statusText !== "OK") return;
+      dispatch(
+        authActions.Login({
+          user: res.data.user.email,
+          token: res.data.token,
+        })
+      );
+      navigate("/");
+      toast("Welcome back!");
+    } catch (err) {
+      setServerErrors(err.response.data.error);
+    }
+    setLoading(false);
   };
   const formValidation = yup.object().shape({
     email: yup.string().email().required("Email is required"),
@@ -50,8 +73,7 @@ function Login() {
             values,
             errors,
             touched,
-            handleBlur,
-            handleChange,
+
             handleSubmit,
           }) => (
             <FormCard
@@ -71,8 +93,6 @@ function Login() {
                 type={"text"}
                 name="email"
                 label={"Email"}
-                handleBlur={handleBlur}
-                handleChange={handleChange}
                 value={values.email}
                 touched={touched.email}
                 errors={errors.email}
@@ -81,8 +101,6 @@ function Login() {
                 type={"password"}
                 name="password"
                 label={"Password"}
-                handleBlur={handleBlur}
-                handleChange={handleChange}
                 value={values.password}
                 touched={touched.password}
                 errors={errors.password}
@@ -93,7 +111,12 @@ function Login() {
         </Formik>
       </Box>
 
-      <Box width={"100%"} className="loginscreen">
+      <Box
+        width={"100%"}
+        className="loginscreen"
+        height={"100%"}
+        bgcolor={colors.primary[600]}
+      >
         <ImageList
           sx={{
             padding: 2,

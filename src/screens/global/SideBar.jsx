@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { useState } from "react";
 import {
@@ -46,8 +47,9 @@ const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   );
 };
 
-function SideBar() {
+function SideBar({ user }) {
   const isLoggedIn = useSelector((state) => state.Auth.loggedIn);
+
   const { collapseSidebar, collapsed } = useProSidebar();
   const [selected, setSelected] = useState(
     window.location.pathname.split("/")[1] === ""
@@ -88,19 +90,16 @@ function SideBar() {
           {!collapsed && (
             <Stack mb={3} spacing={2}>
               <Box display={"flex"} justifyContent={"center"}>
-                <Avatar
-                  sx={{ height: 100, width: 100 }}
+                <img
+                  style={{
+                    height: 100,
+                    width: 100,
+                    borderRadius: "50%",
+                    cursor: "pointer",
+                  }}
                   alt={"Profile-Image"}
+                  src={`${process.env.REACT_APP_DRIVE_URL}${user.image}`}
                 />
-                {/* <img
-          style={{
-            height: 100,
-            width: 100,
-            borderRadius: "50%",
-            cursor: "pointer",
-          }}
-          alt={"Profile-Image"}
-        /> */}
               </Box>
               <Box textAlign={"center"}>
                 <Typography
@@ -112,7 +111,7 @@ function SideBar() {
                       : colors.grey[900]
                   }
                 >
-                  Zead Hani
+                  {user.first_name + " " + user.last_name}
                 </Typography>
                 <Typography variant="h5" color={colors.blueAccent[500]}>
                   Admin

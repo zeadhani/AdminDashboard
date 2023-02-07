@@ -126,40 +126,42 @@ function BrandsDashboard() {
       {brands.length === 0 && !error && !loading && (
         <Box p={2}>No items Found</Box>
       )}
-      <TableCard
-        columns={columns}
-        count={count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-      >
-        {!error &&
-          brands.map((row, index) => (
-            <CustomTableRow colors={colors} key={row.id}>
-              <RowIdentifier>{row.name}</RowIdentifier>
-              <TableImage image={row.image} />
-              <TableCell>{row.Preferences.name}</TableCell>
-              <DateCell
-                sx={{
-                  color:
-                    new Date().toISOString() > row.contrat_Expire
-                      ? colors.redAccent[500]
-                      : colors.greenAccent[500],
-                  fontWeight: "bold",
-                }}
-                date={row.contrat_Expire}
-              />
-              <DateCell date={row.createdAt} />
-              <ActionsButtonsTable
-                deleteAction={handleDeleteBrand(row.name)}
-                editAction={editAction(row?.id)}
-                viewAction={viewAction(row?.id)}
-                colors={colors}
-              />
-            </CustomTableRow>
-          ))}
-      </TableCard>
+      {brands?.length > 0 && 
+        <TableCard
+          columns={columns}
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+        >
+          {!error &&
+            brands.map((row, index) => (
+              <CustomTableRow colors={colors} key={row.id}>
+                <RowIdentifier>{row.name}</RowIdentifier>
+                <TableImage image={row.image} />
+                <TableCell>{row.Preferences.name}</TableCell>
+                <DateCell
+                  sx={{
+                    color:
+                      new Date().toISOString() > row.contrat_Expire
+                        ? colors.redAccent[500]
+                        : colors.greenAccent[500],
+                    fontWeight: "bold",
+                  }}
+                  date={row.contrat_Expire}
+                />
+                <DateCell date={row.createdAt} />
+                <ActionsButtonsTable
+                  deleteAction={handleDeleteBrand(row.name)}
+                  editAction={editAction(row?.id)}
+                  viewAction={viewAction(row?.id)}
+                  colors={colors}
+                />
+              </CustomTableRow>
+            ))}
+        </TableCard>
+      }
     </CustomContainer>
   );
 }

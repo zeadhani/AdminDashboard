@@ -152,33 +152,35 @@ function ProductsDashboard() {
       {products.length === 0 && !error && !loading && (
         <Box p={2}>No items Found</Box>
       )}
-      <TableCard
-        columns={columns}
-        count={count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-      >
-        {!error &&
-          products.map((row, index) => (
-            <CustomTableRow colors={colors} key={row.id}>
-              <RowIdentifier>{row?.name}</RowIdentifier>
-              <TableImage image={row?.image} />
-              <TableCell>{row?.price} EGP</TableCell>
-              <TableCell>{row.Brands?.name}</TableCell>
-              <TableCell>{row.Gender?.name}</TableCell>
-              <TableCell>{row.Category?.name}</TableCell>
-              <DateCell date={row.createdAt} />
-              <ActionsButtonsTable
-                deleteAction={handleDeleteProduct(row.id)}
-                editAction={editAction(row?.id)}
-                viewAction={viewAction(row?.id)}
-                colors={colors}
-              />
-            </CustomTableRow>
-          ))}
-      </TableCard>
+      {products?.length > 0 && (
+        <TableCard
+          columns={columns}
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+        >
+          {!error &&
+            products.map((row, index) => (
+              <CustomTableRow colors={colors} key={row.id}>
+                <RowIdentifier>{row?.name}</RowIdentifier>
+                <TableImage image={row?.image} />
+                <TableCell>{row?.price} EGP</TableCell>
+                <TableCell>{row.Brands?.name}</TableCell>
+                <TableCell>{row.Gender?.name}</TableCell>
+                <TableCell>{row.Category?.name}</TableCell>
+                <DateCell date={row.createdAt} />
+                <ActionsButtonsTable
+                  deleteAction={handleDeleteProduct(row.id)}
+                  editAction={editAction(row?.id)}
+                  viewAction={viewAction(row?.id)}
+                  colors={colors}
+                />
+              </CustomTableRow>
+            ))}
+        </TableCard>
+      )}
     </CustomContainer>
   );
 }

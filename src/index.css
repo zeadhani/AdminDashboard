@@ -49,7 +49,7 @@ body,
 }
 /* Apply the animation to the element */
 .loginscreen {
-  animation: scroll 15s linear infinite;
+  animation: scroll 30s linear infinite;
 }
 
 .offerItem {
