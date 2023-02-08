@@ -104,6 +104,7 @@ function SideBar({ user }) {
               <Box textAlign={"center"}>
                 <Typography
                   variant="h3"
+                  textTransform={"capitalize"}
                   fontWeight={"bold"}
                   color={
                     theme.palette.mode === "dark"

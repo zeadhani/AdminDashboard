@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
   loggedIn: localStorage.getItem("key") || false,
   user: localStorage.getItem("user") || "",

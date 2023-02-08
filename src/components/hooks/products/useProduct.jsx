@@ -1,10 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import {
-  createSearchParams,
-  useNavigate,
-
-} from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import authFetch from "../../../services/interceptors";
 
 function useProduct(
   rowsPerPage,
@@ -24,8 +20,8 @@ function useProduct(
   const getProducts = async () => {
     setLoading(true);
     try {
-      const products = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products?limit=${rowsPerPage}&page=${
+      const products = await authFetch.get(
+        `/products?limit=${rowsPerPage}&page=${
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}&brand=${filteredBrand}`
       );
@@ -63,7 +59,7 @@ function useProduct(
     filteredBrand,
   ]);
 
-  return { products ,count ,getProducts};
+  return { products, count, getProducts };
 }
 
 export default useProduct;

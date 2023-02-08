@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import authFetch from "../../../services/interceptors";
 function useSingleBrand(setServerErrors, id, setLoading) {
   const [brand, setBrand] = useState();
   const [brandPreferences, setBrandPreferences] = useState();
@@ -7,10 +7,7 @@ function useSingleBrand(setServerErrors, id, setLoading) {
   const getBrand = async () => {
     setLoading(true);
     try {
-      const brand = await axios.get(
-        `${process.env.REACT_APP_API_URL}/brand/${id}`
-      );
-
+      const brand = await authFetch.get(`/brand/${id}`);
       setBrand(brand.data);
       const categories = [...brand.data.category];
       const newCategories = categories.map((item) => item.Category.name);

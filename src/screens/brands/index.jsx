@@ -3,7 +3,6 @@ import CustomContainer from "../global/CustomContainer";
 import TableCard from "../../components/Table/TableCard";
 import { Box, TableCell } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import CustomTableRow from "../../components/Table/TableRow";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../Theme";
@@ -19,6 +18,7 @@ import useBrands from "../../components/hooks/merchants/useBrands";
 import usePreferences from "../../components/hooks/merchants/usepreferences";
 import useBrandFilters from "../../components/hooks/merchants/useBrandFilters";
 import LinearProg from "../../components/global/LinearProg";
+import authFetch from "../../services/interceptors";
 
 const columns = [
   { id: "name", label: "Name" },
@@ -62,7 +62,7 @@ function BrandsDashboard() {
     return async () => {
       setLoading(true);
       try {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/brand/${name}`);
+        await authFetch.delete(`/brand/${name}`);
         getBrands();
         setError(false);
       } catch (err) {
@@ -126,7 +126,7 @@ function BrandsDashboard() {
       {brands.length === 0 && !error && !loading && (
         <Box p={2}>No items Found</Box>
       )}
-      {brands?.length > 0 && 
+      {brands?.length > 0 && (
         <TableCard
           columns={columns}
           count={count}
@@ -161,7 +161,7 @@ function BrandsDashboard() {
               </CustomTableRow>
             ))}
         </TableCard>
-      }
+      )}
     </CustomContainer>
   );
 }

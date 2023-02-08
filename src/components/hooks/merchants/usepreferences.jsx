@@ -1,16 +1,16 @@
-import axios from "axios";
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import authFetch from "../../../services/interceptors";
 
 function usePreferences() {
   const [pref, setPref] = useState([]);
   const getFilteredData = async () => {
-    const filterData = await axios.get(`${process.env.REACT_APP_API_URL}/pref`);
+    const filterData = await authFetch.get(`/pref`);
     setPref(filterData.data);
   };
   useEffect(() => {
     getFilteredData();
   }, []);
-  return {pref};
+  return { pref };
 }
 
 export default usePreferences;

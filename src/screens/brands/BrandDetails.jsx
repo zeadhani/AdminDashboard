@@ -16,9 +16,9 @@ import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 import useSingleBrand from "../../components/hooks/merchants/useSingleBrand";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { useEffect } from "react";
 import { ArrowRight } from "@mui/icons-material";
+import authFetch from "../../services/interceptors";
 function BrandDetails() {
   let { id } = useParams();
   let { state } = useLocation();
@@ -84,10 +84,7 @@ function BrandDetails() {
     }
     form_data.append("contrat_Expire", new Date(dateValue).toISOString());
     try {
-      const res = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/brand/${id}`,
-        form_data
-      );
+      const res = await authFetch.patch(`/brand/${id}`, form_data);
       if (res.statusText !== "OK") return;
       toast("Brand edited successfully");
     } catch (error) {

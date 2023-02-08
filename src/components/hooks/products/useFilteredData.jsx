@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import authFetch from "../../../services/interceptors";
 
 function useFilteredData() {
   const [categories, setCategories] = useState([]);
@@ -8,9 +8,7 @@ function useFilteredData() {
   const [allattributes, setallattributes] = useState([]);
   useEffect(() => {
     const getFilteredData = async () => {
-      const filterData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products/filter/all`
-      );
+      const filterData = await authFetch.get(`/products/filter/all`);
       setCategories(filterData.data.categories);
       setGender(filterData.data.gender);
       setBrands(filterData.data.brands);

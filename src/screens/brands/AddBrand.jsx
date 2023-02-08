@@ -9,13 +9,14 @@ import FormCard from "../../components/Forms/FormCard";
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
-import axios from "axios";
+
 import CustomSelect from "../../components/Forms/CustomSelect";
 import { toast } from "react-toastify";
 import CustomDateSelector from "../../components/Forms/CustomDateSelector";
 import useBrandData from "../../components/hooks/merchants/useBrandData";
 import useImage from "../../components/hooks/general/useImage";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
+import authFetch from "../../services/interceptors";
 
 const initialValues = {
   name: "",
@@ -61,10 +62,7 @@ function AddBrand() {
     form_data.append("image", imageFile);
     form_data.append("contrat_Expire", new Date(dateValue).toISOString());
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/brand`,
-        form_data
-      );
+      const res = await authFetch.post(`/brand`, form_data);
       if (res.statusText !== "OK") return;
       toast("Brand added successfully");
     } catch (error) {

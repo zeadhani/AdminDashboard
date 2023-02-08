@@ -1,7 +1,6 @@
-import axios from "axios";
-
 import { useEffect } from "react";
 import { useState } from "react";
+import authFetch from "../../../../services/interceptors";
 
 function useBrandOffers(id) {
   const [offers, setOffers] = useState([]);
@@ -20,10 +19,7 @@ function useBrandOffers(id) {
 
   const getBrandOffers = async () => {
     try {
-      const offersData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
-      );
-   
+      const offersData = await authFetch.get(`/offer/brand/${id}`);
       setData(offersData.data);
     } catch (err) {
       // console.log(err)

@@ -1,4 +1,4 @@
-import { Box, Menu, MenuItem, TextField, useTheme } from "@mui/material";
+import { Box, MenuItem, useTheme } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Formik } from "formik";
@@ -7,7 +7,6 @@ import FormCard from "../../components/Forms/FormCard";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import FormButton from "../../components/Forms/FormButton";
-import axios from "axios";
 import { toast } from "react-toastify";
 import CustomAccordion from "../../components/products/CustomAccordion";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +18,7 @@ import useSingleProduct from "../../components/hooks/products/useSingleProduct";
 import useImage from "../../components/hooks/general/useImage";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 import { useEffect } from "react";
+import authFetch from "../../services/interceptors";
 
 function ProductDetails() {
   let { id } = useParams();
@@ -116,18 +116,15 @@ function ProductDetails() {
 
     try {
       setServerErrors("");
-      const res = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/products/${product.id}`,
-        form_data
-      );
+      const res = await authFetch.patch(`/products/${product.id}`, form_data);
       if (res.statusText !== "OK") return;
       if (!product.hasAttributes) {
         toast("Product edited successfully");
         setLoading(false);
         return;
       }
-      const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/products/${res.data.editedProduct.id}/additem`,
+      const result = await authFetch.post(
+        `/products/${res.data.editedProduct.id}/additem`,
         attributesData
       );
       if (result.statusText === "OK") {
@@ -154,9 +151,7 @@ function ProductDetails() {
 
   const handleDelete = async (name) => {
     try {
-      const deleteItem = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/products/${id}/item/${name}`
-      );
+      const deleteItem = await authFetch.delete(`/products/${id}/item/${name}`);
       if (deleteItem.status === 200) {
         const newArray = [...items];
         const resullt = newArray.filter((item) => item.name !== name);
@@ -171,9 +166,7 @@ function ProductDetails() {
       if (!id) return;
 
       try {
-        const offersData = await axios.get(
-          `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
-        );
+        const offersData = await authFetch.get(`/offer/brand/${id}`);
         setOffers(offersData.data);
       } catch (err) {
         setServerErrors(err);

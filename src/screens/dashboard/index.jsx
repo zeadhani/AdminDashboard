@@ -161,7 +161,7 @@ function Dashboard() {
             </Typography>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart  />
+            <LineChart />
           </Box>
         </Box>
         <Box

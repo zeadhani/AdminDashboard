@@ -4,7 +4,7 @@ import { FormControlLabel, MenuItem, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
-import axios from "axios";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FormButton from "../../components/Forms/FormButton";
@@ -20,6 +20,7 @@ import useFilteredData from "../../components/hooks/products/useFilteredData";
 import useImage from "../../components/hooks/general/useImage";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 import { Box } from "@mui/system";
+import authFetch from "../../services/interceptors";
 
 const initialValues = {
   name: "",
@@ -71,7 +72,7 @@ function AddProduct() {
     const offerName = offer.split("/")[0];
     const highestPrice = offer.split("to")[1];
     const lowestPrice = offer.split("from")[1].split("to")[0];
-  
+
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
@@ -84,18 +85,15 @@ function AddProduct() {
     form_data.append("highestPrice", Number(highestPrice));
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/products`,
-        form_data
-      );
+      const res = await authFetch.post(`/products`, form_data);
       if (res.statusText !== "OK") return;
       if (!hasAttributes) {
         toast("Product added successfully");
         setLoading(false);
         return;
       }
-      const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/products/${res.data.createdProduct.id}/additem`,
+      const result = await authFetch.post(
+        `/products/${res.data.createdProduct.id}/additem`,
         attributesData
       );
       if (result.statusText === "OK") toast("Product added successfully");
@@ -130,10 +128,8 @@ function AddProduct() {
   const handleOffer = (id) => {
     return async () => {
       try {
-        const offersData = await axios.get(
-          `${process.env.REACT_APP_API_URL}/offer/brand/${id}`
-        );
-        console.log(offersData.data);
+        const offersData = await authFetch.get(`/offer/brand/${id}`);
+
         setOffers(offersData.data);
       } catch (err) {
         setServerErrors(err);

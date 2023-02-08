@@ -1,14 +1,12 @@
-import axios from "axios"; 
 import { useEffect } from "react";
 import { useState } from "react";
+import authFetch from "../../../services/interceptors";
 
 function useBrandData() {
   const [categories, setCategories] = useState([]);
   const [pref, setPref] = useState([]);
   const getFilteredData = async () => {
-    const filterData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/brand/filter/all`
-    );
+    const filterData = await authFetch.get(`/brand/filter/all`);
     setPref(filterData.data.pref);
     setCategories(filterData.data.categories);
   };

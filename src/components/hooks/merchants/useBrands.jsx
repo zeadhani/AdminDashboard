@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import authFetch from "../../../services/interceptors";
 
 function useBrands(
   setLoading,
@@ -18,8 +18,8 @@ function useBrands(
   const getBrands = async () => {
     setLoading(true);
     try {
-      const brands = await axios.get(
-        `${process.env.REACT_APP_API_URL}/brand?limit=${rowsPerPage}&page=${
+      const brands = await authFetch.get(
+        `/brand?limit=${rowsPerPage}&page=${
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
       );

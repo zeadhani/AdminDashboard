@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { tokens } from "../../Theme";
 import { useState } from "react";
-import axios from "axios";
 import TableCard from "../../components/Table/TableCard";
 import LinearProg from "../../components/global/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
@@ -21,6 +20,7 @@ import useFilteredData from "../../components/hooks/products/useFilteredData";
 import useProduct from "../../components/hooks/products/useProduct";
 import useCommonFilters from "../../components/hooks/general/useCommonFilters";
 import useProductFilters from "../../components/hooks/products/useProductFilters";
+import authFetch from "../../services/interceptors";
 
 const sortArray = ["createdAt", "price", "name"];
 const columns = [
@@ -75,7 +75,7 @@ function ProductsDashboard() {
     return async (e) => {
       setLoading(true);
       try {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/products/${id}`);
+        await authFetch.delete(`/products/${id}`);
         getProducts();
         setError(false);
       } catch (err) {

@@ -1,5 +1,5 @@
-import { Box, Grid, MenuItem, Slide, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box, MenuItem, Slide, Typography } from "@mui/material";
+import React from "react";
 import FormButton from "../Forms/FormButton";
 import { Formik } from "formik";
 import FormCard from "../Forms/FormCard";
@@ -8,8 +8,9 @@ import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import * as yup from "yup";
 import useOffer from "../hooks/merchants/offers/useOffer";
-import axios from "axios";
+
 import { toast } from "react-toastify";
+import authFetch from "../../services/interceptors";
 
 const offerPercentages = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 function OfferDetails({
@@ -57,7 +58,7 @@ function OfferDetails({
       brand: brandName,
     };
 
-    if (values.offerType==="percentage") {
+    if (values.offerType === "percentage") {
       data["offer_percentage"] = Number(values.offer_percentage.split("%")[0]);
     }
 
@@ -65,18 +66,12 @@ function OfferDetails({
 
     try {
       if (!offerId) {
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URL}/offer`,
-          data
-        );
+        const res = await authFetch.post(`/offer`, data);
         if (res.statusText !== "OK") return;
         addOffer(res.data);
         toast("offer added successfully");
       } else {
-        const res = await axios.patch(
-          `${process.env.REACT_APP_API_URL}/offer/${offerId}`,
-          data
-        );
+        const res = await authFetch.patch(`/offer/${offerId}`, data);
         if (res.statusText !== "OK") return;
         setNewOfferName(res.data.name);
         toast("offer edited successfully");

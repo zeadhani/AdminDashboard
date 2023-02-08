@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import authFetch from "../../../services/interceptors";
 
 function useSingleProduct(setServerErrors, id, setLoading) {
   const [product, setProduct] = useState();
@@ -7,9 +7,7 @@ function useSingleProduct(setServerErrors, id, setLoading) {
   const getProduct = async () => {
     setLoading(true);
     try {
-      const product = await axios.get(
-        `${process.env.REACT_APP_API_URL}/products/${id}`
-      );
+      const product = await authFetch.get(`/products/${id}`);
       setProduct(product.data);
       setItems(product.data.productItems);
     } catch (err) {

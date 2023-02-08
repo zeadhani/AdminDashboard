@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 import { Box, Button, Stack, TextField, useTheme } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import Dialogue from "../global/Dialogue";
-import CustomTextField from "../Forms/CustomTextField";
 import { tokens } from "../../Theme";
-import axios from "axios";
+
 import { toast } from "react-toastify";
+import authFetch from "../../services/interceptors";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -103,10 +103,7 @@ function CustomAccordion({
     };
 
     try {
-      const res = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/products/${id}/item/${name}`,
-        data
-      );
+      const res = await authFetch.patch(`/products/${id}/item/${name}`, data);
       if (res.status === 200) {
         getProduct();
         setOpen(false);

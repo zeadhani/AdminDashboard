@@ -15,10 +15,11 @@ import {
 import useBrandOffers from "../../../components/hooks/merchants/offers/useBrandOffers";
 
 import OfferContainer from "../../../components/offers/offerContainer";
-import axios from "axios";
+
 import LinearProg from "../../../components/global/LinearProg";
 import { toast } from "react-toastify";
 import useOfferFilters from "../../../components/hooks/merchants/offers/useOfferFilters";
+import authFetch from "../../../services/interceptors";
 
 function BrandOffers() {
   const { state } = useLocation();
@@ -48,9 +49,7 @@ function BrandOffers() {
     return async (e) => {
       setLoading(true);
       try {
-        const deleteItem = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/offer/${id}`
-        );
+        const deleteItem = await authFetch.delete(`/offer/${id}`);
         if (deleteItem.status === 200) {
           const newArray = [...offers];
           const resullt = newArray.filter((item) => item.id !== id);

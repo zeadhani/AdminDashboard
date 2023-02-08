@@ -1,8 +1,8 @@
-import axios from "axios";
 
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import authFetch from "../../../services/interceptors";
 
 function useUser() {
   const data = useSelector((state) => state.Auth.user);
@@ -10,9 +10,7 @@ function useUser() {
   const [user, setUser] = useState({});
   const getUser = async () => {
     try {
-      const userData = await axios.get(
-        `${process.env.REACT_APP_API_URL}/user/${email}`
-      );
+      const userData = await authFetch.get(`/user/${email}`);
       if (userData.data) {
         setUser(userData.data);
       }

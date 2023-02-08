@@ -1,13 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import authFetch from "../../../services/interceptors";
 
 function useCategories() {
   const [categories, setCategories] = useState();
   const getCategories = async () => {
-    const categoriesData = await axios.get(
-      `${process.env.REACT_APP_API_URL}/category`
-    );
-
+    const categoriesData = await authFetch.get(`/category`);
     setCategories(categoriesData.data);
   };
   useEffect(() => {

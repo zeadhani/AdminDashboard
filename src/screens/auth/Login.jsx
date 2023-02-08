@@ -17,8 +17,10 @@ import FormCard from "../../components/Forms/FormCard";
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import { mockLoginData as itemData } from "../../data/mockData";
-import axios from "axios";
+
 import { toast } from "react-toastify";
+import authFetch from "../../services/interceptors";
+import axios from "axios";
 
 const initialValues = {
   email: "",
@@ -37,10 +39,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
-        { email, password }
-      );
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password });
 
       if (res.statusText !== "OK") return;
       dispatch(
