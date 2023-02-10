@@ -8,9 +8,7 @@ const authFetch = axios.create({
 authFetch.interceptors.request.use(
   (request) => {
     const token = localStorage.getItem("token").replace(/"/g, "") || "";
-
     request.headers["Authorization"] = `Bearer ${token}`;
-
     return request;
   },
   (error) => {

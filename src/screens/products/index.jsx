@@ -31,6 +31,7 @@ const columns = [
   { id: "gender", label: "Gender" },
   { id: "category", label: "Category" },
   { id: "created_at", label: "Created_At" },
+  { id: "stock", label: "Stock" },
 ];
 function ProductsDashboard() {
   const theme = useTheme();
@@ -171,6 +172,17 @@ function ProductsDashboard() {
                 <TableCell>{row.Gender?.name}</TableCell>
                 <TableCell>{row.Category?.name}</TableCell>
                 <DateCell date={row.createdAt} />
+                <TableCell
+                  sx={{
+                    color:
+                      0 === row.count
+                        ? colors.redAccent[500]
+                        : colors.greenAccent[500],
+                    fontWeight: "bold",
+                  }}
+                >
+                  {row.count > 0 ? "In Stock" : "Out Of Stock"}
+                </TableCell>
                 <ActionsButtonsTable
                   deleteAction={handleDeleteProduct(row.id)}
                   editAction={editAction(row?.id)}

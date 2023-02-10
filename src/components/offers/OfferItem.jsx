@@ -59,6 +59,14 @@ function OfferItem({ offer, colors, deletOffer, showOfferItemDetails }) {
           <Typography variant="body1">
             {offer._count.products} products
           </Typography>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ border: "1px solid" }}
+          />
+          <Typography variant="body1">
+            {offer._count.Order} orders
+          </Typography>
         </Box>
       </Box>
       {hovered && (
