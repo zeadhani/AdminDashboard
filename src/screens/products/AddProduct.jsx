@@ -39,12 +39,16 @@ function AddProduct() {
   const { brands, categories, gender, allattributes } = useFilteredData();
   const { handleImageUpload, imageFile, imageFileerror, changeImageFileError } =
     useImage();
+  const [hasGender, setHasGender] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasAttributes, setHasAttributes] = useState(false);
   const [offers, setOffers] = useState();
   const [attributesData, setattributesData] = useState([]);
   const [indexcount, setindexcount] = useState();
+  const handlecheckGender = () => {
+    setHasGender(!hasGender);
+  };
 
   const handleFormSubmit = async (values) => {
     setServerErrors("");
@@ -76,7 +80,7 @@ function AddProduct() {
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
-    form_data.append("gender", gender);
+    form_data.append("gender", hasGender ? gender : null);
     form_data.append("brand", brand);
     form_data.append("image", imageFile);
     form_data.append("hasAttributes", hasAttributes);
@@ -116,7 +120,7 @@ function AddProduct() {
     price: yup.number().integer().min(1).required("price is required"),
     count: yup.number().integer().min(0).required("Count is required"),
     category: yup.string().ensure().required("category is required!"),
-    gender: yup.string().ensure().required("gender is required!"),
+    gender: hasGender && yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
     offer: yup.string().ensure().required("offer is required!"),
   });
@@ -180,22 +184,6 @@ function AddProduct() {
               select
             >
               {categories.map((item) => (
-                <MenuItem key={item.id} value={item?.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </CustomTextField>
-
-            <CustomTextField
-              type={"text"}
-              name="gender"
-              label={"Product Gender"}
-              value={values.gender}
-              touched={touched.gender}
-              errors={errors.gender}
-              select
-            >
-              {gender.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
@@ -266,6 +254,34 @@ function AddProduct() {
             />
             <ImageFileDisplay imageFile={imageFile} />
 
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="info"
+                  value={hasGender}
+                  checked={hasGender}
+                  onChange={handlecheckGender}
+                />
+              }
+              label="Does this product has gender ?"
+            />
+            {hasGender && (
+              <CustomTextField
+                type={"text"}
+                name="gender"
+                label={"Product Gender"}
+                value={values.gender}
+                touched={touched.gender}
+                errors={errors.gender}
+                select
+              >
+                {gender.map((item) => (
+                  <MenuItem key={item.id} value={item?.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </CustomTextField>
+            )}
             <FormControlLabel
               control={
                 <Checkbox

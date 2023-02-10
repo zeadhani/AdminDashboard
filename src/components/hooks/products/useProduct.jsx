@@ -9,10 +9,10 @@ function useProduct(
   orderBy,
   search,
   filtered,
-  filteredGneder,
   filteredBrand,
   setLoading,
-  setError
+  setError,
+  filteredStock
 ) {
   const [products, setProducts] = useState([]);
   const [count, setCount] = useState();
@@ -23,7 +23,7 @@ function useProduct(
       const products = await authFetch.get(
         `/products?limit=${rowsPerPage}&page=${
           page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&gender=${filteredGneder}&brand=${filteredBrand}`
+        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
       );
       setProducts(products.data.data.data);
       setCount(products.data.data.totalCount);
@@ -41,7 +41,7 @@ function useProduct(
         sort,
         orderBy,
         search,
-        gender: filteredGneder,
+        stock: filteredStock,
         brand: [filteredBrand],
         filtered: [filtered],
       })}`,
@@ -55,7 +55,7 @@ function useProduct(
     orderBy,
     search,
     filtered,
-    filteredGneder,
+    filteredStock,
     filteredBrand,
   ]);
 

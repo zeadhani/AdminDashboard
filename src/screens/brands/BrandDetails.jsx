@@ -79,6 +79,7 @@ function BrandDetails() {
     form_data.append("email", email);
     form_data.append("prefrence", prefrence);
     form_data.append("categories", categories);
+    form_data.append("hasGender", brand.hasGender);
     if (imageFile) {
       form_data.append("image", imageFile);
     }

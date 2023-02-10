@@ -6,6 +6,9 @@ function useProductFilters() {
   const [filtered, setFiltered] = useState(
     searchParams.get("filtered") ? searchParams.get("filtered").split(",") : []
   );
+  const [filteredStock, setFilteredStock] = useState(
+    searchParams.get("stock") ? searchParams.get("stock") : ""
+  );
   const [filteredGneder, setFilteredGender] = useState(
     searchParams.get("gender") ? searchParams.get("gender") : ""
   );
@@ -21,6 +24,9 @@ function useProductFilters() {
   const handleFilterGenderChange = (e) => {
     setFilteredGender(e.target.value);
   };
+  const handleFilterStockChange = (e) => {
+    setFilteredStock(e.target.value);
+  };
   const handleFilterBrandChange = (e) => {
     const {
       target: { value },
@@ -31,15 +37,18 @@ function useProductFilters() {
     setFiltered([]);
     setfilteredBrand([]);
     setFilteredGender("");
+    setFilteredStock("");
   };
   return {
     filtered,
     filteredGneder,
     filteredBrand,
+    filteredStock,
     handleFilterBrandChange,
     handleFilterChange,
     handleFilterGenderChange,
     resetProductFilters,
+    handleFilterStockChange,
   };
 }
 

@@ -23,12 +23,13 @@ import useProductFilters from "../../components/hooks/products/useProductFilters
 import authFetch from "../../services/interceptors";
 
 const sortArray = ["createdAt", "price", "name"];
+const stockArrary = ["inStock", "outStock"];
 const columns = [
   { id: "name", label: "Name" },
   { id: "image", label: "Image" },
   { id: "price", label: "Price" },
   { id: "brand", label: "Brand" },
-  { id: "gender", label: "Gender" },
+
   { id: "category", label: "Category" },
   { id: "created_at", label: "Created_At" },
   { id: "stock", label: "Stock" },
@@ -57,6 +58,8 @@ function ProductsDashboard() {
     handleFilterGenderChange,
     handleFilterChange,
     resetProductFilters,
+    filteredStock,
+    handleFilterStockChange,
   } = useProductFilters();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -67,10 +70,10 @@ function ProductsDashboard() {
     orderBy,
     search,
     filtered,
-    filteredGneder,
     filteredBrand,
     setLoading,
-    setError
+    setError,
+    filteredStock
   );
   const handleDeleteProduct = (id) => {
     return async (e) => {
@@ -106,6 +109,7 @@ function ProductsDashboard() {
       });
     };
   };
+
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
@@ -126,11 +130,12 @@ function ProductsDashboard() {
         sortArray={sortArray}
       >
         <CustomFilter
-          label={"Gender"}
-          filterarray={gender}
-          onChange={handleFilterGenderChange}
+          label={"stock"}
+          filterarray={stockArrary}
+          onChange={handleFilterStockChange}
+          value={filteredStock}
           multiple={false}
-          value={filteredGneder}
+          itemitself="true"
         />
         <CustomFilter
           label={"Category"}
@@ -169,19 +174,29 @@ function ProductsDashboard() {
                 <TableImage image={row?.image} />
                 <TableCell>{row?.price} EGP</TableCell>
                 <TableCell>{row.Brands?.name}</TableCell>
-                <TableCell>{row.Gender?.name}</TableCell>
+
                 <TableCell>{row.Category?.name}</TableCell>
                 <DateCell date={row.createdAt} />
                 <TableCell
                   sx={{
                     color:
-                      0 === row.count
-                        ? colors.redAccent[500]
-                        : colors.greenAccent[500],
+                      row.count > 0 ||
+                      row.productItems?.reduce(
+                        (total, productItems) => total + productItems.count,
+                        0
+                      ) > 0
+                        ? colors.greenAccent[500]
+                        : colors.redAccent[500],
                     fontWeight: "bold",
                   }}
                 >
-                  {row.count > 0 ? "In Stock" : "Out Of Stock"}
+                  {row.count > 0 ||
+                  row.productItems?.reduce(
+                    (total, productItems) => total + productItems.count,
+                    0
+                  ) > 0
+                    ? "In Stock"
+                    : "Out Of Stock"}
                 </TableCell>
                 <ActionsButtonsTable
                   deleteAction={handleDeleteProduct(row.id)}

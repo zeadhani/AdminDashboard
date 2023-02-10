@@ -1,4 +1,4 @@
-import { MenuItem, useTheme } from "@mui/material";
+import { Checkbox, FormControlLabel, MenuItem, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomContainer from "../global/CustomContainer";
@@ -37,7 +37,7 @@ function AddBrand() {
     useImage();
   const [dateValue, setDateValue] = useState();
   const [brandError, setBrandError] = useState(false);
-
+  const [hasGender, setHasGender] = useState(false);
   const handleFormSubmit = async (values) => {
     setServerErrors("");
     if (values.categories.length === 0) {
@@ -60,6 +60,7 @@ function AddBrand() {
     form_data.append("prefrence", prefrence);
     form_data.append("categories", categories);
     form_data.append("image", imageFile);
+    form_data.append("hasGender", hasGender ? 1 : 0);
     form_data.append("contrat_Expire", new Date(dateValue).toISOString());
     try {
       const res = await authFetch.post(`/brand`, form_data);
@@ -76,6 +77,10 @@ function AddBrand() {
     email: yup.string().required("Brand Email is required"),
     prefrence: yup.string().ensure().required("Prefrence is required!"),
   });
+
+  const handleCheckChange = () => {
+    setHasGender(!hasGender);
+  };
 
   return (
     <CustomContainer
@@ -154,6 +159,17 @@ function AddBrand() {
             />
             <ImageFileDisplay imageFile={imageFile} />
 
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="info"
+                  value={hasGender}
+                  checked={hasGender}
+                  onChange={handleCheckChange}
+                />
+              }
+              label="Does this brand has gender ?"
+            />
             <FormButton theme={theme}>Create new brand</FormButton>
           </FormCard>
         )}
