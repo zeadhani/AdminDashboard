@@ -28,8 +28,6 @@ function Dialogue({
   servererrors,
   ...rest
 }) {
-
-
   return (
     <>
       <Dialog

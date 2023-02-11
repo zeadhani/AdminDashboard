@@ -13,8 +13,8 @@ import {
   useTheme,
   IconButton,
   Typography,
-  Avatar,
   Stack,
+  Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../Theme";
@@ -33,6 +33,7 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ViewCarouselOutlinedIcon from "@mui/icons-material/ViewCarouselOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { useSelector } from "react-redux";
+import SideBarActionButton from "../../components/global/sidebar/sideBarActionButton";
 const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   return (
     <MenuItem
@@ -47,10 +48,10 @@ const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   );
 };
 
-function SideBar({ user }) {
+function SideBar({ user, collapseSidebar, collapsed }) {
   const isLoggedIn = useSelector((state) => state.Auth.loggedIn);
 
-  const { collapseSidebar, collapsed } = useProSidebar();
+  // const { collapseSidebar, collapsed } = useProSidebar();
   const [selected, setSelected] = useState(
     window.location.pathname.split("/")[1] === ""
       ? "Dashboard"
@@ -74,22 +75,22 @@ function SideBar({ user }) {
           }}
         >
           <Box
-            display={"flex"}
+            sx={{ display: { xs: "none", md: "flex" } }}
             justifyContent={collapsed ? "center" : "flex-end"}
             m={2}
           >
-            <IconButton
-              onClick={() => collapseSidebar()}
-              color={
-                theme.palette.mode === "dark" ? colors.grey[100] : "neutral"
-              }
-            >
-              {collapsed ? <MenuOutlined /> : <CloseOutlinedIcon />}
-            </IconButton>
+            <SideBarActionButton
+              collapseSidebar={collapseSidebar}
+              collapsed={collapsed}
+            />
           </Box>
           {!collapsed && (
             <Stack mb={3} spacing={2}>
-              <Box display={"flex"} justifyContent={"center"}>
+              <Box
+                display={"flex"}
+                justifyContent={"center"}
+                sx={{ marginTop: { xs: "40px", md: "0px" } }}
+              >
                 <img
                   style={{
                     height: 100,
@@ -120,6 +121,7 @@ function SideBar({ user }) {
               </Box>
             </Stack>
           )}
+
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {

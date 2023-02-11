@@ -4,22 +4,14 @@ import CustomContainer from "../../global/CustomContainer";
 import { handleTitleClick } from "../../../utils/functions";
 import { useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import StateBox from "../../../components/global/stateBox";
 import { tokens } from "../../../Theme";
-import {
-  MoneyOff,
-  PeopleTwoTone,
-  Shop2Outlined,
-  ShoppingBag,
-} from "@mui/icons-material";
 import useBrandOffers from "../../../components/hooks/merchants/offers/useBrandOffers";
-
 import OfferContainer from "../../../components/offers/offerContainer";
-
 import LinearProg from "../../../components/global/LinearProg";
 import { toast } from "react-toastify";
 import useOfferFilters from "../../../components/hooks/merchants/offers/useOfferFilters";
 import authFetch from "../../../services/interceptors";
+import OffersDataGrid from "../../../components/offers/OffersDataGrid";
 
 function BrandOffers() {
   const { state } = useLocation();
@@ -61,6 +53,7 @@ function BrandOffers() {
       setLoading(false);
     };
   };
+
   return (
     <CustomContainer
       title={brandName}
@@ -73,90 +66,13 @@ function BrandOffers() {
         height={"85vh"}
         overflow={"hidden"}
       >
-        <Box
-          display="grid"
-          gridTemplateColumns="repeat(12, 1fr)"
-          gridAutoRows="140px"
-          gap="20px"
-          py={3}
-        >
-          <Box
-            gridColumn="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <StateBox
-              title={requestsNumber}
-              subtitle="Total Requests"
-              progress="0.25"
-              increase="+12%"
-              icon={
-                <PeopleTwoTone
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                />
-              }
-            />
-          </Box>
-          <Box
-            gridColumn="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <StateBox
-              title={offersNumber}
-              subtitle="Total Offers"
-              progress="0.25"
-              increase="+12%"
-              icon={
-                <MoneyOff
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                />
-              }
-            />
-          </Box>
-          <Box
-            gridColumn="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <StateBox
-              title={ordersNumber}
-              subtitle="Total Orders"
-              progress="0.25"
-              increase="+12%"
-              icon={
-                <ShoppingBag
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                />
-              }
-            />
-          </Box>
-          <Box
-            gridColumn="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <StateBox
-              title={productsNumber}
-              subtitle="Total Products"
-              progress="0.25"
-              increase="+12%"
-              icon={
-                <Shop2Outlined
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                />
-              }
-            />
-          </Box>
-        </Box>
+        <OffersDataGrid
+          colors={colors}
+          requestsNumber={requestsNumber}
+          offersNumber={offersNumber}
+          ordersNumber={ordersNumber}
+          productsNumber={productsNumber}
+        />
         <LinearProg loading={loading} />
         <OfferContainer
           offers={offers}

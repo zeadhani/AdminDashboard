@@ -174,7 +174,6 @@ function ProductsDashboard() {
                 <TableImage image={row?.image} />
                 <TableCell>{row?.price} EGP</TableCell>
                 <TableCell>{row.Brands?.name}</TableCell>
-
                 <TableCell>{row.Category?.name}</TableCell>
                 <DateCell date={row.createdAt} />
                 <TableCell

@@ -60,10 +60,8 @@ function LineChart() {
         orient: "bottom",
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
+        tickRotation: 90,
         legend: undefined,
-        legendOffset: 36,
-        legendPosition: "middle",
       }}
       axisLeft={{
         orient: "left",
@@ -71,8 +69,6 @@ function LineChart() {
         tickPadding: 5,
         tickRotation: 0,
         legend: undefined,
-        legendOffset: -40,
-        legendPosition: "middle",
       }}
       enableGridX={false}
       enableGridY={false}

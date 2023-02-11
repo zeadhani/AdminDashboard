@@ -42,6 +42,7 @@ function Dashboard() {
               fontSize: "12px",
               fontWeight: "bold",
               padding: "10px 20px",
+              display: { xs: "none", md: "block" },
             }}
           >
             <DownloadOutlined sx={{ mr: "10px" }} />
@@ -53,7 +54,14 @@ function Dashboard() {
 
       <Box
         display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
+        // gridTemplateColumns="repeat(12, 1fr)"
+        sx={{
+          gridTemplateColumns: {
+            lg: "repeat(12, 1fr)",
+            sm: "repeat(6, 1fr)",
+            xs: "repeat(3, 1fr)",
+          },
+        }}
         gridAutoRows="140px"
         gap="20px"
       >
@@ -134,7 +142,11 @@ function Dashboard() {
           />
         </Box>
         <Box
-          gridColumn="span 8"
+          // gridColumn="span 8"
+          sx={{
+            gridColumn: { lg: "span 8", sm: "span 6", xs: "span 3" },
+            // display: { xs: "none", sm: "block" },
+          }}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -156,6 +168,7 @@ function Dashboard() {
               variant="h3"
               fontWeight="bold"
               color={colors.greenAccent[500]}
+              sx={{ display: { xs: "none", sm: "block" } }}
             >
               59,342.32 EGP
             </Typography>
@@ -165,7 +178,8 @@ function Dashboard() {
           </Box>
         </Box>
         <Box
-          gridColumn="span 4"
+          // gridColumn="span 4"
+          sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
@@ -219,7 +233,7 @@ function Dashboard() {
           ))}
         </Box>
         <Box
-          gridColumn="span 4"
+          sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
@@ -241,29 +255,21 @@ function Dashboard() {
             >
               48,352 EGP Expense data
             </Typography>
-            <Typography color={colors.greenAccent[500]}>
+            <Typography
+              color={colors.greenAccent[500]}
+              sx={{
+                display: {
+                  lg: "block",
+                  xs: "none",
+                },
+              }}
+            >
               Takes into account any additional unforeseen expenses and costs.
             </Typography>
           </Box>
         </Box>
         <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Requests In Last six Months
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
+          sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"
@@ -277,6 +283,22 @@ function Dashboard() {
           </Typography>
           <Box height="200px">
             <PieChart />
+          </Box>
+        </Box>
+        <Box
+          sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Requests In Last six Months
+          </Typography>
+          <Box height="250px" mt="-20px">
+            <BarChart />
           </Box>
         </Box>
       </Box>

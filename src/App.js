@@ -2,7 +2,6 @@ import { ColorModeContext, useMode } from "./Theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Dashboard from "./screens/dashboard/index";
 import { Route, Routes } from "react-router-dom";
-import SideBar from "./screens/global/SideBar";
 import TeamDashboard from "./screens/Team/Index";
 import UsersDashboard from "./screens/Users/Index";
 import ProductsDashboard from "./screens/products";
@@ -13,25 +12,23 @@ import BrandsDashboard from "./screens/brands";
 import AddBrand from "./screens/brands/AddBrand";
 import BrandDetails from "./screens/brands/BrandDetails";
 import Login from "./screens/auth/Login";
-
 import Profile from "./screens/profile/Profile";
 import BrandOffers from "./screens/brands/offers";
-
 import PrivateRoutes from "./components/auth/PrivateRoutes";
 import AuthRoutes from "./components/auth/AuthRoutes";
 import useUser from "./components/hooks/auth/useUser";
 
+import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 function App() {
   const [theme, colorMode] = useMode();
   const { user } = useUser();
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <div className="sidebar">
-            <SideBar user={user} />
-          </div>
+          <SideBarContainer user={user} />
           <main className="content">
             <Routes>
               <Route element={<PrivateRoutes />}>

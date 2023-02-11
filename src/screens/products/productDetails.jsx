@@ -37,7 +37,6 @@ function ProductDetails() {
   const [serverErrors, setServerErrors] = useState(null);
   const { brands, categories, gender, allattributes } = useFilteredData();
   const [offers, setOffers] = useState();
-
   const { items, product, getProduct, newItems } = useSingleProduct(
     setServerErrors,
     id,
@@ -145,11 +144,12 @@ function ProductDetails() {
     }
     setLoading(false);
   };
+  const [hasGender, setHasGender] = useState(false);
   const formValidation = yup.object().shape({
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
     category: yup.string().ensure().required("category is required!"),
-    // gender: yup.string().ensure().required("gender is required!"),
+    gender: hasGender && yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
     count: yup.number().integer().min(0).required("brand is required!"),
     offer: yup.string().ensure().required("offer is required!"),
@@ -171,7 +171,6 @@ function ProductDetails() {
   const handleOffer = (id) => {
     return async () => {
       if (!id) return;
-
       try {
         const offersData = await authFetch.get(`/offer/brand/${id}`);
         setOffers(offersData.data);
@@ -180,10 +179,6 @@ function ProductDetails() {
       }
     };
   };
-
-  useEffect(() => {
-    handleOffer(product?.brandsId)();
-  }, [product]);
 
   const initialValues = {
     name: product ? product.name : "",
@@ -202,10 +197,13 @@ function ProductDetails() {
     select: "",
   };
 
-  const [hasGender, setHasGender] = useState(false);
   const handlecheckGender = () => {
     setHasGender(!hasGender);
   };
+  useEffect(() => {
+    handleOffer(product?.brandsId)();
+    setHasGender(Boolean(product?.Brands.hasGender));
+  }, [product]);
 
   return (
     <CustomContainer
@@ -345,17 +343,19 @@ function ProductDetails() {
               variant={editable ? "filled" : "standard"}
             />
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="info"
-                  value={hasGender}
-                  checked={hasGender}
-                  onChange={handlecheckGender}
-                />
-              }
-              label="Does this product has gender ?"
-            />
+            {editable && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="info"
+                    value={hasGender}
+                    checked={hasGender}
+                    onChange={handlecheckGender}
+                  />
+                }
+                label="Does this product has gender ?"
+              />
+            )}
 
             {hasGender && (
               <CustomTextField
