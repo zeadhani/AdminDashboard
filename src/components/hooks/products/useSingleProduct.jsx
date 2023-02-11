@@ -4,6 +4,7 @@ import authFetch from "../../../services/interceptors";
 function useSingleProduct(setServerErrors, id, setLoading) {
   const [product, setProduct] = useState();
   const [items, setItems] = useState([]);
+  
   const getProduct = async () => {
     setLoading(true);
     try {

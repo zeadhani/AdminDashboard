@@ -80,7 +80,7 @@ function AddProduct() {
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
-    form_data.append("gender", hasGender ? gender : null);
+    form_data.append("gender", hasGender ? gender : '');
     form_data.append("brand", brand);
     form_data.append("image", imageFile);
     form_data.append("hasAttributes", hasAttributes);

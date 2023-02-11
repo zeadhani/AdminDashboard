@@ -1,4 +1,10 @@
-import { Box, MenuItem, useTheme } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  useTheme,
+} from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Formik } from "formik";
@@ -81,6 +87,7 @@ function ProductDetails() {
 
     const { name, price, category, gender, brand, count, offer, select } =
       values;
+
     if (imageFile) {
       form_data.append("image", imageFile);
     }
@@ -104,7 +111,7 @@ function ProductDetails() {
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
-    form_data.append("gender", gender);
+    form_data.append("gender", hasGender ? gender : "");
     form_data.append("brand", brand);
     form_data.append(
       "hasAttributes",
@@ -142,7 +149,7 @@ function ProductDetails() {
     name: yup.string().required("name is required"),
     price: yup.number().integer().min(1).required("price is required"),
     category: yup.string().ensure().required("category is required!"),
-    gender: yup.string().ensure().required("gender is required!"),
+    // gender: yup.string().ensure().required("gender is required!"),
     brand: yup.string().ensure().required("brand is required!"),
     count: yup.number().integer().min(0).required("brand is required!"),
     offer: yup.string().ensure().required("offer is required!"),
@@ -182,7 +189,7 @@ function ProductDetails() {
     name: product ? product.name : "",
     price: product ? product.price : 0,
     category: product ? product.Category.name : "",
-    gender: product ? product.Gender.name : "",
+    gender: product ? product.Gender?.name : "",
     brand: product ? product.Brands.name : "",
     count: product ? product.count : 0,
     offer: product
@@ -194,6 +201,12 @@ function ProductDetails() {
       : "",
     select: "",
   };
+
+  const [hasGender, setHasGender] = useState(false);
+  const handlecheckGender = () => {
+    setHasGender(!hasGender);
+  };
+
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
@@ -252,24 +265,6 @@ function ProductDetails() {
               variant={editable ? "filled" : "standard"}
             >
               {categories.map((item) => (
-                <MenuItem key={item.id} value={item?.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </CustomTextField>
-
-            <CustomTextField
-              type={"text"}
-              name="gender"
-              label={"Product gender"}
-              value={values.gender}
-              touched={touched.gender}
-              errors={errors.gender}
-              disabled={!editable}
-              select={editable}
-              variant={editable ? "filled" : "standard"}
-            >
-              {gender.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
@@ -350,6 +345,37 @@ function ProductDetails() {
               variant={editable ? "filled" : "standard"}
             />
 
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="info"
+                  value={hasGender}
+                  checked={hasGender}
+                  onChange={handlecheckGender}
+                />
+              }
+              label="Does this product has gender ?"
+            />
+
+            {hasGender && (
+              <CustomTextField
+                type={"text"}
+                name="gender"
+                label={"Product gender"}
+                value={values.gender}
+                touched={touched.gender}
+                errors={errors.gender}
+                disabled={!editable}
+                select={editable}
+                variant={editable ? "filled" : "standard"}
+              >
+                {gender.map((item) => (
+                  <MenuItem key={item.id} value={item?.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </CustomTextField>
+            )}
             {add && (
               <ImageFileDisplay imageFile={imageFile} alt={values.name} />
             )}
