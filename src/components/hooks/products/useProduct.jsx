@@ -20,13 +20,14 @@ function useProduct(
   const getProducts = async () => {
     setLoading(true);
     try {
-      const products = await authFetch.get(
+      const productsData = await authFetch.get(
         `/products?limit=${rowsPerPage}&page=${
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
       );
-      setProducts(products.data.data.data);
-      setCount(products.data.data.totalCount);
+      console.log("first")
+      setProducts(productsData.data.data.data);
+      setCount(productsData.data.data.totalCount);
       setError(false);
     } catch (err) {
       setError(true);
@@ -50,7 +51,6 @@ function useProduct(
   }, [
     rowsPerPage,
     page,
-    count,
     sort,
     orderBy,
     search,
@@ -63,3 +63,5 @@ function useProduct(
 }
 
 export default useProduct;
+
+

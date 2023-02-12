@@ -23,6 +23,7 @@ function useBrands(
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
       );
+      console.log("second");
       setBrands(brands.data.data.data);
       setCount(brands.data.data.totalCount);
       setError(false);
@@ -43,7 +44,7 @@ function useBrands(
       })}`,
     });
     getBrands();
-  }, [rowsPerPage, page, count, sort, orderBy, search, preferencesFilter]);
+  }, [rowsPerPage, page, sort, orderBy, search, preferencesFilter]);
   return { brands, count, getBrands };
 }
 

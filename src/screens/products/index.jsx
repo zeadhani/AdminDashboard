@@ -40,7 +40,7 @@ function ProductsDashboard() {
   const navigate = useNavigate();
   const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
     usePage();
-  const { brands, categories, gender } = useFilteredData();
+  const { brands, categories } = useFilteredData();
   const {
     sort,
     search,
@@ -53,9 +53,7 @@ function ProductsDashboard() {
   const {
     filtered,
     filteredBrand,
-    filteredGneder,
     handleFilterBrandChange,
-    handleFilterGenderChange,
     handleFilterChange,
     resetProductFilters,
     filteredStock,
@@ -109,7 +107,6 @@ function ProductsDashboard() {
       });
     };
   };
-
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
