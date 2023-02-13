@@ -83,14 +83,16 @@ function Login() {
               loading={loading}
               handleSubmit={handleSubmit}
             >
-              <Typography
-                variant="h2"
-                textAlign={"center"}
-                color={colors.grey[100]}
-                sx={{ mb: "5px", cursor: "pointer" }}
-              >
-                Logo Placeholder
-              </Typography>
+              {!serverErrors && (
+                <Typography
+                  variant="h2"
+                  textAlign={"start"}
+                  color={colors.grey[100]}
+                  sx={{ mb: "5px", cursor: "pointer" }}
+                >
+                  Login
+                </Typography>
+              )}
               <CustomTextField
                 type={"text"}
                 name="email"
@@ -117,6 +119,7 @@ function Login() {
         width={"100%"}
         className="loginscreen"
         height={"100%"}
+        sx={{ display: { xs: "none", lg: "block" } }}
         bgcolor={colors.primary[600]}
       >
         <ImageList
