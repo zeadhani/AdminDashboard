@@ -76,21 +76,27 @@ function UserDashbaord() {
       });
     };
   };
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = (id) => { 
     return async (e) => {
-      // setLoading(true);
-      // try {
-      //   await authFetch.delete(`/products/${id}`);
-      //   // getProducts();
-      //   setError(false);
-      // } catch (err) {
-      //   setError(true);
-      // }
-      // setLoading(false);
+      setLoading(true);
+      try {
+        await authFetch.delete(`/user/${id}`);
+        getUsers();
+        setError(false);
+      } catch (err) {
+        setError(true);
+      }
+      setLoading(false);
     };
   };
   const verifyAction = (id, verified) => {
-    return (e) => {
+    return async (e) => {
+      setLoading(true);
+      const updateServer = await authFetch.patch(
+        `/user/verify/${id}?verifyQuery=${verified}`
+      );
+
+      if (updateServer.status !== 200) return;
       const data = [...users];
       const newData = data.map((item) => {
         if (item.id === id) {
@@ -99,6 +105,7 @@ function UserDashbaord() {
         return item;
       });
       setUsers(newData);
+      setLoading(false);
     };
   };
   return (
@@ -159,7 +166,7 @@ function UserDashbaord() {
                 </TableCell>
                 <DateCell date={row.createdAt} />
                 <ActionsButtonsTable
-                  deleteAction={handleDeleteUser(row?.email)}
+                  deleteAction={handleDeleteUser(row?.id)}
                   viewAction={viewAction(row?.id)}
                   colors={colors}
                   anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
