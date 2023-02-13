@@ -107,6 +107,7 @@ function ProductsDashboard() {
       });
     };
   };
+
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}

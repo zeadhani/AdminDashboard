@@ -12,7 +12,7 @@ function CustomFloatingButton({ colors, handleClick, children, showOffers }) {
         onClick={handleClick}
         aria-label="add"
         sx={{
-          position: "fixed",
+          position: "absolute",
           bottom: "35px",
           right: "30px",
           bgcolor: colors.greenAccent[500],

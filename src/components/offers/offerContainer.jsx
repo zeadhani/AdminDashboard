@@ -34,9 +34,10 @@ function OfferContainer({
       backgroundColor={colors.primary[400]}
       sx={{
         borderRadius: "10px",
-        height: "100%",
+        height: "100px",
         overflowY: "scroll",
-        overflowX: "hidden",
+        overflowX:"hidden",
+        position: "relative",
       }}
     >
       {!showOffers && (

@@ -1,314 +1,176 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Table, { tableClasses } from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { useTheme } from "@mui/material/styles";
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  Paper,
-  Select,
-  TableFooter,
-  TablePagination,
-} from "@mui/material";
-import { mockDataTeam } from "../../data/mockData";
+import React from "react";
+import CustomContainer from "../global/CustomContainer";
+import FilterContainer from "../../components/filters/FilterContainer";
+import CustomFilter from "../../components/filters/CustomSingleFilter";
+import { TableCell, useTheme } from "@mui/material";
 import { tokens } from "../../Theme";
+import { useNavigate } from "react-router-dom";
+import usePage from "../../components/hooks/general/usePage";
+import useCommonFilters from "../../components/hooks/general/useCommonFilters";
+import useUserFilters from "../../components/hooks/users/useUserFilters";
 import { useState } from "react";
-import Header from "../../components/global/Header";
-import MenuItem from "@mui/material/MenuItem";
+import LinearProg from "../../components/global/LinearProg";
+import { Box } from "@mui/system";
+import useUsers from "../../components/hooks/users/useUsers";
+import TableCard from "../../components/Table/TableCard";
+import CustomTableRow from "../../components/Table/TableRow";
+import RowIdentifier from "../../components/Table/rowIdentifier";
+import TableImage from "../../components/Table/TableImage";
+import DateCell from "../../components/Table/DateCell";
+import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
+import authFetch from "../../services/interceptors";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-function UsersDashboard() {
+const sortArray = ["createdAt", "name"];
+const columns = [
+  { id: "first name", label: "First Name" },
+  { id: "last name", label: "Last Name" },
+  { id: "image", label: "Image" },
+  { id: "email", label: "Email" },
+  { id: "verified", label: "verified" },
+  { id: "created_at", label: "Created_At" },
+];
+function UserDashbaord() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sort, setSort] = useState("");
-  const [filtered, setFiltered] = useState([]);
-
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
+    usePage();
+  const {
+    VerifiedArray,
+    handleFilterVerifiedChange,
+    resetUserFilter,
+    verifiedFilter,
+  } = useUserFilters();
+  const {
+    sort,
+    search,
+    orderBy,
+    handleOrderByChange,
+    handleSearchChange,
+    resetCommonFilters,
+    handleSortChange,
+  } = useCommonFilters();
+  const { count, getUsers, users, setUsers } = useUsers(
+    setLoading,
+    rowsPerPage,
+    page,
+    sort,
+    orderBy,
+    search,
+    setError,
+    verifiedFilter
+  );
+  const handleTitleClick = () => {
+    navigate("/Users/add-user");
   };
-  const handleFilterChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setFiltered(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+  const handleRestFilters = () => {
+    resetUserFilter();
+    resetCommonFilters();
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const viewAction = (id) => {
+    return () => {
+      navigate(`/Users/${id}`, {
+        state: { editable: false.toString() },
+      });
+    };
   };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleDeleteUser = (id) => {
+    return async (e) => {
+      // setLoading(true);
+      // try {
+      //   await authFetch.delete(`/products/${id}`);
+      //   // getProducts();
+      //   setError(false);
+      // } catch (err) {
+      //   setError(true);
+      // }
+      // setLoading(false);
+    };
   };
-
-  const StyledTableCell = styled(TableCell)(() => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: colors.blueAccent[600],
-    },
-  }));
-
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: colors.primary[400],
-    },
-    "&:nth-of-type(even)": {
-      backgroundColor:
-        theme.palette.mode === "dark" ? colors.primary[500] : colors.grey[800],
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-
-  const columns = [
-    { id: "id", label: "Id" },
-    { id: "name", label: "Name" },
-    { id: "email", label: "Email" },
-    { id: "age", label: "Age" },
-    { id: "phone", label: "Phone" },
-    { id: "access", label: "Role" },
-  ];
-  const rows = mockDataTeam;
-  console.log({ sort, filtered, page, rowsPerPage });
+  const verifyAction = (id, verified) => {
+    return (e) => {
+      const data = [...users];
+      const newData = data.map((item) => {
+        if (item.id === id) {
+          return { ...item, verified };
+        }
+        return item;
+      });
+      setUsers(newData);
+    };
+  };
   return (
-    <Box mx="20px">
-      <Header title={"BOGO USERS"} subtitle={"Managing bogo users!"} />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          paddingTop: "20px",
-          paddingBottom: "20px",
-        }}
+    <CustomContainer title={"BOGO USERS"} subtitle={"Managing bogo users!"}>
+      <FilterContainer
+        handleRestFilters={handleRestFilters}
+        name={"User"}
+        theme={theme}
+        addNav={handleTitleClick}
+        colors={colors}
+        search={search}
+        handleSearchChange={handleSearchChange}
+        handleSortChange={handleSortChange}
+        sort={sort}
+        handleOrderByChange={handleOrderByChange}
+        orderBy={orderBy}
+        sortArray={sortArray}
       >
-        <FormControl sx={{ width: 200 }}>
-          <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={sort}
-            label="Age"
-            onChange={handleSortChange}
-          >
-            <MenuItem value={""}>Default</MenuItem>
-            <MenuItem value={"age"}>Age</MenuItem>
-            <MenuItem value={"Created_At"}>Created At</MenuItem>
-            <MenuItem value={"Name"}>Name</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl sx={{ width: 400 }}>
-          <InputLabel id="demo-multiple-chip-label">Filter</InputLabel>
-          <Select
-            labelId="demo-multiple-chip-label"
-            id="demo-multiple-chip"
-            multiple
-            value={filtered}
-            onChange={handleFilterChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {["Admin", "Manager", "Frontend", "Backend"].map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-      <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-        <Table stickyHeader sx={{ minWidth: 1000 }}>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <StyledTableCell key={column.id}>
-                  {column.label}
-                </StyledTableCell>
-              ))}
-              <StyledTableCell sx={{ textAlign: "center" }}>
-                Actions
-              </StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <StyledTableRow
-                  key={row.id}
-                  onClick={() => alert(row.name)}
+        <CustomFilter
+          label={"Verified"}
+          value={verifiedFilter}
+          filterarray={VerifiedArray}
+          itemitself="true"
+          onChange={handleFilterVerifiedChange}
+          sx={{ flex: 1 }}
+        />
+      </FilterContainer>
+      <LinearProg loading={loading} />
+      {error && <Box p={2}>Error , could not fetch data</Box>}
+      {users.length === 0 && !error && !loading && (
+        <Box p={2}>No items Found</Box>
+      )}
+      {users?.length > 0 && (
+        <TableCard
+          columns={columns}
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+        >
+          {!error &&
+            users.map((row, index) => (
+              <CustomTableRow colors={colors} key={row.id}>
+                <RowIdentifier>{row.first_name}</RowIdentifier>
+                <TableCell>{row.last_name}</TableCell>
+                <TableImage image={row.image} />
+                <TableCell>{row.email}</TableCell>
+                <TableCell
                   sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                      backgroundColor: colors.grey[900],
-                    },
+                    color: row.verified
+                      ? colors.greenAccent[500]
+                      : colors.redAccent[500],
+                    fontWeight: "bold",
                   }}
                 >
-                  <StyledTableCell>{row.id}</StyledTableCell>
-                  <StyledTableCell>{row.name}</StyledTableCell>
-                  <StyledTableCell>{row.email}</StyledTableCell>
-                  <StyledTableCell>{row.age}</StyledTableCell>
-                  <StyledTableCell>{row.phone}</StyledTableCell>
-                  <StyledTableCell>{row.access}</StyledTableCell>
-                  <StyledTableCell sx={{ textAlign: "center" }}>
-                    <Box display={"flex"} justifyContent={"space-around"}>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: colors.redAccent[600],
-                          borderRadius: "5px",
-                        }}
-                      >
-                        Delete
-                      </Button>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: colors.blueAccent[600],
-                          borderRadius: "5px",
-                        }}
-                      >
-                        Edit
-                      </Button>
-                    </Box>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-          </TableBody>
-          <TableFooter
-            sx={{
-              position: "sticky",
-              insetBlockEnd: 0,
-              backgroundColor: colors.blueAccent[600],
-              //   backgroundColor: colors.blueAccent[600],
-            }}
-          >
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 25, 50]}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-    </Box>
+                  {row.verified ? "Verified" : "Not Verified"}
+                </TableCell>
+                <DateCell date={row.createdAt} />
+                <ActionsButtonsTable
+                  deleteAction={handleDeleteUser(row?.email)}
+                  viewAction={viewAction(row?.id)}
+                  colors={colors}
+                  anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
+                  anotherActionName={row.verified ? "UnVerify" : "Verify"}
+                />
+              </CustomTableRow>
+            ))}
+        </TableCard>
+      )}
+    </CustomContainer>
   );
 }
 
-export default UsersDashboard;
-// const columns = [
-//     { field: "id", headerName: "ID" },
-//     {
-//       field: "name",
-//       headerName: "Name",
-//       flex: 1,
-//       minWidth: 200,
-//       cellClassName: "name-column--cell",
-//     },
-//     {
-//       field: "age",
-//       headerName: "Age",
-//       type: "number",
-//       headerAlign: "left",
-//       align: "left",
-//     },
-//     {
-//       field: "phone",
-//       headerName: "Phone Number",
-//       flex: 1,
-//       minWidth: 200,
-//     },
-//     {
-//       field: "email",
-//       headerName: "Email",
-//       flex: 1,
-//       minWidth: 200,
-//     },
-//     {
-//       field: "adress",
-//       headerName: "Adress",
-//       headerAlign: "left",
-//       align: "left",
-//     },
-//     {
-//       headerName: "Actions",
-//       headerAlign: "center",
-//       align: "center",
-//       justifyContent: "space-around",
-//       flex: 1,
-//       minWidth: 200,
-//       sortable: false,
-//       hideable: false,
-//       renderCell: ({ row: { id } }) => {
-//         return (
-//           <Box
-//             display={"flex"}
-//             justifyContent={"space-around"}
-//             width={"80%"}
-//           >
-//             <Button
-//               variant="contained"
-//               sx={{
-//                 backgroundColor: colors.redAccent[600],
-//                 borderRadius: "5px",
-//               }}
-
-//             >
-//               Delete
-//             </Button>
-//             <Button
-//               variant="contained"
-//               sx={{
-//                 backgroundColor: colors.blueAccent[600],
-//                 borderRadius: "5px",
-//               }}
-
-//             >
-//               Edit
-//             </Button>
-//           </Box>
-//         );
-//       },
-//     },
-//   ];
-//   return (
-//     <Box mx="20px">
-//       <Header title={"BOGO USERS"} subtitle={"Managing bogo users!"} />
-//       <Table rowData={mockUsers} ColumnData={columns} />
-//     </Box>
-//   );
+export default UserDashbaord;

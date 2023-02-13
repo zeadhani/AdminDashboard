@@ -39,6 +39,7 @@ function OffersItems({
           )}
         </Box>
       </Slide>
+      
     </Box>
   );
 }

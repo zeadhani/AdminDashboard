@@ -3,7 +3,6 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import Dashboard from "./screens/dashboard/index";
 import { Route, Routes } from "react-router-dom";
 import TeamDashboard from "./screens/Team/Index";
-import UsersDashboard from "./screens/Users/Index";
 import ProductsDashboard from "./screens/products";
 import ProductDetails from "./screens/products/productDetails";
 import AddProduct from "./screens/products/AddProduct";
@@ -19,6 +18,7 @@ import AuthRoutes from "./components/auth/AuthRoutes";
 import useUser from "./components/hooks/auth/useUser";
 
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
+import UserDashbaord from "./screens/Users/Index";
 function App() {
   const [theme, colorMode] = useMode();
   const { user } = useUser();
@@ -34,7 +34,7 @@ function App() {
               <Route element={<PrivateRoutes />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/Team" element={<TeamDashboard />} />
-                <Route path="/Users" element={<UsersDashboard />} />
+                <Route path="/Users" element={<UserDashbaord />} />
                 <Route exact path="/Products" element={<ProductsDashboard />} />
                 <Route path="/Products/add-product" element={<AddProduct />} />
                 <Route path="/Products/:id" element={<ProductDetails />} />

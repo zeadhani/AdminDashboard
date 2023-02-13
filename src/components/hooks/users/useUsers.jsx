@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import authFetch from "../../../services/interceptors";
 
-function useBrands(
+function useUsers(
   setLoading,
   rowsPerPage,
   page,
@@ -10,20 +10,20 @@ function useBrands(
   orderBy,
   search,
   setError,
-  preferencesFilter
+  verifiedFilter
 ) {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
-  const [brands, setBrands] = useState([]);
-  const getBrands = async () => {
+  const [users, setUsers] = useState([]);
+  const getUsers = async () => {
     setLoading(true);
     try {
       const brands = await authFetch.get(
-        `/brand?limit=${rowsPerPage}&page=${
+        `/user?limit=${rowsPerPage}&page=${
           page + 1
-        }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
+        }&sort=${sort},${orderBy}&search=${search}&verified=${verifiedFilter}`
       );
-      setBrands(brands.data.data.data);
+      setUsers(brands.data.data.data);
       setCount(brands.data.data.totalCount);
       setError(false);
     } catch (err) {
@@ -39,12 +39,12 @@ function useBrands(
         sort,
         orderBy,
         search,
-        preferences: [preferencesFilter],
+        verified: [verifiedFilter],
       })}`,
     });
-    getBrands();
-  }, [rowsPerPage, page, sort, orderBy, search, preferencesFilter]);
-  return { brands, count, getBrands };
+    getUsers();
+  }, [rowsPerPage, page, sort, orderBy, search, verifiedFilter]);
+  return { users, count, getUsers,setUsers };
 }
 
-export default useBrands;
+export default useUsers;
