@@ -25,6 +25,7 @@ function useProduct(
           page + 1
         }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
       );
+
       setProducts(productsData.data.data.data);
       setCount(productsData.data.data.totalCount);
       setError(false);
@@ -33,6 +34,7 @@ function useProduct(
     }
     setLoading(false);
   };
+
   useEffect(() => {
     navigate({
       search: `?${createSearchParams({
@@ -62,5 +64,3 @@ function useProduct(
 }
 
 export default useProduct;
-
-

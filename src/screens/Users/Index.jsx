@@ -63,20 +63,18 @@ function UserDashbaord() {
     verifiedFilter
   );
   const handleTitleClick = () => {
-    navigate("/Users/add-user");
+    navigate("/Users/details");
   };
   const handleRestFilters = () => {
     resetUserFilter();
     resetCommonFilters();
   };
-  const viewAction = (id) => {
+  const viewAction = (email) => {
     return () => {
-      navigate(`/Users/${id}`, {
-        state: { editable: false.toString() },
-      });
+      navigate(`/Users/details/${email}`);
     };
   };
-  const handleDeleteUser = (id) => { 
+  const handleDeleteUser = (id) => {
     return async (e) => {
       setLoading(true);
       try {
@@ -167,7 +165,7 @@ function UserDashbaord() {
                 <DateCell date={row.createdAt} />
                 <ActionsButtonsTable
                   deleteAction={handleDeleteUser(row?.id)}
-                  viewAction={viewAction(row?.id)}
+                  viewAction={viewAction(row?.email)}
                   colors={colors}
                   anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
                   anotherActionName={row.verified ? "UnVerify" : "Verify"}

@@ -4,6 +4,7 @@ import SideBar from "../../../screens/global/SideBar";
 import { useProSidebar } from "react-pro-sidebar";
 function SideBarContainer({ user }) {
   const { collapseSidebar, collapsed } = useProSidebar();
+  
   return (
     <Box
       className="sidebar"

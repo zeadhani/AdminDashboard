@@ -107,7 +107,7 @@ function CustomAccordion({
       if (res.status === 200) {
         getProduct();
         setOpen(false);
-        toast("edited");
+        toast("Edited");
       }
     } catch (err) {
       setServerErrors(err.response.data.error);

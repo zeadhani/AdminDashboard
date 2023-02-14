@@ -51,7 +51,6 @@ const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
 function SideBar({ user, collapseSidebar, collapsed }) {
   const isLoggedIn = useSelector((state) => state.Auth.loggedIn);
 
-  // const { collapseSidebar, collapsed } = useProSidebar();
   const [selected, setSelected] = useState(
     window.location.pathname.split("/")[1] === ""
       ? "Dashboard"

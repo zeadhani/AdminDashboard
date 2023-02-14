@@ -19,9 +19,13 @@ import useUser from "./components/hooks/auth/useUser";
 
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import UserDashbaord from "./screens/Users/Index";
+import { useSelector } from "react-redux";
+import UserDetails from "./screens/Users/userDetails";
 function App() {
   const [theme, colorMode] = useMode();
-  const { user } = useUser();
+  const data = useSelector((state) => state.Auth.user);
+  const email = data.replace(/"/g, "");
+  const { user } = useUser(email);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -35,6 +39,8 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/Team" element={<TeamDashboard />} />
                 <Route path="/Users" element={<UserDashbaord />} />
+                <Route path="/Users/details/:email" element={<UserDetails />} />
+                <Route path="/Users/details" element={<UserDetails />} />
                 <Route exact path="/Products" element={<ProductsDashboard />} />
                 <Route path="/Products/add-product" element={<AddProduct />} />
                 <Route path="/Products/:id" element={<ProductDetails />} />
