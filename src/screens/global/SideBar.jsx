@@ -1,30 +1,16 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { useState } from "react";
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  useProSidebar,
-  sidebarClasses,
-} from "react-pro-sidebar";
-import {
-  Box,
-  useTheme,
-  IconButton,
-  Typography,
-  Stack,
-  Button,
-} from "@mui/material";
+import { Sidebar, Menu, MenuItem, sidebarClasses } from "react-pro-sidebar";
+import { Box, useTheme, Typography, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../Theme";
 import {
   HomeOutlined,
   CalendarMonthOutlined,
-  MenuOutlined,
   Shop2Outlined,
 } from "@mui/icons-material";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";

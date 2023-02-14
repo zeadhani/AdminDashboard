@@ -136,30 +136,33 @@ function BrandsDashboard() {
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         >
           {!error &&
-            brands.map((row, index) => (
-              <CustomTableRow colors={colors} key={row.id}>
-                <RowIdentifier>{row.name}</RowIdentifier>
-                <TableImage image={row.image} />
-                <TableCell>{row.Preferences.name}</TableCell>
-                <DateCell
-                  sx={{
-                    color:
-                      new Date().toISOString() > row.contrat_Expire
+            brands.map((row, index) => {
+              const dateIsBiggerThanCurrentDate =
+                new Date().toISOString() > row.contrat_Expire;
+              return (
+                <CustomTableRow colors={colors} key={row.id}>
+                  <RowIdentifier>{row.name}</RowIdentifier>
+                  <TableImage image={row.image} />
+                  <TableCell>{row.Preferences.name}</TableCell>
+                  <DateCell
+                    sx={{
+                      color: dateIsBiggerThanCurrentDate
                         ? colors.redAccent[500]
                         : colors.greenAccent[500],
-                    fontWeight: "bold",
-                  }}
-                  date={row.contrat_Expire}
-                />
-                <DateCell date={row.createdAt} />
-                <ActionsButtonsTable
-                  deleteAction={handleDeleteBrand(row.name)}
-                  editAction={editAction(row?.id)}
-                  viewAction={viewAction(row?.id)}
-                  colors={colors}
-                />
-              </CustomTableRow>
-            ))}
+                      fontWeight: "bold",
+                    }}
+                    date={row.contrat_Expire}
+                  />
+                  <DateCell date={row.createdAt} />
+                  <ActionsButtonsTable
+                    deleteAction={handleDeleteBrand(row.name)}
+                    editAction={editAction(row?.id)}
+                    viewAction={viewAction(row?.id)}
+                    colors={colors}
+                  />
+                </CustomTableRow>
+              );
+            })}
         </TableCard>
       )}
     </CustomContainer>

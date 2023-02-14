@@ -108,6 +108,8 @@ function ProductsDashboard() {
     };
   };
 
+  const isBiggerThan0 = (element) => element.count > 0;
+
   return (
     <CustomContainer
       title={"BOGO PRODUCTS"}
@@ -166,43 +168,36 @@ function ProductsDashboard() {
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         >
           {!error &&
-            products.map((row, index) => (
-              <CustomTableRow colors={colors} key={row.id}>
-                <RowIdentifier>{row?.name}</RowIdentifier>
-                <TableImage image={row?.image} />
-                <TableCell>{row?.price} EGP</TableCell>
-                <TableCell>{row.Brands?.name}</TableCell>
-                <TableCell>{row.Category?.name}</TableCell>
-                <DateCell date={row.createdAt} />
-                <TableCell
-                  sx={{
-                    color:
-                      row.count > 0 ||
-                      row.productItems?.reduce(
-                        (total, productItems) => total + productItems.count,
-                        0
-                      ) > 0
+            products.map((row, index) => {
+              const inStock =
+                row.count > 0 || row.productItems?.some(isBiggerThan0);
+              return (
+                <CustomTableRow colors={colors} key={row.id}>
+                  <RowIdentifier>{row?.name}</RowIdentifier>
+                  <TableImage image={row?.image} />
+                  <TableCell>{row?.price} EGP</TableCell>
+                  <TableCell>{row.Brands?.name}</TableCell>
+                  <TableCell>{row.Category?.name}</TableCell>
+                  <DateCell date={row.createdAt} />
+                  <TableCell
+                    sx={{
+                      color: inStock
                         ? colors.greenAccent[500]
                         : colors.redAccent[500],
-                    fontWeight: "bold",
-                  }}
-                >
-                  {row.count > 0 ||
-                  row.productItems?.reduce(
-                    (total, productItems) => total + productItems.count,
-                    0
-                  ) > 0
-                    ? "In Stock"
-                    : "Out Of Stock"}
-                </TableCell>
-                <ActionsButtonsTable
-                  deleteAction={handleDeleteProduct(row.id)}
-                  editAction={editAction(row?.id)}
-                  viewAction={viewAction(row?.id)}
-                  colors={colors}
-                />
-              </CustomTableRow>
-            ))}
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {inStock ? "In Stock" : "Out Of Stock"}
+                  </TableCell>
+                  <ActionsButtonsTable
+                    deleteAction={handleDeleteProduct(row.id)}
+                    editAction={editAction(row?.id)}
+                    viewAction={viewAction(row?.id)}
+                    colors={colors}
+                  />
+                </CustomTableRow>
+              );
+            })}
         </TableCard>
       )}
     </CustomContainer>
