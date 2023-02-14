@@ -1,12 +1,13 @@
 import React from "react";
 import useUser from "../../components/hooks/auth/useUser";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import FormCard from "../../components/Forms/FormCard";
 import { Formik } from "formik";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormButton from "../../components/Forms/FormButton";
 import { useTheme } from "@emotion/react";
+import * as yup from "yup";
 import { tokens } from "../../Theme";
 import { useState } from "react";
 import CustomContainer from "../global/CustomContainer";
@@ -23,15 +24,19 @@ function UserDetails() {
   const [verified, setVerified] = useState();
   const handleFormSubmit = () => {};
   const initialValues = {
-    first_name: user ? user.first_name : "",
-    last_name: user ? user.last_name : "",
-    email: user ? user.email : "",
-    address: user ? user.address : "",
-    phone: user ? user.phone : "",
+    first_name: user.first_name ? user.first_name : "test",
+    last_name: user.last_name ? user.last_name : "",
+    email: user.email ? user.email : "",
+    address: user.address ? user.address : "",
+    phone: user.phone ? user.phone : "",
   };
-  const formValidation = () => {};
+  const formValidation = yup.object().shape({
+    first_name: yup.string().required("First Name is required"),
+  });
   useEffect(() => {
-    setVerified(user.verified);
+    if (user) {
+      setVerified(user.verified);
+    }
   }, [user]);
   return (
     <CustomContainer
@@ -65,23 +70,20 @@ function UserDetails() {
               errors={errors.last_name}
               touched={touched.last_name}
             />
-
             <CustomTextField
               type={"text"}
               name="email"
-              label={"Email"}
+              label={"Email "}
               errors={errors.email}
               touched={touched.email}
             />
-
             <CustomTextField
               type={"text"}
               name="address"
-              label={"Adress"}
+              label={"Address"}
               errors={errors.address}
               touched={touched.address}
             />
-
             <CustomTextField
               type={"text"}
               name="phone"

@@ -5,40 +5,41 @@ import { Stack } from "@mui/system";
 
 function FormCard({ children, serverErrors, loading, handleSubmit }) {
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        width: "55%",
-        margin: "auto",
-        paddingTop: "20px",
-        paddingBottom: "20px",
-      }}
-    >
-      {serverErrors && (
-        <Box
-          borderRadius={3}
-          px={10}
-          mb={2}
-          sx={{
-            cursor: "pointer",
-            width: "fit-content",
-            marginX: "auto",
-            border: "1px solid #d32f2f",
-          }}
-        >
-          <Typography
-            my={2}
-            textAlign={"center"}
-            variant="h4"
-            color={"#d32f2f"}
-            fontWeight={"bold"}
+    <form onSubmit={handleSubmit}>
+      <Box
+        sx={{
+          width: { xs: "85%", md: "55%" },
+          margin: "auto",
+          paddingTop: "20px",
+          paddingBottom: "20px",
+        }}
+      >
+        {serverErrors && (
+          <Box
+            borderRadius={3}
+            px={10}
+            mb={2}
+            sx={{
+              cursor: "pointer",
+              width: "fit-content",
+              marginX: "auto",
+              border: "1px solid #d32f2f",
+            }}
           >
-            {serverErrors}
-          </Typography>
-        </Box>
-      )}
-      <LinearProg loading={loading} />
-      <Stack spacing={3}>{children}</Stack>
+            <Typography
+              my={2}
+              textAlign={"center"}
+              variant="h4"
+              color={"#d32f2f"}
+              fontWeight={"bold"}
+            >
+              {serverErrors}
+            </Typography>
+          </Box>
+        )}
+        <LinearProg loading={loading} />
+        <Stack spacing={3}>{children}</Stack>
+      </Box>
     </form>
   );
 }
