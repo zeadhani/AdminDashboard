@@ -42,7 +42,7 @@ function CustomSelect(props) {
       )}
       {value?.length === 0 && error && (
         <Typography variant="body2" color={"red"} mt={1} ml={1}>
-          You must have at least one category
+          You must have at least one item
         </Typography>
       )}
     </FormControl>

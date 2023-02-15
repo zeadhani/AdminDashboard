@@ -15,70 +15,46 @@ import Profile from "./screens/profile/Profile";
 import BrandOffers from "./screens/brands/offers";
 import PrivateRoutes from "./components/auth/PrivateRoutes";
 import AuthRoutes from "./components/auth/AuthRoutes";
-import useUser from "./components/hooks/auth/useUser";
-
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import UserDashbaord from "./screens/Users/Index";
-import { useSelector } from "react-redux";
 import UserDetails from "./screens/Users/userDetails";
 function App() {
   const [theme, colorMode] = useMode();
-  const data = useSelector((state) => state.Auth.user);
-  const email = data.replace(/"/g, "");
-  const { user } = useUser(email);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <SideBarContainer user={user} />
-          {user?.email && (
-            <main className="content">
-              <Routes>
-                <Route element={<PrivateRoutes />}>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/Team" element={<TeamDashboard />} />
-                  <Route path="/Users" element={<UserDashbaord />} />
-                  <Route
-                    path="/Users/details/:email"
-                    element={<UserDetails />}
-                  />
-                  <Route path="/Users/details" element={<UserDetails />} />
-                  <Route
-                    exact
-                    path="/Products"
-                    element={<ProductsDashboard />}
-                  />
-                  <Route
-                    path="/Products/add-product"
-                    element={<AddProduct />}
-                  />
-                  <Route path="/Products/:id" element={<ProductDetails />} />
-                  <Route
-                    exact
-                    path="/Merchants"
-                    element={<BrandsDashboard />}
-                  />
-                  <Route
-                    path="/Merchants/:id/offers"
-                    element={<BrandOffers />}
-                  />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route
-                    exact
-                    path="/Merchants/:add-brand"
-                    element={<AddBrand />}
-                  />
-                  <Route path="/Merchants/:id" element={<BrandDetails />} />
-                </Route>
-                <Route element={<AuthRoutes />}>
-                  <Route path="/Auth/Login" element={<Login />} />
-                </Route>
-              </Routes>
-              <ToastMessage />
-            </main>
-          )}
+          <SideBarContainer />
+
+          <main className="content">
+            <Routes>
+              <Route element={<PrivateRoutes />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/Team" element={<TeamDashboard />} />
+                <Route path="/Users" element={<UserDashbaord />} />
+                <Route path="/Users/details/:email" element={<UserDetails />} />
+                <Route path="/Users/details" element={<UserDetails />} />
+                <Route exact path="/Products" element={<ProductsDashboard />} />
+                <Route path="/Products/add-product" element={<AddProduct />} />
+                <Route path="/Products/:id" element={<ProductDetails />} />
+                <Route exact path="/Merchants" element={<BrandsDashboard />} />
+                <Route path="/Merchants/:id/offers" element={<BrandOffers />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route
+                  exact
+                  path="/Merchants/:add-brand"
+                  element={<AddBrand />}
+                />
+                <Route path="/Merchants/:id" element={<BrandDetails />} />
+              </Route>
+              <Route element={<AuthRoutes />}>
+                <Route path="/Auth/Login" element={<Login />} />
+              </Route>
+            </Routes>
+            <ToastMessage />
+          </main>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

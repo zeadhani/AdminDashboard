@@ -65,7 +65,12 @@ function Login() {
 
   return (
     <Stack direction={"row"} height={"100vh"} overflow={"hidden"}>
-      <Box width={"100%"} display={"flex"} alignContent={"center"}>
+      <Box
+        width={"100%"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
@@ -78,39 +83,41 @@ function Login() {
 
             handleSubmit,
           }) => (
-            <FormCard
-              serverErrors={serverErrors}
-              loading={loading}
-              handleSubmit={handleSubmit}
-            >
-              {!serverErrors && (
-                <Typography
-                  variant="h2"
-                  textAlign={"start"}
-                  color={colors.grey[100]}
-                  sx={{ mb: "5px", cursor: "pointer" }}
-                >
-                  Login
-                </Typography>
-              )}
-              <CustomTextField
-                type={"text"}
-                name="email"
-                label={"Email"}
-                value={values.email}
-                touched={touched.email}
-                errors={errors.email}
-              />
-              <CustomTextField
-                type={"password"}
-                name="password"
-                label={"Password"}
-                value={values.password}
-                touched={touched.password}
-                errors={errors.password}
-              />
-              <FormButton theme={theme}>Login</FormButton>
-            </FormCard>
+            <Box width={"100%"}>
+              <FormCard
+                serverErrors={serverErrors}
+                loading={loading}
+                handleSubmit={handleSubmit}
+              >
+                {!serverErrors && (
+                  <Typography
+                    variant="h2"
+                    textAlign={"start"}
+                    color={colors.grey[100]}
+                    sx={{ mb: "5px", cursor: "pointer" }}
+                  >
+                    Login
+                  </Typography>
+                )}
+                <CustomTextField
+                  type={"text"}
+                  name="email"
+                  label={"Email"}
+                  value={values.email}
+                  touched={touched.email}
+                  errors={errors.email}
+                />
+                <CustomTextField
+                  type={"password"}
+                  name="password"
+                  label={"Password"}
+                  value={values.password}
+                  touched={touched.password}
+                  errors={errors.password}
+                />
+                <FormButton theme={theme}>Login</FormButton>
+              </FormCard>
+            </Box>
           )}
         </Formik>
       </Box>
