@@ -18,10 +18,16 @@ function OffersDataGrid({
   return (
     <Box
       display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
       gridAutoRows="140px"
       gap="20px"
       py={3}
+      sx={{
+        gridTemplateColumns: {
+          lg: "repeat(12, 1fr)",
+          sm: "repeat(6, 1fr)",
+          xs: "repeat(3, 1fr)",
+        },
+      }}
     >
       <Box
         gridColumn="span 3"

@@ -63,8 +63,8 @@ function BrandOffers() {
       <Box
         display={"flex"}
         flexDirection={"column"}
-        height={"85vh"}
         overflow={"hidden"}
+        sx={{ height: { md: "85vh" } }}
       >
         <OffersDataGrid
           colors={colors}

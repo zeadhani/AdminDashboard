@@ -11,7 +11,7 @@ function OffersItems({
   showOfferItemDetails,
 }) {
   return (
-    <Box height={"100%"} >
+    <Box height={"100%"}>
       <Slide in={showOffers} direction="left">
         <Box
           display={offers.length === 0 ? "flex" : "grid"}
@@ -21,11 +21,23 @@ function OffersItems({
           gridAutoRows={"140px"}
           rowGap={"10px"}
           height={"100%"}
+          sx={{
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "1fr 1fr ",
+              lg: "1fr 1fr 1fr",
+            },
+          }}
         >
           {offers.length > 0 &&
             offers?.map((item) => (
               <OfferItem
-                key={item.name+item.OfferRange.lowestPrice+""+item.OfferRange.highestPrice}
+                key={
+                  item.name +
+                  item.OfferRange.lowestPrice +
+                  "" +
+                  item.OfferRange.highestPrice
+                }
                 offer={item}
                 colors={colors}
                 deletOffer={deletOffer}
@@ -39,7 +51,6 @@ function OffersItems({
           )}
         </Box>
       </Slide>
-      
     </Box>
   );
 }

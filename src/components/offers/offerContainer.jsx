@@ -34,32 +34,32 @@ function OfferContainer({
       backgroundColor={colors.primary[400]}
       sx={{
         borderRadius: "10px",
-        height: "100px",
-        overflowY: "scroll",
-        overflowX:"hidden",
+        overflow: "hidden",
         position: "relative",
       }}
     >
-      {!showOffers && (
-        <OfferDetails
-          showOffers={showOffers}
-          offerType={offerType}
-          offerRange={offerRange}
-          offerId={offerId}
-          brandName={brandName}
-          addOffer={addOffer}
-        />
-      )}
+      <Box sx={{ overflowY: "scroll", overflowX: "hidden" }} height={"100%"}>
+        {!showOffers && (
+          <OfferDetails
+            showOffers={showOffers}
+            offerType={offerType}
+            offerRange={offerRange}
+            offerId={offerId}
+            brandName={brandName}
+            addOffer={addOffer}
+          />
+        )}
 
-      {showOffers && (
-        <OffersItems
-          offers={offers}
-          colors={colors}
-          deletOffer={deletOffer}
-          showOffers={showOffers}
-          showOfferItemDetails={showOfferItemDetails}
-        />
-      )}
+        {showOffers && (
+          <OffersItems
+            offers={offers}
+            colors={colors}
+            deletOffer={deletOffer}
+            showOffers={showOffers}
+            showOfferItemDetails={showOfferItemDetails}
+          />
+        )}
+      </Box>
 
       <CustomFloatingButton
         colors={colors}
