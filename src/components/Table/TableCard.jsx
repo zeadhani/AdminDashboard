@@ -1,4 +1,5 @@
 import {
+  Box,
   styled,
   Table,
   TableBody,
@@ -13,6 +14,7 @@ import React from "react";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { Paper } from "@mui/material";
 import { tokens } from "../../Theme";
+import LinearProg from "../global/LinearProg";
 
 function TableCard({
   children,
@@ -22,6 +24,9 @@ function TableCard({
   page,
   handleChangePage,
   handleChangeRowsPerPage,
+  error,
+  loading,
+  model,
 }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -34,45 +39,56 @@ function TableCard({
   }));
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: "73vh" }}>
-      <Table stickyHeader sx={{ minWidth: 1200 }}>
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <StyledTableCell key={column.id}>{column.label}</StyledTableCell>
-            ))}
-            <StyledTableCell sx={{ textAlign: "center" }}>
-              Actions
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{children}</TableBody>
-        <TableFooter
-          sx={{
-            position: "sticky",
-            insetBlockEnd: -1,
-            backgroundColor:
-              theme.palette.mode === "dark"
-                ? colors.blueAccent[600]
-                : "#1F2A40",
-          }}
-        >
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 50]}
-              count={count ? count : 0}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+    <>
+      <LinearProg loading={loading} />
+      {error && <Box p={2}>Error , could not fetch data</Box>}
+      {model?.length === 0 && !error && !loading && (
+        <Box p={2}>No items Found</Box>
+      )}
+      {model?.length > 0 && (
+        <TableContainer component={Paper} sx={{ maxHeight: "73vh" }}>
+          <Table stickyHeader={true}  sx={{ minWidth: 1200 }}>
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <StyledTableCell key={column.id}>
+                    {column.label}
+                  </StyledTableCell>
+                ))}
+                <StyledTableCell sx={{ textAlign: "center" }}>
+                  Actions
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{!error && children}</TableBody>
+            <TableFooter
               sx={{
-                color:"#fff"
+                position: "sticky",
+                insetBlockEnd: -1,
+                backgroundColor:
+                  theme.palette.mode === "dark"
+                    ? colors.blueAccent[600]
+                    : "#1F2A40",
               }}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+            >
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[10, 25, 50]}
+                  count={count ? count : 0}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  sx={{
+                    color: "#fff",
+                  }}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      )}
+    </>
   );
 }
 

@@ -12,11 +12,13 @@ function CommonFilterContainer({
   handleOrderByChange,
   orderBy,
   sortArray,
+  searchLabel,
 }) {
   return (
     <>
       <SearchFilter
         colors={colors}
+        label={searchLabel}
         search={search}
         handleSearchChange={handleSearchChange}
       />

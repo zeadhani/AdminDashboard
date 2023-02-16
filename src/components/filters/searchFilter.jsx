@@ -2,7 +2,7 @@ import { Search } from "@mui/icons-material";
 import { Box, FormControl, IconButton, InputBase } from "@mui/material";
 import React from "react";
 
-function SearchFilter({ colors, search, handleSearchChange }) {
+function SearchFilter({ colors,label, search, handleSearchChange }) {
   return (
     <FormControl sx={{ minWidth: "200px" }}>
       <Box
@@ -13,7 +13,7 @@ function SearchFilter({ colors, search, handleSearchChange }) {
       >
         <InputBase
           sx={{ ml: 2, flex: 1 }}
-          placeholder="Search"
+          placeholder={label}
           value={search}
           onChange={handleSearchChange}
         />

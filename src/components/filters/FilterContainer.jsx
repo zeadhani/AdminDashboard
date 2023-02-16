@@ -18,6 +18,7 @@ function FilterContainer({
   handleOrderByChange,
   orderBy,
   sortArray,
+  searchLabel,
 }) {
   const [open, setOpen] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
@@ -61,10 +62,13 @@ function FilterContainer({
           sx={
             width < 1200
               ? {
-                  bgcolor:theme.palette.mode==="dark"? "rgba(0, 0, 20, 0.9)":"rgba(255, 255,255, 0.9)",
+                  bgcolor:
+                    theme.palette.mode === "dark"
+                      ? "rgba(0, 0, 20, 0.9)"
+                      : "rgba(255, 255,255, 0.9)",
                   position: "absolute",
                   top: "100%",
-                
+
                   padding: "50px",
                   zIndex: "200",
                   right: "1px",
@@ -86,6 +90,7 @@ function FilterContainer({
             handleOrderByChange={handleOrderByChange}
             orderBy={orderBy}
             sortArray={sortArray}
+            searchLabel={searchLabel}
           />
           {children}
         </Stack>
@@ -99,14 +104,16 @@ function FilterContainer({
         >
           Reset Filters
         </Button>
-        <Button
-          variant="outlined"
-          sx={{ height: "100%" }}
-          color={theme.palette.mode === "dark" ? "secondary" : "primary"}
-          onClick={addNav}
-        >
-          Add new {name}
-        </Button>
+        {name && (
+          <Button
+            variant="outlined"
+            sx={{ height: "100%" }}
+            color={theme.palette.mode === "dark" ? "secondary" : "primary"}
+            onClick={addNav}
+          >
+            Add new {name}
+          </Button>
+        )}
       </Stack>
     </Stack>
   );

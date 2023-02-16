@@ -2,11 +2,9 @@ import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
 import { tokens } from "../../Theme";
 import { useState } from "react";
 import TableCard from "../../components/Table/TableCard";
-import LinearProg from "../../components/global/LinearProg";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 import TableImage from "../../components/Table/TableImage";
 import CustomTableRow from "../../components/Table/TableRow";
@@ -29,7 +27,6 @@ const columns = [
   { id: "image", label: "Image" },
   { id: "price", label: "Price" },
   { id: "brand", label: "Brand" },
-
   { id: "category", label: "Category" },
   { id: "created_at", label: "Created_At" },
   { id: "stock", label: "Stock" },
@@ -128,6 +125,7 @@ function ProductsDashboard() {
         handleOrderByChange={handleOrderByChange}
         orderBy={orderBy}
         sortArray={sortArray}
+        searchLabel={"Search By Product Name"}
       >
         <CustomFilter
           label={"stock"}
@@ -153,53 +151,49 @@ function ProductsDashboard() {
           sx={{ flex: 1 }}
         />
       </FilterContainer>
-      <LinearProg loading={loading} />
-      {error && <Box p={2}>Error , could not fetch data</Box>}
-      {products.length === 0 && !error && !loading && (
-        <Box p={2}>No items Found</Box>
-      )}
-      {products?.length > 0 && (
-        <TableCard
-          columns={columns}
-          count={count}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-        >
-          {!error &&
-            products.map((row, index) => {
-              const inStock =
-                row.count > 0 || row.productItems?.some(isBiggerThan0);
-              return (
-                <CustomTableRow colors={colors} key={row.id}>
-                  <RowIdentifier>{row?.name}</RowIdentifier>
-                  <TableImage image={row?.image} />
-                  <TableCell>{row?.price} EGP</TableCell>
-                  <TableCell>{row.Brands?.name}</TableCell>
-                  <TableCell>{row.Category?.name}</TableCell>
-                  <DateCell date={row.createdAt} />
-                  <TableCell
-                    sx={{
-                      color: inStock
-                        ? colors.greenAccent[500]
-                        : colors.redAccent[500],
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {inStock ? "In Stock" : "Out Of Stock"}
-                  </TableCell>
-                  <ActionsButtonsTable
-                    deleteAction={handleDeleteProduct(row.id)}
-                    editAction={editAction(row?.id)}
-                    viewAction={viewAction(row?.id)}
-                    colors={colors}
-                  />
-                </CustomTableRow>
-              );
-            })}
-        </TableCard>
-      )}
+
+      <TableCard
+        columns={columns}
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        error={error}
+        loading={loading}
+        model={products}
+      >
+        {products.map((row, index) => {
+          const inStock =
+            row.count > 0 || row.productItems?.some(isBiggerThan0);
+          return (
+            <CustomTableRow colors={colors} key={row.id}>
+              <RowIdentifier>{row?.name}</RowIdentifier>
+              <TableImage image={row?.image} />
+              <TableCell>{row?.price} EGP</TableCell>
+              <TableCell>{row.Brands?.name}</TableCell>
+              <TableCell>{row.Category?.name}</TableCell>
+              <DateCell date={row.createdAt} />
+              <TableCell
+                sx={{
+                  color: inStock
+                    ? colors.greenAccent[500]
+                    : colors.redAccent[500],
+                  fontWeight: "bold",
+                }}
+              >
+                {inStock ? "In Stock" : "Out Of Stock"}
+              </TableCell>
+              <ActionsButtonsTable
+                deleteAction={handleDeleteProduct(row.id)}
+                editAction={editAction(row?.id)}
+                viewAction={viewAction(row?.id)}
+                colors={colors}
+              />
+            </CustomTableRow>
+          );
+        })}
+      </TableCard>
     </CustomContainer>
   );
 }

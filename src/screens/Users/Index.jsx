@@ -9,8 +9,6 @@ import usePage from "../../components/hooks/general/usePage";
 import useCommonFilters from "../../components/hooks/general/useCommonFilters";
 import useUserFilters from "../../components/hooks/users/useUserFilters";
 import { useState } from "react";
-import LinearProg from "../../components/global/LinearProg";
-import { Box } from "@mui/system";
 import useUsers from "../../components/hooks/users/useUsers";
 import TableCard from "../../components/Table/TableCard";
 import CustomTableRow from "../../components/Table/TableRow";
@@ -121,9 +119,10 @@ function UserDashbaord() {
         handleOrderByChange={handleOrderByChange}
         orderBy={orderBy}
         sortArray={sortArray}
+        searchLabel={"Search By User Email"}
       >
         <CustomFilter
-          label={"Verified"}
+          label={"Verification"}
           value={verifiedFilter}
           filterarray={VerifiedArray}
           itemitself="true"
@@ -131,49 +130,45 @@ function UserDashbaord() {
           sx={{ flex: 1 }}
         />
       </FilterContainer>
-      <LinearProg loading={loading} />
-      {error && <Box p={2}>Error , could not fetch data</Box>}
-      {users.length === 0 && !error && !loading && (
-        <Box p={2}>No items Found</Box>
-      )}
-      {users?.length > 0 && (
-        <TableCard
-          columns={columns}
-          count={count}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-        >
-          {!error &&
-            users.map((row, index) => (
-              <CustomTableRow colors={colors} key={row.id}>
-                <RowIdentifier>{row.first_name}</RowIdentifier>
-                <TableCell>{row.last_name}</TableCell>
-                <TableImage image={row.image} />
-                <TableCell>{row.email}</TableCell>
-                <TableCell
-                  sx={{
-                    color: row.verified
-                      ? colors.greenAccent[500]
-                      : colors.redAccent[500],
-                    fontWeight: "bold",
-                  }}
-                >
-                  {row.verified ? "Verified" : "Not Verified"}
-                </TableCell>
-                <DateCell date={row.createdAt} />
-                <ActionsButtonsTable
-                  deleteAction={handleDeleteUser(row?.id)}
-                  viewAction={viewAction(row?.email)}
-                  colors={colors}
-                  anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
-                  anotherActionName={row.verified ? "UnVerify" : "Verify"}
-                />
-              </CustomTableRow>
-            ))}
-        </TableCard>
-      )}
+
+      <TableCard
+        columns={columns}
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        error={error}
+        loading={loading}
+        model={users}
+      >
+        {users?.map((row, index) => (
+          <CustomTableRow colors={colors} key={row.id}>
+            <RowIdentifier>{row.first_name}</RowIdentifier>
+            <TableCell>{row.last_name}</TableCell>
+            <TableImage image={row.image} />
+            <TableCell>{row.email}</TableCell>
+            <TableCell
+              sx={{
+                color: row.verified
+                  ? colors.greenAccent[500]
+                  : colors.redAccent[500],
+                fontWeight: "bold",
+              }}
+            >
+              {row.verified ? "Verified" : "Not Verified"}
+            </TableCell>
+            <DateCell date={row.createdAt} />
+            <ActionsButtonsTable
+              deleteAction={handleDeleteUser(row?.id)}
+              viewAction={viewAction(row?.email)}
+              colors={colors}
+              anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
+              anotherActionName={row.verified ? "UnVerify" : "Verify"}
+            />
+          </CustomTableRow>
+        ))}
+      </TableCard>
     </CustomContainer>
   );
 }

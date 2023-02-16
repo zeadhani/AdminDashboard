@@ -18,6 +18,7 @@ import AuthRoutes from "./components/auth/AuthRoutes";
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import UserDashbaord from "./screens/Users/Index";
 import UserDetails from "./screens/Users/userDetails";
+import OrdersDashboard from "./screens/orders";
 function App() {
   const [theme, colorMode] = useMode();
 
@@ -42,6 +43,7 @@ function App() {
                 <Route exact path="/Merchants" element={<BrandsDashboard />} />
                 <Route path="/Merchants/:id/offers" element={<BrandOffers />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/Orders" element={<OrdersDashboard />} />
                 <Route
                   exact
                   path="/Merchants/:add-brand"

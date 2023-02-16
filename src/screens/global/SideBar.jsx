@@ -56,6 +56,7 @@ function SideBar({ user, collapseSidebar, collapsed }) {
               backgroundColor: colors.primary[600],
               height: "100vh",
               paddingBottom: "20px",
+              zIndex:300
             },
           }}
         >
@@ -186,7 +187,7 @@ function SideBar({ user, collapseSidebar, collapsed }) {
 
             <Item
               title="Orders"
-              to="/orders"
+              to="/Orders"
               icon={<ShoppingBagOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
