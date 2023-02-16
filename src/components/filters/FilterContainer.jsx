@@ -61,7 +61,7 @@ function FilterContainer({
           sx={
             width < 1200
               ? {
-                  bgcolor: "rgba(0, 0, 20, 0.9)",
+                  bgcolor:theme.palette.mode==="dark"? "rgba(0, 0, 20, 0.9)":"rgba(255, 255,255, 0.9)",
                   position: "absolute",
                   top: "100%",
                 

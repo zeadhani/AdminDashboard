@@ -353,7 +353,6 @@ export const mockPieData = [
     color: "hsl(344, 70%, 50%)",
   },
 ];
-
 export const mockLineData = [
   {
     id: "Bershka",

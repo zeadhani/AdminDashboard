@@ -134,7 +134,10 @@ function BrandDetails() {
               component="a"
               variant="contained"
               onClick={handleViewOffers}
-              color="info"
+              sx={{
+                color: "#fff",
+                bgcolor: theme.palette.mode === "dark" ? "#535ac8" : "#1f2a40",
+              }}
               endIcon={<ArrowRight color="primary" />}
             >
               view offers

@@ -15,11 +15,12 @@ import {
 import StateBox from "../../components/global/stateBox";
 import ProgressCircle from "../../components/global/ProgressCircle";
 import TopRightBar from "../../components/global/TopRightBar";
-import { mockTransactions } from "../../data/mockData";
+import { mockBarData, mockTransactions } from "../../data/mockData";
 
 function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   return (
     <Box mx="20px" my={"15px"}>
       <Box
@@ -45,8 +46,12 @@ function Dashboard() {
               display: { xs: "none", md: "block" },
             }}
           >
-            <DownloadOutlined sx={{ mr: "10px" }} />
-            Download CSV
+            <DownloadOutlined
+              sx={{ mr: "10px", transform: "translateY(5px)" }}
+            />
+            <Typography display={"inline"} variant="body1">
+              Download CSV
+            </Typography>
           </Button>
           <TopRightBar sx={{ alignSelf: "flex-end" }} />
         </Box>

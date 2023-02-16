@@ -27,7 +27,9 @@ function TableCard({
   const colors = tokens(theme.palette.mode);
   const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: colors.blueAccent[600],
+      backgroundColor:
+        theme?.palette.mode === "dark" ? colors.blueAccent[600] : "#1F2A40",
+      color: "#fff",
     },
   }));
 
@@ -49,17 +51,23 @@ function TableCard({
           sx={{
             position: "sticky",
             insetBlockEnd: -1,
-            backgroundColor: colors.blueAccent[600],
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? colors.blueAccent[600]
+                : "#1F2A40",
           }}
         >
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[10, 25, 50]}
-              count={count?count:0}
+              count={count ? count : 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{
+                color:"#fff"
+              }}
             />
           </TableRow>
         </TableFooter>
