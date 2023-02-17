@@ -21,7 +21,6 @@ function OrderInfo({ order }) {
       </Typography>
     </Box>
   );
-  
 }
 
 export default OrderInfo;
