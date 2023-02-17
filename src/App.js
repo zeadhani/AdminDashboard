@@ -19,6 +19,7 @@ import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import UserDashbaord from "./screens/Users/Index";
 import UserDetails from "./screens/Users/userDetails";
 import OrdersDashboard from "./screens/orders";
+import OrderDetails from "./screens/orders/orderDetails";
 function App() {
   const [theme, colorMode] = useMode();
 
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/Merchants/:id/offers" element={<BrandOffers />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Orders" element={<OrdersDashboard />} />
+                <Route path="/Orders/:id" element={<OrderDetails />} />
                 <Route
                   exact
                   path="/Merchants/:add-brand"

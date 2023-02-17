@@ -16,6 +16,7 @@ import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
 import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 import useOrders from "../../components/hooks/orders/useOrders";
+import authFetch from "../../services/interceptors";
 
 const sortArray = ["createdAt", "total"];
 const columns = [
@@ -59,11 +60,23 @@ function OrdersDashboard() {
     resetCommonFilters();
     resetBrandFilters();
   };
-  const handleDeleteProduct = () => {
-    return () => {};
+  const handleDeleteOrder = (id) => {
+    return async () => {
+      setLoading(true);
+      try {
+        await authFetch.delete(`/orders/${id}`);
+        getOrders();
+        setError(false);
+      } catch (err) {
+        setError(true);
+      }
+      setLoading(false);
+    };
   };
-  const viewAction = () => {
-    return () => {};
+  const viewAction = (id) => {
+    return () => {
+      navigate(`/Orders/${id}`);
+    };
   };
   return (
     <CustomContainer
@@ -112,7 +125,7 @@ function OrdersDashboard() {
             <TableCell>{row.total}</TableCell>
             <DateCell date={row.createdAt} />
             <ActionsButtonsTable
-              deleteAction={handleDeleteProduct(row.id)}
+              deleteAction={handleDeleteOrder(row.id)}
               viewAction={viewAction(row?.id)}
               colors={colors}
             />
