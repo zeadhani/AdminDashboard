@@ -20,6 +20,9 @@ import UserDashbaord from "./screens/Users/Index";
 import UserDetails from "./screens/Users/userDetails";
 import OrdersDashboard from "./screens/orders";
 import OrderDetails from "./screens/orders/orderDetails";
+import SettingDashboard from "./screens/setting";
+import BogoProfile from "./screens/setting/BogoProfile";
+import BogoDataEdit from "./screens/setting/BogoDataEit";
 function App() {
   const [theme, colorMode] = useMode();
 
@@ -29,7 +32,6 @@ function App() {
         <CssBaseline />
         <div className="app">
           <SideBarContainer />
-
           <main className="content">
             <Routes>
               <Route element={<PrivateRoutes />}>
@@ -44,6 +46,9 @@ function App() {
                 <Route exact path="/Merchants" element={<BrandsDashboard />} />
                 <Route path="/Merchants/:id/offers" element={<BrandOffers />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/setting" element={<SettingDashboard />} />
+                <Route path="/setting/userData" element={<BogoProfile />} />
+                <Route path="/setting/BogoData" element={<BogoDataEdit />} />
                 <Route path="/Orders" element={<OrdersDashboard />} />
                 <Route path="/Orders/:id" element={<OrderDetails />} />
                 <Route

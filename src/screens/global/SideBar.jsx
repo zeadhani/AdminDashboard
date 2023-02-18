@@ -21,11 +21,10 @@ import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { useSelector } from "react-redux";
 import SideBarActionButton from "../../components/global/sidebar/sideBarActionButton";
 
-
 const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   const handleClickMenuItem = (title) => {
     return () => {
-      setSelected(title)
+      setSelected(title);
     };
   };
   return (
@@ -79,22 +78,24 @@ function SideBar({ user, collapseSidebar, collapsed }) {
           </Box>
           {!collapsed && (
             <Stack mb={3} spacing={2}>
-              <Box
-                display={"flex"}
-                justifyContent={"center"}
-                sx={{ marginTop: { xs: "40px", md: "0px" } }}
-              >
-                <img
-                  style={{
-                    height: 100,
-                    width: 100,
-                    borderRadius: "50%",
-                    cursor: "pointer",
-                  }}
-                  alt={"Profile-Image"}
-                  src={`${process.env.REACT_APP_DRIVE_URL}${user.image}`}
-                />
-              </Box>
+              {user?.image && (
+                <Box
+                  display={"flex"}
+                  justifyContent={"center"}
+                  sx={{ marginTop: { xs: "40px", md: "0px" } }}
+                >
+                  <img
+                    style={{
+                      height: 100,
+                      width: 100,
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                    }}
+                    alt={"Profile-Image"}
+                    src={`${process.env.REACT_APP_DRIVE_URL}${user.image}`}
+                  />
+                </Box>
+              )}
               <Box textAlign={"center"}>
                 <Typography
                   variant="h3"
@@ -106,7 +107,9 @@ function SideBar({ user, collapseSidebar, collapsed }) {
                       : colors.grey[900]
                   }
                 >
-                  {user.first_name + " " + user.last_name}
+                  {user?.first_name
+                    ? user?.first_name + " " + user?.last_name
+                    : "Please Refresh the page Failed to Connect to the server"}
                 </Typography>
                 <Typography variant="h5" color={colors.blueAccent[500]}>
                   Admin

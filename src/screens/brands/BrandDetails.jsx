@@ -102,7 +102,7 @@ function BrandDetails() {
   const initialValues = {
     name: brand ? brand.name : "",
     email: brand ? brand.email : "",
-    prefrence: brandPreferences ? brandPreferences : "",
+    prefrence: pref.length>0 ? brandPreferences : "",
     categories: brandCtegories ? brandCtegories : [],
   };
   const handleViewOffers = () => {
