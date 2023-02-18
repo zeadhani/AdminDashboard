@@ -238,7 +238,7 @@ function Dashboard() {
           ))}
         </Box>
         <Box
-          sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
+          sx={{ gridColumn: { lg: "span 4",  xs: "span 3" } }}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
@@ -274,7 +274,7 @@ function Dashboard() {
           </Box>
         </Box>
         <Box
-          sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
+          sx={{ gridColumn: { lg: "span 4",  xs: "span 3" } }}
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"

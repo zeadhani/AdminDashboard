@@ -17,7 +17,7 @@ function OrderDetails() {
 
   return (
     <CustomContainer
-      title={"BOGO ORDERS"}
+      title={"ORDERS DETAILS"}
       subtitle={"Viewing your bogo order!"}
       onClick={() => handleTitleClick(navigate, "Orders")}
     >
