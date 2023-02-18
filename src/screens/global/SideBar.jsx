@@ -20,11 +20,18 @@ import ViewCarouselOutlinedIcon from "@mui/icons-material/ViewCarouselOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { useSelector } from "react-redux";
 import SideBarActionButton from "../../components/global/sidebar/sideBarActionButton";
+
+
 const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
+  const handleClickMenuItem = (title) => {
+    return () => {
+      setSelected(title)
+    };
+  };
   return (
     <MenuItem
       active={selected === title}
-      onClick={() => setSelected(title)}
+      onClick={handleClickMenuItem(title)}
       icon={icon}
       disabled={disabled}
       routerLink={<Link to={to} />}
@@ -56,7 +63,7 @@ function SideBar({ user, collapseSidebar, collapsed }) {
               backgroundColor: colors.primary[600],
               height: "100vh",
               paddingBottom: "20px",
-              zIndex:300
+              zIndex: 300,
             },
           }}
         >

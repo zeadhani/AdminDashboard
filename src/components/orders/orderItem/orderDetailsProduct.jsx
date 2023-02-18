@@ -1,5 +1,6 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
+import PersonLine from "./PersonLine";
 
 function OrderDetailsProduct({ item }) {
   const isXSmallScreen = useMediaQuery("(max-width:600px)");
@@ -14,16 +15,28 @@ function OrderDetailsProduct({ item }) {
           width: "100%",
         }}
       >
-        <Typography
-          textAlign={"center"}
-          variant="h5"
-          alignSelf="center"
-          border={"1px solid "}
-          padding={"5px 10px"}
-          sx={{ cursor: "pointer", width: "fit-content" }}
-        >
-          {item?.Product.name}
-        </Typography>
+        <Box alignSelf={"center"} textAlign={"center"}>
+          <Typography
+            variant="h5"
+            border={"1px solid "}
+            padding={"5px 10px"}
+            mx={"auto"}
+            sx={{ cursor: "pointer", width: "fit-content" }}
+          >
+            {item?.Product.name}
+          </Typography>
+          {item?.ProductItems && (
+            <Box mt={1} display={"flex"} gap={1}>
+              {item?.ProductItems.ProductAttributesValues.map((itemData) => (
+                <PersonLine
+                  key={itemData.id}
+                  label={itemData.attribute.name}
+                  data={itemData.value}
+                />
+              ))}
+            </Box>
+          )}
+        </Box>
         <img
           style={{
             height: 70,
@@ -46,7 +59,7 @@ function OrderDetailsProduct({ item }) {
         <Typography
           sx={{
             textDecoration: "line-through",
-            color: "#666", 
+            color: "#666",
           }}
           variant="h6"
           alignSelf={"center"}
@@ -56,7 +69,7 @@ function OrderDetailsProduct({ item }) {
         <Typography
           sx={{
             fontWeight: "bold",
-            color: "#007bff", 
+            color: "#007bff",
           }}
           variant="h4"
         >
