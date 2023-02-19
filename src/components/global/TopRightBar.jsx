@@ -5,16 +5,20 @@ import {
   PersonOutlined,
   SettingsOutlined,
 } from "@mui/icons-material";
-import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import { Badge, Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ColorModeContext } from "../../Theme";
 import { useProSidebar } from "react-pro-sidebar";
 import SideBarActionButton from "./sidebar/sideBarActionButton";
+import useMessage from "../hooks/contactus/useMessageCount";
+
 function TopRightBar(props) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
+  // const { count } = useMessage();
   const { collapseSidebar, collapsed } = useProSidebar();
+
   return (
     <Box
       display={"flex"}
@@ -33,7 +37,9 @@ function TopRightBar(props) {
       </Tooltip>
       <Tooltip title="Notifications">
         <IconButton component={Link} to="/notifications">
-          <NotificationsOutlined />
+          {/* <Badge badgeContent={count} color={"error"}> */}
+            <NotificationsOutlined />
+          {/* </Badge> */}
         </IconButton>
       </Tooltip>
       <Tooltip title="Settings">

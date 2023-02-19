@@ -11,7 +11,12 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function ContactUsItem({ item, isReplied }) {
+function ContactUsItem({
+  item,
+  isReplied,
+  handleDeleteMessage,
+  handleShowMessage,
+}) {
   return (
     <>
       <ListItem alignItems="flex-start" sx={{ cursor: "pointer" }}>
@@ -47,10 +52,14 @@ function ContactUsItem({ item, isReplied }) {
         />
 
         <ListItemSecondaryAction>
-          <IconButton size="small">
+          <IconButton size="small" onClick={handleDeleteMessage(item.id)}>
             <DeleteOutline />
           </IconButton>
-          <IconButton size="small" color="seconadry">
+          <IconButton
+            size="small"
+            color="seconadry"
+            onClick={handleShowMessage(item.id)}
+          >
             <Message />
           </IconButton>
         </ListItemSecondaryAction>

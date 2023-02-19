@@ -12,6 +12,7 @@ function EmailsSectionCard({
   count,
   rowsPerPage,
   handleChangeRowsPerPage,
+  getcontactUs
 }) {
   const smallWidth = useMediaQuery("(max-width:600px)");
   return (
@@ -23,7 +24,7 @@ function EmailsSectionCard({
       )}
       {model?.length > 0 && (
         <Box>
-          <ContactUsContainer model={model} />
+          <ContactUsContainer model={model} getcontactUs={getcontactUs} />
           <Box display={"flex"} justifyContent={"right"}>
             <TablePagination
               rowsPerPageOptions={[10, 25, 50]}

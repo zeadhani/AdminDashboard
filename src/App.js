@@ -24,9 +24,10 @@ import SettingDashboard from "./screens/setting";
 import BogoProfile from "./screens/setting/BogoProfile";
 import BogoDataEdit from "./screens/setting/BogoDataEit";
 import NotificationsDashboard from "./screens/notifications";
+import MessageDetails from "./screens/notifications/MessageDetails";
 function App() {
   const [theme, colorMode] = useMode();
-
+ 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -50,7 +51,14 @@ function App() {
                 <Route path="/setting" element={<SettingDashboard />} />
                 <Route path="/setting/userData" element={<BogoProfile />} />
                 <Route path="/setting/BogoData" element={<BogoDataEdit />} />
-                <Route path="/notifications" element={<NotificationsDashboard />} />
+                <Route
+                  path="/notifications"
+                  element={<NotificationsDashboard />}
+                />
+                <Route
+                  path="/notifications/reply/:id"
+                  element={<MessageDetails />}
+                />
                 <Route path="/Orders" element={<OrdersDashboard />} />
                 <Route path="/Orders/:id" element={<OrderDetails />} />
                 <Route

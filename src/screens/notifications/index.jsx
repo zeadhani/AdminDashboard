@@ -34,7 +34,7 @@ function NotificationsDashboard() {
     repliedFilter,
     resetContactUsFilter,
   } = useContactUsFilters();
-  const { contactUs, count, getcontactUs, setContactUs } = useContactUs(
+  const { contactUs, count, getcontactUs } = useContactUs(
     setLoading,
     rowsPerPage,
     page,
@@ -85,6 +85,7 @@ function NotificationsDashboard() {
         page={page}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         rowsPerPage={rowsPerPage}
+        getcontactUs={getcontactUs}
       />
     </CustomContainer>
   );
