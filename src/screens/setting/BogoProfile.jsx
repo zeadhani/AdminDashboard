@@ -19,6 +19,7 @@ import ImageFileUpload from "../../components/Forms/ImageFileUpload";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 import authFetch from "../../services/interceptors";
 import { toast } from "react-toastify";
+import { handleTitleClick } from "../../utils/functions";
 function BogoProfile() {
   const data = useSelector((state) => state.Auth.user);
   const email = data.replace(/"/g, "");
@@ -111,10 +112,12 @@ function BogoProfile() {
       ? user.preferences.map((item) => item.Preferences.name)
       : [],
   };
+  
   return (
     <CustomContainer
-      title={"Bogo ROFILE"}
+      title={"Bogo Setings"}
       subtitle={"editing your bogo profile"}
+      onClick={() => handleTitleClick(navigate, "Setting")}
     >
       <Formik
         onSubmit={handleFormSubmit}

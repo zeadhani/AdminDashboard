@@ -32,7 +32,7 @@ function TopRightBar(props) {
         </IconButton>
       </Tooltip>
       <Tooltip title="Notifications">
-        <IconButton component={Link} to="/logs">
+        <IconButton component={Link} to="/notifications">
           <NotificationsOutlined />
         </IconButton>
       </Tooltip>

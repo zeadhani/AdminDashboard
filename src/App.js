@@ -23,6 +23,7 @@ import OrderDetails from "./screens/orders/orderDetails";
 import SettingDashboard from "./screens/setting";
 import BogoProfile from "./screens/setting/BogoProfile";
 import BogoDataEdit from "./screens/setting/BogoDataEit";
+import NotificationsDashboard from "./screens/notifications";
 function App() {
   const [theme, colorMode] = useMode();
 
@@ -49,6 +50,7 @@ function App() {
                 <Route path="/setting" element={<SettingDashboard />} />
                 <Route path="/setting/userData" element={<BogoProfile />} />
                 <Route path="/setting/BogoData" element={<BogoDataEdit />} />
+                <Route path="/notifications" element={<NotificationsDashboard />} />
                 <Route path="/Orders" element={<OrdersDashboard />} />
                 <Route path="/Orders/:id" element={<OrderDetails />} />
                 <Route

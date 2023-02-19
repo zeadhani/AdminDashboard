@@ -21,7 +21,7 @@ function SettingDashboard() {
       <Box
         display={"grid"}
         gridTemplateColumns={"repeat(1fr,12)"}
-        mt={2}
+        py={3}
         height={"85vh"}
       >
         <SettingBox
