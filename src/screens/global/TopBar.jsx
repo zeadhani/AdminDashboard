@@ -9,7 +9,9 @@ function TopBar({ title, subtitle, onClick }) {
       <Box>
         <Header title={title} subtitle={subtitle} onClick={onClick} />
       </Box>
-      <TopRightBar sx={{ transform: "translateY(-5px)" }} />
+      <TopRightBar
+        sx={{ transform: { xs: "translateY(-5px)", md: "translateY(2px)" } }}
+      />
     </Box>
   );
 }

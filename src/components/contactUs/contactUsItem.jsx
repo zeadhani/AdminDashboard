@@ -41,7 +41,7 @@ function ContactUsItem({
                 }}
                 component="span"
                 variant="body2"
-                color={isReplied ? "green" : "red"}
+                color={isReplied ? "limegreen" : "red"}
               >
                 {isReplied ? "Replied" : "Not Replied"}
               </Typography>
