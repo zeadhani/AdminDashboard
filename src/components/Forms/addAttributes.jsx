@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import React from "react";
 
 function AddAttributes({
@@ -26,15 +26,22 @@ function AddAttributes({
   return (
     <React.Fragment>
       {attributesData.map((item, index) => (
-        <Stack
+        <Box
           key={item}
-          direction={"row"}
-          spacing={2}
-          justifyContent={"center"}
+          display={"grid"}
+          sx={{
+            gridTemplateColumns: {
+              lg: "repeat(12, 1fr)",
+              xs: "repeat(3, 1fr)",
+              sm: "repeat(6, 1fr)",
+            },
+          }}
+          gap={1}
         >
           {Object.keys(item).map((itemkey) => (
             <TextField
               key={itemkey}
+              sx={{ gridColumn: "span 3" }}
               label={itemkey}
               error={itemkey === "count" && index === indexcount}
               onChange={(e) =>
@@ -42,7 +49,7 @@ function AddAttributes({
               }
             />
           ))}
-        </Stack>
+        </Box>
       ))}
 
       <Stack direction={"row"} spacing={2} justifyContent={"center"}>
