@@ -9,9 +9,14 @@ import {
   HomeOutlined,
   CalendarMonthOutlined,
   Shop2Outlined,
+  Diversity3Outlined,
+  FavoriteBorderOutlined,
+  CategoryOutlined,
+  TypeSpecimenOutlined,
+  LocalOfferOutlined,
+  ManageAccountsOutlined,
 } from "@mui/icons-material";
 
-import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
 import { PeopleOutlined } from "@mui/icons-material";
@@ -183,9 +188,51 @@ function SideBar({ user, collapseSidebar, collapsed }) {
               setSelected={setSelected}
             />
             <Item
-              title="Offers"
-              to="/offers"
-              icon={<LocalOfferOutlinedIcon />}
+              title="Categories"
+              to="/Categories"
+              icon={<CategoryOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Attributes"
+              to="/Attributes"
+              icon={<TypeSpecimenOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Roles"
+              to="/Roles"
+              icon={<ManageAccountsOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Offer Ranges"
+              to="/Offer Ranges"
+              icon={<AttachMoneyOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Offer Types"
+              to="/Offer Types"
+              icon={<LocalOfferOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Preferences"
+              to="/Preferences"
+              icon={<FavoriteBorderOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Requests"
+              to="/Requests"
+              icon={<Diversity3Outlined />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -204,13 +251,7 @@ function SideBar({ user, collapseSidebar, collapsed }) {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="profit"
-              to="/balance"
-              icon={<AttachMoneyOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+
             <Item
               title="Home Slider"
               to="/home-slider"

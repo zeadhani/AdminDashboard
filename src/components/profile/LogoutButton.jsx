@@ -13,7 +13,12 @@ function LogoutButton() {
   };
   return (
     <Button
-      sx={{ display: "block", marginLeft: "auto", marginTop: "50px" }}
+      sx={{
+        display: "block",
+        marginLeft: "auto",
+        marginTop: "50px",
+        mb: "20px",
+      }}
       variant="contained"
       color="error"
       onClick={handleLogout}
