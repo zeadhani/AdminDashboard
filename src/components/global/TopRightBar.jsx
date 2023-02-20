@@ -5,19 +5,27 @@ import {
   PersonOutlined,
   SettingsOutlined,
 } from "@mui/icons-material";
-import { Badge, Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import {
+  Badge,
+  Box,
+  IconButton,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ColorModeContext } from "../../Theme";
 import { useProSidebar } from "react-pro-sidebar";
 import SideBarActionButton from "./sidebar/sideBarActionButton";
-import useMessage from "../hooks/contactus/useMessageCount";
+import { useSelector } from "react-redux";
 
 function TopRightBar(props) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
-  // const { count } = useMessage();
   const { collapseSidebar, collapsed } = useProSidebar();
+  const count = useSelector((state) => state.Count.count);
+  // const matches = useMediaQuery("(max-width:600px)");
 
   return (
     <Box
@@ -37,9 +45,15 @@ function TopRightBar(props) {
       </Tooltip>
       <Tooltip title="Notifications">
         <IconButton component={Link} to="/notifications">
-          {/* <Badge badgeContent={count} color={"error"}> */}
+          <Badge
+            badgeContent={count}
+            color={"error"}
+            showZero
+            max={99}
+            // variant={matches ? "dot":"standard"}
+          >
             <NotificationsOutlined />
-          {/* </Badge> */}
+          </Badge>
         </IconButton>
       </Tooltip>
       <Tooltip title="Settings">

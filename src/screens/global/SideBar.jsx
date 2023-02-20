@@ -20,6 +20,7 @@ import ViewCarouselOutlinedIcon from "@mui/icons-material/ViewCarouselOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { useSelector } from "react-redux";
 import SideBarActionButton from "../../components/global/sidebar/sideBarActionButton";
+import useMessage from "../../components/hooks/contactus/useMessageCount";
 
 const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   const handleClickMenuItem = (title) => {
@@ -50,7 +51,7 @@ function SideBar({ user, collapseSidebar, collapsed }) {
   );
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  useMessage();
   return (
     <>
       {isLoggedIn && (
@@ -98,9 +99,10 @@ function SideBar({ user, collapseSidebar, collapsed }) {
               )}
               <Box textAlign={"center"}>
                 <Typography
-                  variant="h3"
+                  variant={user?.first_name ? "h3" : "body2"}
                   textTransform={"capitalize"}
                   fontWeight={"bold"}
+                  paddingY={!user?.first_name && 2}
                   color={
                     theme.palette.mode === "dark"
                       ? colors.primary[100]

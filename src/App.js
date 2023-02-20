@@ -25,9 +25,9 @@ import BogoProfile from "./screens/setting/BogoProfile";
 import BogoDataEdit from "./screens/setting/BogoDataEit";
 import NotificationsDashboard from "./screens/notifications";
 import MessageDetails from "./screens/notifications/MessageDetails";
+
 function App() {
   const [theme, colorMode] = useMode();
- 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
