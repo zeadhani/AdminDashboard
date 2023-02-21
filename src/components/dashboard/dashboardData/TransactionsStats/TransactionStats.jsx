@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { mockTransactions } from "../../../../data/mockData";
+import moment from "moment";
 
-function TransactionStats({colors}) {
+function TransactionStats({ colors, transactions }) {
   return (
     <Box
       sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
@@ -26,9 +26,9 @@ function TransactionStats({colors}) {
           Recent Orders
         </Typography>
       </Box>
-      {mockTransactions.map((transaction, i) => (
+      {transactions.map((item) => (
         <Box
-          key={`${transaction.txId}-${i}`}
+          key={item.id}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -41,19 +41,21 @@ function TransactionStats({colors}) {
               variant="h5"
               fontWeight="600"
             >
-              {transaction.txId}
+              #{item.id}
             </Typography>
             <Typography color={colors.blueAccent[500]}>
-              {transaction.user}
+              {item.Users?.email}
             </Typography>
           </Box>
-          <Box color={colors.greenAccent[500]}>{transaction.date}</Box>
+          <Box color={colors.greenAccent[500]}>
+            {moment(item.createdAt).format("YYYY-MM-DD")}
+          </Box>
           <Box
             backgroundColor={colors.blueAccent[500]}
             p="5px 10px"
             borderRadius="4px"
           >
-            {transaction.cost} Egp
+            {Math.floor(item.price)} Egp
           </Box>
         </Box>
       ))}

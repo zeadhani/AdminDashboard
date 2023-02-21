@@ -15,6 +15,7 @@ import {
   TypeSpecimenOutlined,
   LocalOfferOutlined,
   ManageAccountsOutlined,
+  AttachMoneyOutlined,
 } from "@mui/icons-material";
 
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
@@ -256,7 +257,13 @@ function SideBar({ collapseSidebar, collapsed }) {
               selected={selected}
               setSelected={setSelected}
             />
-
+            <Item
+              title="Expenses"
+              to="/Expenses"
+              icon={<AttachMoneyOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Home Slider"
               to="/home-slider"

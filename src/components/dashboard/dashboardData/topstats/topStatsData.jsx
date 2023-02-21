@@ -1,15 +1,20 @@
 import React from "react";
 import TopStatsContainer from "./TopStatsContainer";
 import StateBox from "../../../global/stateBox";
-import { AttachMoney, Email, PeopleOutlined, Person } from "@mui/icons-material";
+import {
+  Diversity3Outlined,
+  Email,
+  PeopleOutlined,
+  Person,
+} from "@mui/icons-material";
 
-function TopStatsData({colors}) {
+function TopStatsData({ colors, messages, requests, merchants, users }) {
   return (
     <>
       <TopStatsContainer colors={colors}>
         <StateBox
-          title="1,263"
-          subtitle="Emails Sent"
+          title={messages}
+          subtitle="Messages Received"
           progress="0.25"
           increase="+12%"
           icon={
@@ -19,12 +24,12 @@ function TopStatsData({colors}) {
       </TopStatsContainer>
       <TopStatsContainer colors={colors}>
         <StateBox
-          title="431,225"
+          title={requests}
           subtitle="Requests Received"
           progress="0.70"
           increase="+31%"
           icon={
-            <AttachMoney
+            <Diversity3Outlined
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
@@ -32,7 +37,7 @@ function TopStatsData({colors}) {
       </TopStatsContainer>
       <TopStatsContainer colors={colors}>
         <StateBox
-          title="441"
+          title={merchants}
           subtitle="New Merchants"
           progress="0.40"
           increase="+5%"
@@ -45,7 +50,7 @@ function TopStatsData({colors}) {
       </TopStatsContainer>
       <TopStatsContainer colors={colors}>
         <StateBox
-          title="345,732"
+          title={users}
           subtitle="New Bogo Users"
           progress="0.80"
           increase="+43%"
@@ -59,4 +64,3 @@ function TopStatsData({colors}) {
 }
 
 export default TopStatsData;
-    

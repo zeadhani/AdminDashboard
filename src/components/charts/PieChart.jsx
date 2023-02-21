@@ -1,15 +1,21 @@
 import { useTheme } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import React from "react";
-import { mockPieData as data } from "../../data/mockData";
 import { tokens } from "../../Theme";
 
-function PieChart() {
+function PieChart({ data }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const transformedData = data.map((item, index) => {
+    return {
+      id: item.name,
+      name: item.name,
+      value: item._count.products,
+    };
+  });
   return (
     <ResponsivePie
-      data={data}
+      data={transformedData}
       theme={{
         tooltip: { basic: { color: "black" } },
         legends: {
@@ -65,7 +71,6 @@ function PieChart() {
           spacing: 1,
         },
       ]}
-      
     />
   );
 }
