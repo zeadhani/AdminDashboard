@@ -19,7 +19,7 @@ import CustomTextField from "../../components/Forms/CustomTextField";
 import { mockLoginData as itemData } from "../../data/mockData";
 
 import { toast } from "react-toastify";
-import authFetch from "../../services/interceptors";
+
 import axios from "axios";
 
 const initialValues = {
@@ -93,6 +93,7 @@ function Login() {
                   <Typography
                     variant="h2"
                     textAlign={"start"}
+                    pt={2}
                     color={colors.grey[100]}
                     sx={{ mb: "5px", cursor: "pointer" }}
                   >

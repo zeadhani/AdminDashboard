@@ -100,7 +100,7 @@ function BogoProfile() {
     phone: yup.string().length(11).required("enter a valid number"),
   });
   const handleChangePassword = () => {
-    navigate("/setting/userData/changePassword");
+    navigate(`/setting/userData/changePassword`);
   };
   const initialValues = {
     first_name: user.first_name ? user.first_name : "",

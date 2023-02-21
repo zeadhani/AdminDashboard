@@ -26,6 +26,7 @@ import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { useSelector } from "react-redux";
 import SideBarActionButton from "../../components/global/sidebar/sideBarActionButton";
 import useMessage from "../../components/hooks/contactus/useMessageCount";
+import useUser from "../../components/hooks/auth/useUser";
 
 const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   const handleClickMenuItem = (title) => {
@@ -46,14 +47,18 @@ const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   );
 };
 
-function SideBar({ user, collapseSidebar, collapsed }) {
+function SideBar({ collapseSidebar, collapsed }) {
   const isLoggedIn = useSelector((state) => state.Auth.loggedIn);
+  const data = useSelector((state) => state.Auth.user);
+  const email = data.replace(/"/g, "");
+  const { user } = useUser(email);
 
   const [selected, setSelected] = useState(
     window.location.pathname.split("/")[1] === ""
       ? "Dashboard"
       : window.location.pathname.split("/")[1]
   );
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   useMessage();
@@ -194,28 +199,28 @@ function SideBar({ user, collapseSidebar, collapsed }) {
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="Attributes"
               to="/Attributes"
               icon={<TypeSpecimenOutlined />}
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="Roles"
               to="/Roles"
               icon={<ManageAccountsOutlined />}
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="Offer Ranges"
               to="/Offer Ranges"
               icon={<AttachMoneyOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="Offer Types"
               to="/Offer Types"
               icon={<LocalOfferOutlined />}

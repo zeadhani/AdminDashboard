@@ -25,6 +25,7 @@ import BogoProfile from "./screens/setting/BogoProfile";
 import BogoDataEdit from "./screens/setting/BogoDataEit";
 import NotificationsDashboard from "./screens/notifications";
 import MessageDetails from "./screens/notifications/MessageDetails";
+import ChangePassword from "./screens/setting/changePassword";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/setting" element={<SettingDashboard />} />
                 <Route path="/setting/userData" element={<BogoProfile />} />
+                <Route path="/setting/userData/changePassword" element={<ChangePassword />} />
                 <Route path="/setting/BogoData" element={<BogoDataEdit />} />
                 <Route
                   path="/notifications"

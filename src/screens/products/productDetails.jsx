@@ -223,7 +223,6 @@ function ProductDetails() {
           values,
           errors,
           touched,
-
           handleSubmit,
         }) => (
           <FormCard

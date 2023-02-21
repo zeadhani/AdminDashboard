@@ -1,4 +1,4 @@
-import { Box, Slide, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import LinearProg from "../global/LinearProg";
 import { Stack } from "@mui/system";
@@ -17,11 +17,11 @@ function FormCard({ children, serverErrors, loading, handleSubmit }) {
         {serverErrors && (
           <Box
             borderRadius={3}
-            px={10}
+            px={4}
             mb={2}
             sx={{
               cursor: "pointer",
-              width: "fit-content",
+              width: "100%",
               marginX: "auto",
               border: "1px solid #d32f2f",
             }}

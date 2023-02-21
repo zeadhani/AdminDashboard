@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import authFetch from "../../../services/interceptors";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -15,6 +16,7 @@ function useMessage() {
 
   const getCount = async () => {
     try {
+      
       const data = await authFetch.get("/contactus/count");
       handleCount(data.data.count);
     } catch (error) {}
