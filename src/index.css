@@ -71,7 +71,11 @@ body,
   /* .content {
     padding-bottom: 80px;
   } */
-
+  html,
+  body,
+  #root {
+    overflow-y: scroll;
+  }
   .app {
     overflow-y: scroll;
   }
