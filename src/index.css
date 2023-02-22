@@ -67,6 +67,9 @@ body,
   .nivo_x_axis .nivo_tick text {
     display: none;
   }
+  body {
+    margin-top: -60px; /* adjust this value to suit your needs */
+  }
   /* .content {
     padding-bottom: 80px;
   } */
