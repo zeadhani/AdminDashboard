@@ -75,7 +75,7 @@ body,
   body,
   #root {
     overflow-y: scroll;
-    height: 100vh;
+    height: 120vh;
     width: 100vw;
   }
   .app {
