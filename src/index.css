@@ -67,7 +67,13 @@ body,
   .nivo_x_axis .nivo_tick text {
     display: none;
   }
-  .content {
+  /* .content {
     padding-bottom: 80px;
-  }
+  } */
+}
+::-webkit-search-cancel-button,
+::-webkit-search-decoration,
+::-webkit-search-results-button,
+::-webkit-search-results-decoration {
+  display: none;
 }
