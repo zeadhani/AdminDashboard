@@ -12,4 +12,3 @@ function CustomContainer({ title, subtitle, onClick, children }) {
 }
 
 export default CustomContainer;
-

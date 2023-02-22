@@ -27,7 +27,7 @@ function AddAttributes({
     <React.Fragment>
       {attributesData.map((item, index) => (
         <Box
-          key={item}
+          key={item+index}
           display={"grid"}
           sx={{
             gridTemplateColumns: {

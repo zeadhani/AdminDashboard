@@ -15,7 +15,7 @@ function ProfileImage({user}) {
           height: 140,
           borderRadius: "50%",
           cursor: "pointer",
-          width: "fit-content",
+          width: 140,
         }}
         alt={user?.first_name}
         src={`${process.env.REACT_APP_DRIVE_URL}${user?.image}`}
