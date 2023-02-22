@@ -75,20 +75,19 @@ body,
   body,
   #root {
     overflow-y: scroll;
+    height: 100vh;
+    width: 100vw;
   }
   .app {
     overflow-y: scroll;
+    width: 100%;
+    height: 100%;
   }
   .content::-webkit-scrollbar {
     display: none;
   }
 
-  .content {
-    overflow-x: hidden;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-  }
+  
 }
 ::-webkit-search-cancel-button,
 ::-webkit-search-decoration,
