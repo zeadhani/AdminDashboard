@@ -67,4 +67,7 @@ body,
   .nivo_x_axis .nivo_tick text {
     display: none;
   }
+  .content {
+    padding-bottom: 40px;
+  }
 }
