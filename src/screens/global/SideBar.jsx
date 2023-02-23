@@ -72,7 +72,7 @@ function SideBar({ collapseSidebar, collapsed }) {
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
               backgroundColor: colors.primary[600],
-              height: "100vh",
+              // height: "100vh",
               paddingBottom: "20px",
               zIndex: 300,
             },
