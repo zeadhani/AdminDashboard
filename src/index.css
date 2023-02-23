@@ -81,10 +81,9 @@ body,
   .app {
     overflow-y: scroll;
     width: 100%;
-  }
-  .content {
     height: fit-content;
   }
+  
   .content::-webkit-scrollbar {
     display: none;
   }
