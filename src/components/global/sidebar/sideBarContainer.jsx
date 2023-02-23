@@ -10,7 +10,10 @@ function SideBarContainer() {
     <Box
       className="sidebar"
       sx={{
-        position: { xs: "absolute", md: "relative" },
+        position: { xs: "fixed", md: "relative" },
+        top: 0,
+        left: 0,
+        bottom: 0,
         display: { xs: collapsed && "none", md: "block" },
       }}
     >
