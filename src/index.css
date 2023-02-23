@@ -5,8 +5,9 @@ body,
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: scroll;
   font-family: "Source Sans Pro", sans-serif;
+  height: fit-content;
 }
 
 .app {
@@ -71,13 +72,13 @@ body,
   /* .content {
     padding-bottom: 80px;
   } */
-  html,
+  /* html,
   body,
   #root {
     overflow-y: scroll;
     height: fit-content;
     width: 100vw;
-  }
+  } */
   .app {
     overflow-y: scroll;
     width: 100%;
@@ -86,15 +87,13 @@ body,
   .sidebar {
     margin-bottom: auto;
   }
-
-  .sidebar::-webkit-scrollbar,
-  .content::-webkit-scrollbar {
+  *::-webkit-scrollbar {
     display: none;
   }
 }
-::-webkit-search-cancel-button,
+/* ::-webkit-search-cancel-button,
 ::-webkit-search-decoration,
 ::-webkit-search-results-button,
 ::-webkit-search-results-decoration {
   display: none;
-}
+} */

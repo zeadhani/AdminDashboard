@@ -1,8 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import LineChart from "../../../charts/LineChart";
 
-function LineChartStats({colors}) {
+import BarChart from "../../../charts/BarChart";
+
+function LineChartStats({colors,data}) {
+  const transformedData = data.map((item, index) => ({
+    id: item.Brands.name,
+    name: item.Brands.name,
+    value: item._count.requests,
+  }));
   return (
     <Box
       sx={{
@@ -23,7 +29,7 @@ function LineChartStats({colors}) {
           fontWeight="600"
           color={colors.blueAccent[500]}
         >
-          Revenue Generated
+          Top brands
         </Typography>
         <Typography
           variant="h3"
@@ -31,11 +37,11 @@ function LineChartStats({colors}) {
           color={colors.greenAccent[500]}
           sx={{ display: { xs: "none", sm: "block" } }}
         >
-          59,342.32 EGP
+         Requests
         </Typography>
       </Box>
       <Box height="250px" m="-20px 0 0 0">
-        <LineChart />
+      <BarChart data={transformedData} layout="horizontal" />
       </Box>
     </Box>
   );

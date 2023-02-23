@@ -3,6 +3,11 @@ import React from "react";
 import BarChart from "../../../charts/BarChart";
 
 function BarChartStats({ colors ,data}) {
+  const transformedData = data.map((item, index) => ({
+    id: item.name,
+    name: item.name,
+    value: item._count.offers,
+  }));
   return (
     <Box
       sx={{ gridColumn: { lg: "span 4", sm: "span 6", xs: "span 3" } }}
@@ -23,7 +28,7 @@ function BarChartStats({ colors ,data}) {
         </Typography>
       </Box>
       <Box height="250px" mt="-20px">
-        <BarChart data={data} />
+        <BarChart data={transformedData} />
       </Box>
     </Box>
   );

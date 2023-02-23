@@ -38,7 +38,7 @@ function DashboardStats({ colors }) {
             users={data.userNumber}
             colors={colors}
           />
-          <LineChartStats colors={colors} />
+          <LineChartStats colors={colors} data={data.topFiveBrandsRequests} />
           <TransactionStats transactions={data.transactions} colors={colors} />
           <ExpenseStats colors={colors} />
           <PieChartStats data={data.topFiveBrandsProducts} colors={colors} />

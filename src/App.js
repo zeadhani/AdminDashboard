@@ -26,6 +26,15 @@ import BogoDataEdit from "./screens/setting/BogoDataEit";
 import NotificationsDashboard from "./screens/notifications";
 import MessageDetails from "./screens/notifications/MessageDetails";
 import ChangePassword from "./screens/setting/changePassword";
+import CategoriesDashboard from "./screens/categories";
+import AttributeDashboard from "./screens/attributes";
+import RolesDashboard from "./screens/roles";
+import OfferRangeDashboard from "./screens/offerRanges";
+import OfferTypesDashboard from "./screens/offerTypes";
+import PreferencesDashboard from "./screens/preferences";
+import RequestsDashboard from "./screens/Requests";
+import ExpensesDashboard from "./screens/Expenses";
+import HomeSliderDashboard from "./screens/HomeSlider";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -51,7 +60,10 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/setting" element={<SettingDashboard />} />
                 <Route path="/setting/userData" element={<BogoProfile />} />
-                <Route path="/setting/userData/changePassword" element={<ChangePassword />} />
+                <Route
+                  path="/setting/userData/changePassword"
+                  element={<ChangePassword />}
+                />
                 <Route path="/setting/BogoData" element={<BogoDataEdit />} />
                 <Route
                   path="/notifications"
@@ -69,6 +81,15 @@ function App() {
                   element={<AddBrand />}
                 />
                 <Route path="/Merchants/:id" element={<BrandDetails />} />
+                <Route path="/Categories" element={<CategoriesDashboard />} />
+                <Route path="/Attributes" element={<AttributeDashboard />} />
+                <Route path="/Roles" element={<RolesDashboard />} />
+                <Route path="/OfferRanges" element={<OfferRangeDashboard />} />
+                <Route path="/OfferTypes" element={<OfferTypesDashboard />} />
+                <Route path="/Preferences" element={<PreferencesDashboard />} />
+                <Route path="/Requests" element={<RequestsDashboard />} />
+                <Route path="/Expenses" element={<ExpensesDashboard />} />
+                <Route path="/home-slider" element={<HomeSliderDashboard />} />
               </Route>
               <Route element={<AuthRoutes />}>
                 <Route path="/Auth/Login" element={<Login />} />

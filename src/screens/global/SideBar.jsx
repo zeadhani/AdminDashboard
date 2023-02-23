@@ -216,14 +216,14 @@ function SideBar({ collapseSidebar, collapsed }) {
             />
             <Item
               title="Offer Ranges"
-              to="/Offer Ranges"
+              to="/OfferRanges"
               icon={<AttachMoneyOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Offer Types"
-              to="/Offer Types"
+              to="/OfferTypes"
               icon={<LocalOfferOutlined />}
               selected={selected}
               setSelected={setSelected}

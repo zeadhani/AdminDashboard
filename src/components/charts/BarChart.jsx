@@ -3,18 +3,13 @@ import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../../Theme";
 
-function BarChart({ data }) {
+function BarChart({ data, layout = "vertical" }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const transformedData = data.map((item, index) => ({
-    id: item.name,
-    name: item.name,
-    value: item._count.offers,
-  }));
-
+  const horizontalLayout = layout === "horizontal";
   return (
     <ResponsiveBar
-      data={transformedData}
+      data={data}
       theme={{
         axis: {
           domain: {
@@ -44,16 +39,22 @@ function BarChart({ data }) {
           },
         },
       }}
+      layout={layout}
       indexBy={"name"}
-      margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+      margin={{
+        top: 50,
+        right: 60,
+        bottom: 50,
+        left: 60,
+      }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme:"set3" }}
+      colors={{ scheme: "set3" }}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 45,
+        tickRotation: horizontalLayout ? 0 : 45,
         legend: undefined,
         legendPosition: "middle",
         legendOffset: 32,
@@ -61,12 +62,13 @@ function BarChart({ data }) {
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
+        tickRotation: horizontalLayout ? 45 : 0,
         legend: undefined,
         legendPosition: "middle",
         legendOffset: -40,
       }}
-      // enableGridY={false}
+      enableGridY={false}
+      // enableGridX={!horizontalLayout}
       labelSkipWidth={5}
       labelSkipHeight={12}
       enableLabel={false}
