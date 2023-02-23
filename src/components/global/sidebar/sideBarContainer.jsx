@@ -3,7 +3,6 @@ import React from "react";
 import SideBar from "../../../screens/global/SideBar";
 import { useProSidebar } from "react-pro-sidebar";
 
-
 function SideBarContainer() {
   const { collapseSidebar, collapsed } = useProSidebar();
 
