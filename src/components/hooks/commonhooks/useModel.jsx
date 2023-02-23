@@ -21,7 +21,7 @@ function useModel(
     setLoading(true);
     try {
       const brands = await authFetch.get(
-        `/${dataModel}?limit=${rowsPerPage}&page=${
+        `/${dataModel}/paginate?limit=${rowsPerPage}&page=${
           page + 1
         }&sort=${sort},${orderBy}&search=${search}`
       );
