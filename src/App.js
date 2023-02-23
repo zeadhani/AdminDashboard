@@ -26,16 +26,18 @@ import BogoDataEdit from "./screens/setting/BogoDataEit";
 import NotificationsDashboard from "./screens/notifications";
 import MessageDetails from "./screens/notifications/MessageDetails";
 import ChangePassword from "./screens/setting/changePassword";
+import { useProSidebar } from "react-pro-sidebar";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const { collapseSidebar, collapsed } = useProSidebar();
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
           <SideBarContainer />
-          <main className="content">
+          <main className={`content ${!collapsed ? 'sidebar-open' : ''}`}>
             <Routes>
               <Route element={<PrivateRoutes />}>
                 <Route path="/" element={<Dashboard />} />
