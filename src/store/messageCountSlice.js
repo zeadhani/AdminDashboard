@@ -11,6 +11,9 @@ const messageCountSlice = createSlice({
     setcount(state, action) {
       state.count = action.payload.count;
     },
+    decreaseCount(state) {
+      state.count = state.count - 1;
+    },
   },
 });
 export default messageCountSlice;

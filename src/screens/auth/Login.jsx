@@ -60,7 +60,7 @@ function Login() {
   };
   const formValidation = yup.object().shape({
     email: yup.string().email().required("Email is required"),
-    password: yup.string().required("Password is required"),
+    password: yup.string().min(8).required("Password is required"),
   });
 
   return (
