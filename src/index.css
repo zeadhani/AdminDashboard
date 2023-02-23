@@ -81,16 +81,13 @@ body,
   .app {
     overflow-y: scroll;
     width: 100%;
+  }
+  .content {
     height: fit-content;
   }
   .content::-webkit-scrollbar {
     display: none;
   }
-  .content.sidebar-open {
-    pointer-events: none;
-    filter: blur(3px);
-  }
-  
 }
 ::-webkit-search-cancel-button,
 ::-webkit-search-decoration,
