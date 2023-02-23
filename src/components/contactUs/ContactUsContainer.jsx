@@ -35,7 +35,7 @@ function ContactUsContainer({ model, getcontactUs }) {
       sx={{
         width: "100%",
         bgcolor: "transparent",
-        maxHeight: "67vh",
+        height: "67vh",
         overflowY: "scroll",
       }}
     >

@@ -35,7 +35,7 @@ function TableCard({
       backgroundColor:
         theme?.palette.mode === "dark" ? colors.blueAccent[600] : "#1F2A40",
       color: "#fff",
-      fontWeight:"bold"
+      fontWeight: "bold",
     },
   }));
 
@@ -47,7 +47,7 @@ function TableCard({
         <Box p={2}>No items Found</Box>
       )}
       {model?.length > 0 && (
-        <TableContainer component={Paper} sx={{ maxHeight: "73vh" }}>
+        <TableContainer sx={{ height: "73vh" }}>
           <Table stickyHeader={true} sx={{ minWidth: 1200 }}>
             <TableHead>
               <TableRow>

@@ -19,7 +19,7 @@ function FilterContainer({
   orderBy,
   sortArray,
   searchLabel,
-  commonmodel
+  commonmodel,
 }) {
   const [open, setOpen] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
@@ -60,6 +60,7 @@ function FilterContainer({
           direction={width < 1200 ? "column" : "row"}
           spacing={2}
           width={"100%"}
+          height={"100%"}
           sx={
             width < 1200
               ? {
@@ -68,8 +69,8 @@ function FilterContainer({
                       ? "rgba(0, 0, 20, 0.9)"
                       : "rgba(255, 255,255, 0.9)",
                   position: "absolute",
+                  height: "fit-content",
                   top: "100%",
-
                   padding: "50px",
                   zIndex: "200",
                   right: "1px",
