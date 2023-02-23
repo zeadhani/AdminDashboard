@@ -13,6 +13,7 @@ function CommonFilterContainer({
   orderBy,
   sortArray,
   searchLabel,
+  commonmodel
 }) {
   return (
     <>
@@ -36,6 +37,7 @@ function CommonFilterContainer({
         filterarray={orderByArray}
         onChange={handleOrderByChange}
         value={orderBy}
+        commonmodel={commonmodel}
       />
     </>
   );

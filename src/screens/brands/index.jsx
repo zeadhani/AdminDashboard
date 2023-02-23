@@ -134,7 +134,7 @@ function BrandsDashboard() {
         loading={loading}
         model={brands}
       >
-        {brands.map((row, index) => {
+        {brands?.map((row, index) => {
           const dateIsBiggerThanCurrentDate =
             new Date().toISOString() > row.contrat_Expire;
           return (

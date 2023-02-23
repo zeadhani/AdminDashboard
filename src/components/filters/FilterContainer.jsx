@@ -19,6 +19,7 @@ function FilterContainer({
   orderBy,
   sortArray,
   searchLabel,
+  commonmodel
 }) {
   const [open, setOpen] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
@@ -91,6 +92,7 @@ function FilterContainer({
             orderBy={orderBy}
             sortArray={sortArray}
             searchLabel={searchLabel}
+            commonmodel={commonmodel}
           />
           {children}
         </Stack>

@@ -2,9 +2,20 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React from "react";
 
 function CustomFilter(props) {
-  const { label, value, onChange, filterarray, multiple, itemitself } = props;
+  const {
+    label,
+    value,
+    onChange,
+    filterarray,
+    multiple,
+    itemitself,
+    commonmodel = false,
+  } = props;
   return (
-    <FormControl sx={{ minWidth: "150px" }} {...props}>
+    <FormControl
+      sx={{ minWidth: !commonmodel && "150px", flex: commonmodel && 1 }}
+      {...props}
+    >
       <InputLabel id="demo-simple-select-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-label"
