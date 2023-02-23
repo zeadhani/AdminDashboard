@@ -14,6 +14,7 @@ function SideBarContainer() {
         top: 0,
         left: 0,
         bottom: 0,
+        zIndex:9999,
         display: { xs: collapsed && "none", md: "block" },
       }}
     >

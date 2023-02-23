@@ -83,10 +83,11 @@ body,
     width: 100%;
     height: fit-content;
   }
-  .sidebar{
+  .sidebar {
     margin-bottom: auto;
   }
-  
+
+  .sidebar::-webkit-scrollbar,
   .content::-webkit-scrollbar {
     display: none;
   }
