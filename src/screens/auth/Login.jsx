@@ -18,7 +18,7 @@ import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import { mockLoginData as itemData } from "../../data/mockData";
 
-import { toast } from "react-toastify";
+
 
 import axios from "axios";
 
@@ -52,7 +52,6 @@ function Login() {
         })
       );
       navigate("/");
-      toast("Welcome back!");
     } catch (err) {
       setServerErrors(err.response.data.error);
     }
