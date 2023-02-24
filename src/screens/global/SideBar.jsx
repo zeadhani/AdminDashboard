@@ -103,7 +103,7 @@ function SideBar({ collapseSidebar, collapsed }) {
                       width: 100,
                       borderRadius: "50%",
                       cursor: "pointer",
-                      objectFit:"contain"
+                      objectFit: "cover",
                     }}
                     alt={"Profile-Image"}
                     src={`${process.env.REACT_APP_CLOUDINARY}${user.image}`}
