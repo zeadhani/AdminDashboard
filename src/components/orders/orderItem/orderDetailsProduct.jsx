@@ -45,7 +45,7 @@ function OrderDetailsProduct({ item }) {
             margin: isXSmallScreen && "auto",
           }}
           alt={item?.Product.name}
-          src={`${process.env.REACT_APP_DRIVE_URL}${item?.Product.image}`}
+          src={`${process.env.REACT_APP_CLOUDINARY}${item?.Product.image}`}
         />
       </Box>
       <Box

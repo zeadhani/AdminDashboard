@@ -22,7 +22,7 @@ function ContactUsItem({
       <ListItem alignItems="flex-start" sx={{ cursor: "pointer" }}>
         <ListItemAvatar>
           <Avatar
-            src={`${process.env.REACT_APP_DRIVE_URL}${item.Users?.image}`}
+            src={`${process.env.REACT_APP_CLOUDINARY}${item.Users?.image}`}
           />
         </ListItemAvatar>
 

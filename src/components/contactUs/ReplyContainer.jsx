@@ -62,7 +62,7 @@ function ReplyContainer({ message }) {
     <Box mt={2}>
       <Stack direction={"row"} spacing={1}>
         <Avatar
-          src={`${process.env.REACT_APP_DRIVE_URL}${message.Users?.image}`}
+          src={`${process.env.REACT_APP_CLOUDINARY}${message.Users?.image}`}
           sx={{ height: "30px", width: "30px" }}
         />
         <Stack direction={"row"} spacing={2}>

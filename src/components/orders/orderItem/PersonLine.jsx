@@ -23,7 +23,7 @@ function PersonLine({ label, data, image }) {
             marginTop: "20px",
           }}
           alt={data}
-          src={`${process.env.REACT_APP_DRIVE_URL}${image}`}
+          src={`${process.env.REACT_APP_CLOUDINARY}${image}`}
         />
       )}
     </Box>

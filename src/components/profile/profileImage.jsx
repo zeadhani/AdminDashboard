@@ -19,7 +19,7 @@ function ProfileImage({ user }) {
           width: 140,
         }}
         alt={user?.first_name}
-        src={`${process.env.REACT_APP_DRIVE_URL}${user?.image}`}
+        src={`${process.env.REACT_APP_CLOUDINARY}${user?.image}`}
       />
     </Box>
   );

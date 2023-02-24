@@ -146,6 +146,7 @@ function UserDashbaord() {
           <CustomTableRow colors={colors} key={row.id}>
             <RowIdentifier>{row.first_name}</RowIdentifier>
             <TableCell>{row.last_name}</TableCell>
+        
             <TableImage image={row.image} />
             <TableCell>{row.email}</TableCell>
             <TableCell

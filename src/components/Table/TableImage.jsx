@@ -8,7 +8,8 @@ function TableImage({image}) {
       <LazyLoadImage
         height={40}
         style={{ borderRadius: 5 }}
-        src={`${process.env.REACT_APP_DRIVE_URL}${image}`}
+        // src={`${process.env.REACT_APP_DRIVE_URL}${image}`}
+        src={`${process.env.REACT_APP_CLOUDINARY}${image}`}
       />
     </TableCell>
   );

@@ -18,7 +18,7 @@ function PersonOrderDetails({ item }) {
           cursor: "pointer",
         }}
         alt={item?.Users.first_name}
-        src={`${process.env.REACT_APP_DRIVE_URL}${item?.Users.image}`}
+        src={`${process.env.REACT_APP_CLOUDINARY}${item?.Users.image}`}
       />
       <Box
         sx={{

@@ -52,7 +52,7 @@ function ImageFileUpload(props) {
         <LazyLoadImage
           width={80}
           style={{ borderRadius: 5 }}
-          src={`${process.env.REACT_APP_DRIVE_URL}${image}`}
+          src={`${process.env.REACT_APP_CLOUDINARY}${image}`}
         />
       )}
     </Stack>
