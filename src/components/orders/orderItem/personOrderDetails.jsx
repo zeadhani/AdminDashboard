@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import PersonLine from "./PersonLine";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function PersonOrderDetails({ item }) {
   return (
@@ -10,7 +11,7 @@ function PersonOrderDetails({ item }) {
         flexDirection: { xs: "row-reverse", sm: "row" },
       }}
     >
-      <img
+      <LazyLoadImage
         style={{
           height: 50,
           borderRadius: "50%",

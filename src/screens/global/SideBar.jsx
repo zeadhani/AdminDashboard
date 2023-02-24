@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import SideBarActionButton from "../../components/global/sidebar/sideBarActionButton";
 import useMessage from "../../components/hooks/contactus/useMessageCount";
 import useUser from "../../components/hooks/auth/useUser";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Item = ({ title, to, icon, selected, setSelected, disabled }) => {
   const handleClickMenuItem = (title) => {
@@ -96,7 +97,7 @@ function SideBar({ collapseSidebar, collapsed }) {
                   justifyContent={"center"}
                   sx={{ marginTop: { xs: "40px", md: "0px" } }}
                 >
-                  <img
+                  <LazyLoadImage
                     style={{
                       height: 100,
                       width: 100,

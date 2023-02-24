@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
-function ProfileImage({user}) {
+function ProfileImage({ user }) {
   return (
     <Box
       sx={{
@@ -10,7 +11,7 @@ function ProfileImage({user}) {
         pb: 5,
       }}
     >
-      <img
+      <LazyLoadImage
         style={{
           height: 140,
           borderRadius: "50%",

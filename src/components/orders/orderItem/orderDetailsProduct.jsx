@@ -1,6 +1,7 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import PersonLine from "./PersonLine";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function OrderDetailsProduct({ item }) {
   const isXSmallScreen = useMediaQuery("(max-width:600px)");
@@ -37,7 +38,7 @@ function OrderDetailsProduct({ item }) {
             </Box>
           )}
         </Box>
-        <img
+        <LazyLoadImage
           style={{
             height: 70,
             cursor: "pointer",

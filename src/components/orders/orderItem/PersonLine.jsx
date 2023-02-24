@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function PersonLine({ label, data, image }) {
   return (
@@ -14,7 +15,7 @@ function PersonLine({ label, data, image }) {
         </Typography>
       )}
       {image && (
-        <img
+        <LazyLoadImage
           style={{
             width: 100,
             borderRadius: "10%",

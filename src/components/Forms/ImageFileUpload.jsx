@@ -1,5 +1,6 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function ImageFileUpload(props) {
   const {
@@ -48,7 +49,7 @@ function ImageFileUpload(props) {
         />
       )}
       {!add && (
-        <img
+        <LazyLoadImage
           width={80}
           style={{ borderRadius: 5 }}
           src={`${process.env.REACT_APP_DRIVE_URL}${image}`}
