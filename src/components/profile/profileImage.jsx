@@ -17,6 +17,7 @@ function ProfileImage({ user }) {
           borderRadius: "50%",
           cursor: "pointer",
           width: 140,
+          objectFit: "cover",
         }}
         alt={user?.first_name}
         src={`${process.env.REACT_APP_CLOUDINARY}${user?.image}`}
