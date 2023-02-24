@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { useState } from "react";
 
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormCard from "../../components/Forms/FormCard";
@@ -80,7 +80,7 @@ function AddProduct() {
     form_data.append("name", name);
     form_data.append("price", price);
     form_data.append("category", category);
-    form_data.append("gender", hasGender ? gender : '');
+    form_data.append("gender", hasGender ? gender : "");
     form_data.append("brand", brand);
     form_data.append("image", imageFile);
     form_data.append("hasAttributes", hasAttributes);

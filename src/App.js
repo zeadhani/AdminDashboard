@@ -4,11 +4,12 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import Dashboard from "./screens/dashboard/index";
 import { Route, Routes } from "react-router-dom";
 import CustomSuspense from "./components/global/CustomSuspense";
-import ToastMessage from "./components/global/ToastMessage";
 import Login from "./screens/auth/Login";
 import PrivateRoutes from "./components/auth/PrivateRoutes";
 import AuthRoutes from "./components/auth/AuthRoutes";
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
+import ToastMessage from "./components/global/ToastMessage";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const TeamDashboard = React.lazy(() => import("./screens/Team/Index"));
 const ProductsDashboard = React.lazy(() => import("./screens/products/index"));
@@ -21,26 +22,32 @@ const BrandDetails = React.lazy(() => import("./screens/brands/BrandDetails"));
 const AddBrand = React.lazy(() => import("./screens/brands/AddBrand"));
 const BrandOffers = React.lazy(() => import("./screens/brands/offers/index"));
 const NoMatch = React.lazy(() => import("./components/global/NoMatch"));
-const Profile = React.lazy(() => import('./screens/profile/Profile'));
-const UserDashbaord = React.lazy(() => import('./screens/Users/Index'));
-const UserDetails = React.lazy(() => import('./screens/Users/userDetails'));
-const OrdersDashboard = React.lazy(() => import('./screens/orders'));
-const OrderDetails = React.lazy(() => import('./screens/orders/orderDetails'));
-const SettingDashboard = React.lazy(() => import('./screens/setting'));
-const BogoProfile = React.lazy(() => import('./screens/setting/BogoProfile'));
-const BogoDataEdit = React.lazy(() => import('./screens/setting/BogoDataEit'));
-const NotificationsDashboard = React.lazy(() => import('./screens/notifications'));
-const MessageDetails = React.lazy(() => import('./screens/notifications/MessageDetails'));
-const ChangePassword = React.lazy(() => import('./screens/setting/changePassword'));
-const CategoriesDashboard = React.lazy(() => import('./screens/categories'));
-const AttributeDashboard = React.lazy(() => import('./screens/attributes'));
-const RolesDashboard = React.lazy(() => import('./screens/roles'));
-const OfferRangeDashboard = React.lazy(() => import('./screens/offerRanges'));
-const OfferTypesDashboard = React.lazy(() => import('./screens/offerTypes'));
-const PreferencesDashboard = React.lazy(() => import('./screens/preferences'));
-const RequestsDashboard = React.lazy(() => import('./screens/Requests'));
-const ExpensesDashboard = React.lazy(() => import('./screens/Expenses'));
-const HomeSliderDashboard = React.lazy(() => import('./screens/HomeSlider'));
+const Profile = React.lazy(() => import("./screens/profile/Profile"));
+const UserDashbaord = React.lazy(() => import("./screens/Users/Index"));
+const UserDetails = React.lazy(() => import("./screens/Users/userDetails"));
+const OrdersDashboard = React.lazy(() => import("./screens/orders"));
+const OrderDetails = React.lazy(() => import("./screens/orders/orderDetails"));
+const SettingDashboard = React.lazy(() => import("./screens/setting"));
+const BogoProfile = React.lazy(() => import("./screens/setting/BogoProfile"));
+const BogoDataEdit = React.lazy(() => import("./screens/setting/BogoDataEit"));
+const NotificationsDashboard = React.lazy(() =>
+  import("./screens/notifications")
+);
+const MessageDetails = React.lazy(() =>
+  import("./screens/notifications/MessageDetails")
+);
+const ChangePassword = React.lazy(() =>
+  import("./screens/setting/changePassword")
+);
+const CategoriesDashboard = React.lazy(() => import("./screens/categories"));
+const AttributeDashboard = React.lazy(() => import("./screens/attributes"));
+const RolesDashboard = React.lazy(() => import("./screens/roles"));
+const OfferRangeDashboard = React.lazy(() => import("./screens/offerRanges"));
+const OfferTypesDashboard = React.lazy(() => import("./screens/offerTypes"));
+const PreferencesDashboard = React.lazy(() => import("./screens/preferences"));
+const RequestsDashboard = React.lazy(() => import("./screens/Requests"));
+const ExpensesDashboard = React.lazy(() => import("./screens/Expenses"));
+const HomeSliderDashboard = React.lazy(() => import("./screens/HomeSlider"));
 
 function App() {
   const [theme, colorMode] = useMode();

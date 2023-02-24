@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 import { MenuItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CustomSelect from "../../components/Forms/CustomSelect";
-
 import usePreferences from "../../components/hooks/merchants/usepreferences";
 import useImage from "../../components/hooks/general/useImage";
 import ImageFileUpload from "../../components/Forms/ImageFileUpload";
@@ -84,7 +83,7 @@ function BogoProfile() {
       form_data.append("nationalIdImage", nationalIdFile);
     }
     try {
-      const res = await authFetch.patch(`/user/${user.id}`, form_data);
+      const res = await authFetch.patch(`/user/edituser/${user.id}`, form_data);
       if (res.statusText !== "OK") return;
       toast("Your Profile is Edited Successfully!");
     } catch (error) {
@@ -155,7 +154,7 @@ function BogoProfile() {
             <CustomTextField
               type={"text"}
               name="address"
-              label={"Email"}
+              label={"Address"}
               touched={touched.address}
               errors={errors.address}
             />
@@ -212,6 +211,7 @@ function BogoProfile() {
           </FormCard>
         )}
       </Formik>
+      
     </CustomContainer>
   );
 }
