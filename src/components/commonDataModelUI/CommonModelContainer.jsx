@@ -68,13 +68,9 @@ function CommonModelContainer({ model }) {
       navigate("/");
     };
   };
-  const viewAction = (id) => {
-    return () => {
-      navigate("/");
-    };
-  };
+  
   const handleTitleClick = () => {
-    navigate("/");
+    navigate(`/add-new/${model}`);
   };
   return (
     <>
@@ -114,7 +110,7 @@ function CommonModelContainer({ model }) {
               <ActionsButtonsTable
                 deleteAction={handleDeleteModelItem(row.name)}
                 editAction={editAction(row?.id)}
-                viewAction={viewAction(row?.id)}
+         
                 colors={colors}
               />
             </CustomTableRow>

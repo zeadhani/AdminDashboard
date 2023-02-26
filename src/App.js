@@ -9,7 +9,7 @@ import PrivateRoutes from "./components/auth/PrivateRoutes";
 import AuthRoutes from "./components/auth/AuthRoutes";
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import ToastMessage from "./components/global/ToastMessage";
-import 'react-toastify/dist/ReactToastify.min.css';
+import "react-toastify/dist/ReactToastify.min.css";
 
 const TeamDashboard = React.lazy(() => import("./screens/Team/Index"));
 const ProductsDashboard = React.lazy(() => import("./screens/products/index"));
@@ -48,7 +48,9 @@ const PreferencesDashboard = React.lazy(() => import("./screens/preferences"));
 const RequestsDashboard = React.lazy(() => import("./screens/Requests"));
 const ExpensesDashboard = React.lazy(() => import("./screens/Expenses"));
 const HomeSliderDashboard = React.lazy(() => import("./screens/HomeSlider"));
-
+const AddNew = React.lazy(() =>
+  import("./components/commonDataModelUI/addNew")
+);
 function App() {
   const [theme, colorMode] = useMode();
   return (
@@ -269,6 +271,14 @@ function App() {
                   element={
                     <CustomSuspense>
                       <PreferencesDashboard />
+                    </CustomSuspense>
+                  }
+                />
+                <Route
+                  path="/add-new/:model"
+                  element={
+                    <CustomSuspense>
+                      <AddNew />
                     </CustomSuspense>
                   }
                 />
