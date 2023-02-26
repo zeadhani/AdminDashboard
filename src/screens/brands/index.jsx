@@ -96,7 +96,7 @@ function BrandsDashboard() {
   return (
     <CustomContainer
       title={"BOGO MERCHANTS"}
-      subtitle={"Managing bogo merchants!"}
+      subtitle={"Managing bogo merchants! "}
     >
       <FilterContainer
         handleRestFilters={handleRestFilters}
