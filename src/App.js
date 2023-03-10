@@ -10,7 +10,7 @@ import AuthRoutes from "./components/auth/AuthRoutes";
 import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import ToastMessage from "./components/global/ToastMessage";
 import "react-toastify/dist/ReactToastify.min.css";
-
+import { QueryClient, QueryClientProvider } from "react-query";
 const TeamDashboard = React.lazy(() => import("./screens/Team/Index"));
 const ProductsDashboard = React.lazy(() => import("./screens/products/index"));
 const ProductDetails = React.lazy(() =>
@@ -53,275 +53,278 @@ const AddNew = React.lazy(() =>
 );
 function App() {
   const [theme, colorMode] = useMode();
+  const queryClient = new QueryClient();
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
-          <SideBarContainer />
-          <main className="content">
-            <Routes>
-              <Route element={<PrivateRoutes />}>
-                <Route path="/" element={<Dashboard />} />
+        <QueryClientProvider client={queryClient}>
+          <div className="app">
+            <SideBarContainer />
+            <main className="content">
+              <Routes>
+                <Route element={<PrivateRoutes />}>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route
+                    path="/Team"
+                    element={
+                      <CustomSuspense>
+                        <TeamDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Users"
+                    element={
+                      <CustomSuspense>
+                        <UserDashbaord />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Users/details/:email"
+                    element={
+                      <CustomSuspense>
+                        <UserDetails />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Users/details"
+                    element={
+                      <CustomSuspense>
+                        <UserDetails />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/Products"
+                    element={
+                      <CustomSuspense>
+                        <ProductsDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Products/add-product"
+                    element={
+                      <CustomSuspense>
+                        <AddProduct />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Products/:id"
+                    element={
+                      <CustomSuspense>
+                        <ProductDetails />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/Merchants"
+                    element={
+                      <CustomSuspense>
+                        <BrandsDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Merchants/:id/offers"
+                    element={
+                      <CustomSuspense>
+                        <BrandOffers />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <CustomSuspense>
+                        <Profile />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/setting"
+                    element={
+                      <CustomSuspense>
+                        <SettingDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/setting/userData"
+                    element={
+                      <CustomSuspense>
+                        <BogoProfile />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/setting/userData/changePassword"
+                    element={
+                      <CustomSuspense>
+                        <ChangePassword />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/setting/BogoData"
+                    element={
+                      <CustomSuspense>
+                        <BogoDataEdit />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/notifications"
+                    element={
+                      <CustomSuspense>
+                        <NotificationsDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/notifications/reply/:id"
+                    element={
+                      <CustomSuspense>
+                        <MessageDetails />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Orders"
+                    element={
+                      <CustomSuspense>
+                        <OrdersDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Orders/:id"
+                    element={
+                      <CustomSuspense>
+                        <OrderDetails />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/Merchants/:add-brand"
+                    element={
+                      <CustomSuspense>
+                        <AddBrand />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Merchants/:id"
+                    element={
+                      <CustomSuspense>
+                        <BrandDetails />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Categories"
+                    element={
+                      <CustomSuspense>
+                        <CategoriesDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Attributes"
+                    element={
+                      <CustomSuspense>
+                        <AttributeDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Roles"
+                    element={
+                      <CustomSuspense>
+                        <RolesDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/OfferRanges"
+                    element={
+                      <CustomSuspense>
+                        <OfferRangeDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/OfferTypes"
+                    element={
+                      <CustomSuspense>
+                        <OfferTypesDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Preferences"
+                    element={
+                      <CustomSuspense>
+                        <PreferencesDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/add-new/:model"
+                    element={
+                      <CustomSuspense>
+                        <AddNew />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Requests"
+                    element={
+                      <CustomSuspense>
+                        <RequestsDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/Expenses"
+                    element={
+                      <CustomSuspense>
+                        <ExpensesDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/home-slider"
+                    element={
+                      <CustomSuspense>
+                        <HomeSliderDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                </Route>
+                <Route element={<AuthRoutes />}>
+                  <Route path="/Auth/Login" element={<Login />} />
+                </Route>
                 <Route
-                  path="/Team"
+                  path="*"
                   element={
                     <CustomSuspense>
-                      <TeamDashboard />
+                      <NoMatch />
                     </CustomSuspense>
                   }
                 />
-                <Route
-                  path="/Users"
-                  element={
-                    <CustomSuspense>
-                      <UserDashbaord />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Users/details/:email"
-                  element={
-                    <CustomSuspense>
-                      <UserDetails />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Users/details"
-                  element={
-                    <CustomSuspense>
-                      <UserDetails />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  exact
-                  path="/Products"
-                  element={
-                    <CustomSuspense>
-                      <ProductsDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Products/add-product"
-                  element={
-                    <CustomSuspense>
-                      <AddProduct />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Products/:id"
-                  element={
-                    <CustomSuspense>
-                      <ProductDetails />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  exact
-                  path="/Merchants"
-                  element={
-                    <CustomSuspense>
-                      <BrandsDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Merchants/:id/offers"
-                  element={
-                    <CustomSuspense>
-                      <BrandOffers />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <CustomSuspense>
-                      <Profile />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/setting"
-                  element={
-                    <CustomSuspense>
-                      <SettingDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/setting/userData"
-                  element={
-                    <CustomSuspense>
-                      <BogoProfile />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/setting/userData/changePassword"
-                  element={
-                    <CustomSuspense>
-                      <ChangePassword />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/setting/BogoData"
-                  element={
-                    <CustomSuspense>
-                      <BogoDataEdit />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/notifications"
-                  element={
-                    <CustomSuspense>
-                      <NotificationsDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/notifications/reply/:id"
-                  element={
-                    <CustomSuspense>
-                      <MessageDetails />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Orders"
-                  element={
-                    <CustomSuspense>
-                      <OrdersDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Orders/:id"
-                  element={
-                    <CustomSuspense>
-                      <OrderDetails />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  exact
-                  path="/Merchants/:add-brand"
-                  element={
-                    <CustomSuspense>
-                      <AddBrand />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Merchants/:id"
-                  element={
-                    <CustomSuspense>
-                      <BrandDetails />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Categories"
-                  element={
-                    <CustomSuspense>
-                      <CategoriesDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Attributes"
-                  element={
-                    <CustomSuspense>
-                      <AttributeDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Roles"
-                  element={
-                    <CustomSuspense>
-                      <RolesDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/OfferRanges"
-                  element={
-                    <CustomSuspense>
-                      <OfferRangeDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/OfferTypes"
-                  element={
-                    <CustomSuspense>
-                      <OfferTypesDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Preferences"
-                  element={
-                    <CustomSuspense>
-                      <PreferencesDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/add-new/:model"
-                  element={
-                    <CustomSuspense>
-                      <AddNew />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Requests"
-                  element={
-                    <CustomSuspense>
-                      <RequestsDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/Expenses"
-                  element={
-                    <CustomSuspense>
-                      <ExpensesDashboard />
-                    </CustomSuspense>
-                  }
-                />
-                <Route
-                  path="/home-slider"
-                  element={
-                    <CustomSuspense>
-                      <HomeSliderDashboard />
-                    </CustomSuspense>
-                  }
-                />
-              </Route>
-              <Route element={<AuthRoutes />}>
-                <Route path="/Auth/Login" element={<Login />} />
-              </Route>
-              <Route
-                path="*"
-                element={
-                  <CustomSuspense>
-                    <NoMatch />
-                  </CustomSuspense>
-                }
-              />
-            </Routes>
-            <ToastMessage />
-          </main>
-        </div>
+              </Routes>
+              <ToastMessage />
+            </main>
+          </div>
+        </QueryClientProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

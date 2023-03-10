@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TopStatsData from "./topstats/topStatsData";
 import BarChartStats from "./chartsStats/BarChartStats";
 import PieChartStats from "./chartsStats/PieChartStats";
@@ -9,14 +9,11 @@ import useDashboardData from "../../hooks/dashboard/useDashboardData";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
 function DashboardStats({ colors }) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const { data } = useDashboardData(setLoading, setError);
-
+  const { data, error, isLoading } = useDashboardData();
   return (
     <>
       {error && <Typography>Error with the dashboard</Typography>}
-      {loading && !error && (
+      {isLoading && (
         <Box
           sx={{
             display: "flex",
@@ -29,7 +26,7 @@ function DashboardStats({ colors }) {
           <CircularProgress color="info" />
         </Box>
       )}
-      {!loading && !error && data && (
+      {data && (
         <>
           <TopStatsData
             merchants={data.merchantNumber}
