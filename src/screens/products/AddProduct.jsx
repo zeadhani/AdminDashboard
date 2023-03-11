@@ -4,9 +4,7 @@ import { FormControlLabel, MenuItem, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
-
 import { toast } from "react-toastify";
-
 import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormCard from "../../components/Forms/FormCard";
@@ -36,7 +34,7 @@ function AddProduct() {
   const theme = useTheme();
   const navigate = useNavigate();
   let form_data = new FormData();
-  const { brands, categories, gender, allattributes } = useFilteredData();
+  const { data } = useFilteredData();
   const { handleImageUpload, imageFile, imageFileerror, changeImageFileError } =
     useImage();
   const [hasGender, setHasGender] = useState(false);
@@ -183,7 +181,7 @@ function AddProduct() {
               errors={errors.category}
               select
             >
-              {categories.map((item) => (
+              {data?.categories.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
@@ -200,7 +198,7 @@ function AddProduct() {
                 errors={errors.brand}
                 select
               >
-                {brands.map((item) => (
+                {data?.brands.map((item) => (
                   <MenuItem
                     key={item.id}
                     value={item?.name}
@@ -275,7 +273,7 @@ function AddProduct() {
                 errors={errors.gender}
                 select
               >
-                {gender.map((item) => (
+                {data?.gender.map((item) => (
                   <MenuItem key={item.id} value={item?.name}>
                     {item.name}
                   </MenuItem>
@@ -310,7 +308,7 @@ function AddProduct() {
                 attributesData={attributesData}
                 handleChangeattribute={handleChangeattribute}
                 indexcount={indexcount}
-                allattributes={allattributes}
+                allattributes={data?.allattributes}
                 setattributesData={setattributesData}
               />
             )}

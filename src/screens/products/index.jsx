@@ -37,7 +37,7 @@ function ProductsDashboard() {
   const navigate = useNavigate();
   const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
     usePage();
-  const { brands, categories } = useFilteredData();
+  const { data } = useFilteredData();
   const {
     sort,
     search,
@@ -138,14 +138,14 @@ function ProductsDashboard() {
         <CustomFilter
           label={"Category"}
           value={filtered}
-          filterarray={categories}
+          filterarray={data?.categories}
           onChange={handleFilterChange}
           multiple={true}
         />
         <CustomFilter
           label={"Brands"}
           value={filteredBrand}
-          filterarray={brands}
+          filterarray={data?.brands}
           onChange={handleFilterBrandChange}
           multiple={true}
           sx={{ flex: 1 }}

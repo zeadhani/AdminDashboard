@@ -35,7 +35,7 @@ function ProductDetails() {
   const ref = useRef(null);
   const [loading, setLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
-  const { brands, categories, gender, allattributes } = useFilteredData();
+  const { data } = useFilteredData();
   const [offers, setOffers] = useState();
   const { items, product, getProduct, newItems } = useSingleProduct(
     setServerErrors,
@@ -219,12 +219,7 @@ function ProductDetails() {
         validationSchema={formValidation}
         enableReinitialize={true}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleSubmit,
-        }) => (
+        {({ values, errors, touched, handleSubmit }) => (
           <FormCard
             serverErrors={serverErrors}
             loading={loading}
@@ -261,7 +256,7 @@ function ProductDetails() {
               disabled={!editable}
               variant={editable ? "filled" : "standard"}
             >
-              {categories.map((item) => (
+              {data?.categories.map((item) => (
                 <MenuItem key={item.id} value={item?.name}>
                   {item.name}
                 </MenuItem>
@@ -281,7 +276,7 @@ function ProductDetails() {
                 select={editable}
                 variant={editable ? "filled" : "standard"}
               >
-                {brands.map((item) => (
+                {data?.brands.map((item) => (
                   <MenuItem
                     key={item.id}
                     value={item.name}
@@ -368,7 +363,7 @@ function ProductDetails() {
                 select={editable}
                 variant={editable ? "filled" : "standard"}
               >
-                {gender.map((item) => (
+                {data?.gender.map((item) => (
                   <MenuItem key={item.id} value={item?.name}>
                     {item.name}
                   </MenuItem>
@@ -402,7 +397,7 @@ function ProductDetails() {
                     attributesData={attributesData}
                     handleChangeattribute={handleChangeattribute}
                     indexcount={indexcount}
-                    allattributes={allattributes}
+                    allattributes={data?.allattributes}
                     setattributesData={setattributesData}
                   />
                 )}

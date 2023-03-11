@@ -9,10 +9,10 @@ import useDashboardData from "../../hooks/dashboard/useDashboardData";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
 function DashboardStats({ colors }) {
-  const { data, error, isLoading } = useDashboardData();
+  const { data, isLoading, isError } = useDashboardData();
   return (
     <>
-      {error && <Typography>Error with the dashboard</Typography>}
+      {isError && <Typography>Error with the dashboard</Typography>}
       {isLoading && (
         <Box
           sx={{
