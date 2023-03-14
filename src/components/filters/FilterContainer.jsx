@@ -60,7 +60,7 @@ function FilterContainer({
           direction={width < 1200 ? "column" : "row"}
           spacing={2}
           width={"100%"}
-          height={"100%"}
+          height={width < 1200 ? "100%" : "90%"}
           sx={
             width < 1200
               ? {
