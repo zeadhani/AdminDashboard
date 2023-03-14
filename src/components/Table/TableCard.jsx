@@ -42,9 +42,15 @@ function TableCard({
   return (
     <>
       <LinearProg loading={loading} />
-      {error && <Box p={2}>Error , could not fetch data</Box>}
+      {error && (
+        <Box sx={{ height: "73vh" }} p={2}>
+          Error , could not fetch data
+        </Box>
+      )}
       {model?.length === 0 && !error && !loading && (
-        <Box p={2}>No items Found</Box>
+        <Box sx={{ height: "73vh" }} p={2}>
+          No items Found
+        </Box>
       )}
       {model?.length > 0 && (
         <TableContainer sx={{ height: "73vh" }}>
