@@ -17,6 +17,7 @@ function useBrands(
   const [brands, setBrands] = useState([]);
   const getBrands = async () => {
     setLoading(true);
+
     try {
       const brands = await authFetch.get(
         `/brand?limit=${rowsPerPage}&page=${

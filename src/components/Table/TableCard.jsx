@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { Paper } from "@mui/material";
 import { tokens } from "../../Theme";
 import LinearProg from "../global/LinearProg";
 
