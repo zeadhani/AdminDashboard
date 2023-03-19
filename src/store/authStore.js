@@ -24,6 +24,10 @@ const AuthSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     },
+    refreshToken(state, action) {
+      state.token = action.payload.token;
+      localStorage.setItem("token", JSON.stringify(state.token));
+    },
   },
 });
 export default AuthSlice;

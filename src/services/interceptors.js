@@ -24,6 +24,14 @@ authFetch.interceptors.response.use(
     if (error.response.status === 401) {
       store.dispatch(authActions.Logout());
     }
+    if (error.response.status === 409) {
+      store.dispatch(
+        authActions.refreshToken({
+          token: error.response.data.newToken,
+        })
+      );
+      return authFetch(error.config);
+    }
     return Promise.reject(error);
   }
 );
