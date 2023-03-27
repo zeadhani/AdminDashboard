@@ -14,6 +14,8 @@ function PersonOrderDetails({ item }) {
       <LazyLoadImage
         style={{
           height: 50,
+          width:50,
+          objectFit:"contain",
           borderRadius: "50%",
           cursor: "pointer",
         }}
