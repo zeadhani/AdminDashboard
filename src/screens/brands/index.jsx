@@ -14,11 +14,10 @@ import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
 import usePage from "../../components/hooks/general/usePage";
 import useCommonFilters from "../../components/hooks/general/useCommonFilters";
-import useBrands from "../../components/hooks/merchants/useBrands";
-import usePreferences from "../../components/hooks/merchants/usepreferences";
 import useBrandFilters from "../../components/hooks/merchants/useBrandFilters";
 
 import authFetch from "../../services/interceptors";
+import useBrandsPage from "../../components/hooks/merchants/useBrandsPage";
 
 const columns = [
   { id: "name", label: "Name" },
@@ -29,6 +28,7 @@ const columns = [
 ];
 const sortArray = ["createdAt", "name"];
 function BrandsDashboard() {
+  console.log("first");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -45,10 +45,11 @@ function BrandsDashboard() {
   } = useCommonFilters();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const { pref } = usePreferences();
+
   const { preferencesFilter, handleFilterPrefChange, resetBrandFilters } =
     useBrandFilters();
-  const { brands, count, getBrands } = useBrands(
+
+  const { brands, count, getBrands, pref } = useBrandsPage({
     setLoading,
     rowsPerPage,
     page,
@@ -56,8 +57,8 @@ function BrandsDashboard() {
     orderBy,
     search,
     setError,
-    preferencesFilter
-  );
+    preferencesFilter,
+  });
   const handleDeleteBrand = (name) => {
     return async () => {
       setLoading(true);
@@ -167,3 +168,14 @@ function BrandsDashboard() {
 }
 
 export default BrandsDashboard;
+// const { brands, count, getBrands } = useBrands(
+//   setLoading,
+//   rowsPerPage,
+//   page,
+//   sort,
+//   orderBy,
+//   search,
+//   setError,
+//   preferencesFilter
+// );
+  // const { pref } = usePreferences();

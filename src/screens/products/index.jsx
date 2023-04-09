@@ -14,11 +14,10 @@ import FilterContainer from "../../components/filters/FilterContainer";
 import RowIdentifier from "../../components/Table/rowIdentifier";
 import DateCell from "../../components/Table/DateCell";
 import usePage from "../../components/hooks/general/usePage";
-import useFilteredData from "../../components/hooks/products/useFilteredData";
-import useProduct from "../../components/hooks/products/useProduct";
 import useCommonFilters from "../../components/hooks/general/useCommonFilters";
 import useProductFilters from "../../components/hooks/products/useProductFilters";
 import authFetch from "../../services/interceptors";
+import useProductsData from "../../components/hooks/products/useProductsData";
 
 const sortArray = ["createdAt", "price", "name"];
 const stockArrary = ["inStock", "outStock"];
@@ -37,7 +36,7 @@ function ProductsDashboard() {
   const navigate = useNavigate();
   const { page, handleChangePage, handleChangeRowsPerPage, rowsPerPage } =
     usePage();
-  const { data } = useFilteredData();
+
   const {
     sort,
     search,
@@ -58,7 +57,8 @@ function ProductsDashboard() {
   } = useProductFilters();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const { products, count, getProducts } = useProduct(
+
+  const { count, data, getProducts, products } = useProductsData({
     rowsPerPage,
     page,
     sort,
@@ -68,8 +68,9 @@ function ProductsDashboard() {
     filteredBrand,
     setLoading,
     setError,
-    filteredStock
-  );
+    filteredStock,
+  });
+
   const handleDeleteProduct = (id) => {
     return async (e) => {
       setLoading(true);
@@ -199,3 +200,16 @@ function ProductsDashboard() {
 }
 
 export default ProductsDashboard;
+// const { products, count, getProducts } = useProduct(
+//   rowsPerPage,
+//   page,
+//   sort,
+//   orderBy,
+//   search,
+//   filtered,
+//   filteredBrand,
+//   setLoading,
+//   setError,
+//   filteredStock
+// );
+// const { data } = useFilteredData();

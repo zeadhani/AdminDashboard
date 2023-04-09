@@ -1,63 +1,62 @@
-import React, { useReducer } from "react";
-import authFetch from "../../../services/interceptors";
+import axios from "axios";
 import { useRef } from "react";
+import { useReducer } from "react";
+import authFetch from "../../../services/interceptors";
 import { useEffect } from "react";
-const initialState = {
-  products: [],
-  count: 0,
-  data: {},
-};
 
+const initialState = {
+  pref: [],
+  brands: [],
+  count: 0,
+};
 const reducer = (state, action) => {
   switch (action.type) {
     case "INITIAL_FETCH_DATA_SUCCESS": {
       return {
         ...state,
-        data: action.payload.data,
-        products: action.payload.products,
+        pref: action.payload.pref,
+        brands: action.payload.brands,
         count: action.payload.count,
       };
     }
     case "UPDATE_DATA": {
       return {
         ...state,
-        products: action.payload.products,
+        brands: action.payload.brands,
       };
     }
     default:
       throw new Error("Unexpected action");
   }
 };
-function useProductsData({
+function useBrandsPage({
+  setLoading,
   rowsPerPage,
   page,
   sort,
   orderBy,
   search,
-  filtered,
-  filteredBrand,
-  setLoading,
   setError,
-  filteredStock,
+  preferencesFilter,
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const initialRender = useRef(true);
   const getInitialData = async () => {
     try {
-      const [filterData, products] = await Promise.all([
-        authFetch.get("/products/filter/all"),
+      const [filterData, brands] = await Promise.all([
+        axios.get(`${process.env.REACT_APP_API_URL}/pref`),
         authFetch.get(
-          `/products?limit=${rowsPerPage}&page=${
+          `/brand?limit=${rowsPerPage}&page=${
             page + 1
-          }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
+          }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
         ),
       ]);
       dispatch({
         type: "INITIAL_FETCH_DATA_SUCCESS",
         payload: {
-          data: filterData.data,
-          products: products.data.data.data,
-          count: products.data.data.totalCount,
+          pref: filterData.data,
+          brands: brands.data.data.data,
+          count: brands.data.data.totalCount,
         },
       });
     } catch (error) {
@@ -67,19 +66,18 @@ function useProductsData({
   };
 
   const getUpdatedData = async () => {
-    const products = await authFetch.get(
-      `/products?limit=${rowsPerPage}&page=${
+    const brands = await authFetch.get(
+      `/brand?limit=${rowsPerPage}&page=${
         page + 1
-      }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
+      }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
     );
     dispatch({
       type: "UPDATE_DATA",
       payload: {
-        products: products.data.data.data,
+        brands: brands.data.data.data,
       },
     });
   };
-
   useEffect(() => {
     getInitialData();
   }, []);
@@ -94,29 +92,17 @@ function useProductsData({
       url.searchParams.set("sort", sort);
       url.searchParams.set("orderBy", orderBy);
       url.searchParams.set("search", search);
-      url.searchParams.set("stock", filteredStock);
-      url.searchParams.set("brand", [filteredBrand]);
-      url.searchParams.set("filtered", [filtered]);
-
+      url.searchParams.set("preferences", [preferencesFilter]);
       window.history.pushState({}, "", url);
       getUpdatedData();
     }
-  }, [
-    rowsPerPage,
-    page,
-    sort,
-    orderBy,
-    search,
-    filtered,
-    filteredStock,
-    filteredBrand,
-  ]);
+  }, [rowsPerPage, page, sort, orderBy, search, preferencesFilter]);
   return {
-    data: state?.data,
-    products: state?.products,
+    brands: state?.brands,
     count: state?.count,
-    getProducts: getUpdatedData,
+    getBrands: getUpdatedData,
+    pref: state?.pref,
   };
 }
 
-export default useProductsData;
+export default useBrandsPage;
