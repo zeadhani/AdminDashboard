@@ -109,7 +109,7 @@ function CommonModelContainer({ model }) {
 
               <ActionsButtonsTable
                 deleteAction={handleDeleteModelItem(row.name)}
-                editAction={editAction(row?.id)}
+                // editAction={editAction(row?.id)}
          
                 colors={colors}
               />

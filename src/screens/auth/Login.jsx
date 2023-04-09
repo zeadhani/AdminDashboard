@@ -18,8 +18,6 @@ import FormButton from "../../components/Forms/FormButton";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import { mockLoginData as itemData } from "../../data/mockData";
 
-
-
 import axios from "axios";
 
 const initialValues = {
@@ -40,7 +38,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
+        `${process.env.REACT_APP_API_URL}/auth/adminLogin`,
         { email, password }
       );
 

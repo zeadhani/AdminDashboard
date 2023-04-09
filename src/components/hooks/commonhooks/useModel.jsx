@@ -35,15 +35,13 @@ function useModel(
   };
 
   useEffect(() => {
-    navigate({
-      search: `?${createSearchParams({
-        rowsPerPage,
-        page,
-        sort,
-        orderBy,
-        search,
-      })}`,
-    });
+    const url = new URL(window.location);
+    url.searchParams.set("rowsPerPage", rowsPerPage);
+    url.searchParams.set("page", page);
+    url.searchParams.set("sort", sort);
+    url.searchParams.set("orderBy", orderBy);
+    url.searchParams.set("search", search);
+    window.history.pushState({}, "", url);
     getData();
   }, [rowsPerPage, page, sort, orderBy, search]);
   return { data, getData, count };
