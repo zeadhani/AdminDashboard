@@ -51,7 +51,7 @@ function TableCard({
           No items Found
         </Box>
       )}
-      {model?.length > 0 && (
+      {model?.length > 0 && !error && (
         <TableContainer sx={{ height: "73vh" }}>
           <Table stickyHeader={true} sx={{ minWidth: 1200 }}>
             <TableHead>

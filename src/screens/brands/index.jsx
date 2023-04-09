@@ -28,7 +28,6 @@ const columns = [
 ];
 const sortArray = ["createdAt", "name"];
 function BrandsDashboard() {
-  console.log("first");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -178,4 +177,4 @@ export default BrandsDashboard;
 //   setError,
 //   preferencesFilter
 // );
-  // const { pref } = usePreferences();
+// const { pref } = usePreferences();
