@@ -200,16 +200,4 @@ function ProductsDashboard() {
 }
 
 export default ProductsDashboard;
-// const { products, count, getProducts } = useProduct(
-//   rowsPerPage,
-//   page,
-//   sort,
-//   orderBy,
-//   search,
-//   filtered,
-//   filteredBrand,
-//   setLoading,
-//   setError,
-//   filteredStock
-// );
-// const { data } = useFilteredData();
+

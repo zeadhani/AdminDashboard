@@ -43,6 +43,7 @@ function useProductsData({
   const [state, dispatch] = useReducer(reducer, initialState);
   const initialRender = useRef(true);
   const getInitialData = async () => {
+    setLoading(true);
     try {
       const [filterData, products] = await Promise.all([
         authFetch.get("/products/filter/all"),
@@ -67,17 +68,23 @@ function useProductsData({
   };
 
   const getUpdatedData = async () => {
-    const products = await authFetch.get(
-      `/products?limit=${rowsPerPage}&page=${
-        page + 1
-      }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
-    );
-    dispatch({
-      type: "UPDATE_DATA",
-      payload: {
-        products: products.data.data.data,
-      },
-    });
+    setLoading(true);
+    try {
+      const products = await authFetch.get(
+        `/products?limit=${rowsPerPage}&page=${
+          page + 1
+        }&sort=${sort},${orderBy}&search=${search}&filter=${filtered}&stock=${filteredStock}&brand=${filteredBrand}`
+      );
+      dispatch({
+        type: "UPDATE_DATA",
+        payload: {
+          products: products.data.data.data,
+        },
+      });
+    } catch (error) {
+      setError(true);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {

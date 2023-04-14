@@ -42,6 +42,7 @@ function useBrandsPage({
   const [state, dispatch] = useReducer(reducer, initialState);
   const initialRender = useRef(true);
   const getInitialData = async () => {
+    setLoading(true);
     try {
       const [filterData, brands] = await Promise.all([
         axios.get(`${process.env.REACT_APP_API_URL}/pref`),
@@ -66,17 +67,23 @@ function useBrandsPage({
   };
 
   const getUpdatedData = async () => {
-    const brands = await authFetch.get(
-      `/brand?limit=${rowsPerPage}&page=${
-        page + 1
-      }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
-    );
-    dispatch({
-      type: "UPDATE_DATA",
-      payload: {
-        brands: brands.data.data.data,
-      },
-    });
+    setLoading(true);
+    try {
+      const brands = await authFetch.get(
+        `/brand?limit=${rowsPerPage}&page=${
+          page + 1
+        }&sort=${sort},${orderBy}&search=${search}&filter=${preferencesFilter}`
+      );
+      dispatch({
+        type: "UPDATE_DATA",
+        payload: {
+          brands: brands.data.data.data,
+        },
+      });
+    } catch (error) {
+      setError(true);
+    }
+    setLoading(false);
   };
   useEffect(() => {
     getInitialData();
