@@ -65,9 +65,9 @@ function RequestsDashboard() {
       try {
         await authFetch.delete(`/request/${id}`);
         getRequests();
-        setError(false)
+        setError(false);
       } catch (err) {
-        console.log("first")
+        console.log("first");
         setError(true);
       }
       setLoading(false);
@@ -132,7 +132,7 @@ function RequestsDashboard() {
               </TableCell>
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
-                deleteAction={handleDeleteRequest(row?.id)}
+                deleteAction={!complete ? handleDeleteRequest(row?.id) : null}
                 colors={colors}
               />
             </CustomTableRow>
