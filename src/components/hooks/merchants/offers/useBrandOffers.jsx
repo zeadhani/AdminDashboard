@@ -22,7 +22,6 @@ function useBrandOffers(id) {
       const offersData = await authFetch.get(`/offer/brand/${id}`);
       setData(offersData.data);
     } catch (err) {
-      // console.log(err)
       // console.log(err.response.data.error)
     }
   };

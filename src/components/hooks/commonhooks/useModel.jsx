@@ -34,8 +34,8 @@ function useModel(
     setLoading(false);
   };
 
+  const url = new URL(window.location);
   useEffect(() => {
-    const url = new URL(window.location);
     url.searchParams.set("rowsPerPage", rowsPerPage);
     url.searchParams.set("page", page);
     url.searchParams.set("sort", sort);

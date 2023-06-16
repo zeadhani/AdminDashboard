@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
 import authFetch from "../../../services/interceptors";
 
 function useContactUs(
@@ -12,7 +11,6 @@ function useContactUs(
   setError,
   repliedFilter
 ) {
-  const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [contactUs, setContactUs] = useState([]);
   const getcontactUs = async () => {
@@ -31,17 +29,15 @@ function useContactUs(
     }
     setLoading(false);
   };
+  const url = new URL(window.location);
   useEffect(() => {
-    navigate({
-      search: `?${createSearchParams({
-        rowsPerPage,
-        page,
-        sort,
-        orderBy,
-        search,
-        replied: [repliedFilter],
-      })}`,
-    });
+    url.searchParams.set("rowsPerPage", rowsPerPage);
+    url.searchParams.set("page", page);
+    url.searchParams.set("sort", sort);
+    url.searchParams.set("orderBy", orderBy);
+    url.searchParams.set("search", search);
+    url.searchParams.set("replied", [repliedFilter]);
+    window.history.pushState({}, "", url);
     getcontactUs();
   }, [rowsPerPage, page, sort, orderBy, search, repliedFilter]);
   return { contactUs, count, getcontactUs, setContactUs };

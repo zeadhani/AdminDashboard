@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import authFetch from "../../../services/interceptors";
 
 function useUser(email) {

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
 import authFetch from "../../../services/interceptors";
 import { useEffect } from "react";
 
@@ -13,7 +12,6 @@ function useOrders(
   setError,
   filteredBrand
 ) {
-  const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [orders, setOrders] = useState([]);
   const getOrders = async () => {
@@ -33,17 +31,15 @@ function useOrders(
     }
     setLoading(false);
   };
+  const url = new URL(window.location);
   useEffect(() => {
-    navigate({
-      search: `?${createSearchParams({
-        rowsPerPage,
-        page,
-        sort,
-        orderBy,
-        search,
-        brand: [filteredBrand],
-      })}`,
-    });
+    url.searchParams.set("rowsPerPage", rowsPerPage);
+    url.searchParams.set("page", page);
+    url.searchParams.set("sort", sort);
+    url.searchParams.set("orderBy", orderBy);
+    url.searchParams.set("search", search);
+    url.searchParams.set("brand", [filteredBrand]);
+    window.history.pushState({}, "", url);
     getOrders();
   }, [rowsPerPage, page, sort, orderBy, search, filteredBrand]);
   return { orders, count, getOrders };
