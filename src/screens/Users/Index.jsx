@@ -50,7 +50,7 @@ function UserDashbaord() {
     resetCommonFilters,
     handleSortChange,
   } = useCommonFilters();
-  const { count, getUsers, users, setUsers } = useUsers(
+  const { count, getUsers, users } = useUsers({
     setLoading,
     rowsPerPage,
     page,
@@ -58,8 +58,8 @@ function UserDashbaord() {
     orderBy,
     search,
     setError,
-    verifiedFilter
-  );
+    verifiedFilter,
+  });
   const handleTitleClick = () => {
     navigate("/Users/details");
   };
@@ -85,25 +85,25 @@ function UserDashbaord() {
       setLoading(false);
     };
   };
-  const verifyAction = (id, verified) => {
-    return async (e) => {
-      setLoading(true);
-      const updateServer = await authFetch.patch(
-        `/user/verify/${id}?verifyQuery=${verified}`
-      );
+  // const verifyAction = (id, verified) => {
+  //   return async (e) => {
+  //     setLoading(true);
+  //     const updateServer = await authFetch.patch(
+  //       `/user/verify/${id}?verifyQuery=${verified}`
+  //     );
 
-      if (updateServer.status !== 200) return;
-      const data = [...users];
-      const newData = data.map((item) => {
-        if (item.id === id) {
-          return { ...item, verified };
-        }
-        return item;
-      });
-      setUsers(newData);
-      setLoading(false);
-    };
-  };
+  //     if (updateServer.status !== 200) return;
+  //     const data = [...users];
+  //     const newData = data.map((item) => {
+  //       if (item.id === id) {
+  //         return { ...item, verified };
+  //       }
+  //       return item;
+  //     });
+  //     setUsers(newData);
+  //     setLoading(false);
+  //   };
+  // };
   return (
     <CustomContainer title={"BOGO USERS"} subtitle={"Managing bogo users!"}>
       <FilterContainer
@@ -146,7 +146,7 @@ function UserDashbaord() {
           <CustomTableRow colors={colors} key={row.id}>
             <RowIdentifier>{row.first_name}</RowIdentifier>
             <TableCell>{row.last_name}</TableCell>
-        
+
             <TableImage image={row.image} />
             <TableCell>{row.email}</TableCell>
             <TableCell
@@ -164,8 +164,8 @@ function UserDashbaord() {
               deleteAction={handleDeleteUser(row?.id)}
               viewAction={viewAction(row?.email)}
               colors={colors}
-              anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
-              anotherActionName={row.verified ? "UnVerify" : "Verify"}
+              // anotherAction={verifyAction(row?.id, row.verified ? 0 : 1)}
+              // anotherActionName={row.verified ? "UnVerify" : "Verify"}
             />
           </CustomTableRow>
         ))}

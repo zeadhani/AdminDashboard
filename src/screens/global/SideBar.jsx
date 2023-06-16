@@ -14,7 +14,6 @@ import {
   CategoryOutlined,
   TypeSpecimenOutlined,
   LocalOfferOutlined,
-  ManageAccountsOutlined,
   AttachMoneyOutlined,
 } from "@mui/icons-material";
 
@@ -209,13 +208,7 @@ function SideBar({ collapseSidebar, collapsed }) {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Roles"
-              to="/Roles"
-              icon={<ManageAccountsOutlined />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+           
             <Item
               title="Offer Ranges"
               to="/OfferRanges"

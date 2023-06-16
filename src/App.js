@@ -41,7 +41,6 @@ const ChangePassword = React.lazy(() =>
 );
 const CategoriesDashboard = React.lazy(() => import("./screens/categories"));
 const AttributeDashboard = React.lazy(() => import("./screens/attributes"));
-const RolesDashboard = React.lazy(() => import("./screens/roles"));
 const OfferRangeDashboard = React.lazy(() => import("./screens/offerRanges"));
 const OfferTypesDashboard = React.lazy(() => import("./screens/offerTypes"));
 const PreferencesDashboard = React.lazy(() => import("./screens/preferences"));
@@ -241,14 +240,6 @@ function App() {
                     element={
                       <CustomSuspense>
                         <AttributeDashboard />
-                      </CustomSuspense>
-                    }
-                  />
-                  <Route
-                    path="/Roles"
-                    element={
-                      <CustomSuspense>
-                        <RolesDashboard />
                       </CustomSuspense>
                     }
                   />

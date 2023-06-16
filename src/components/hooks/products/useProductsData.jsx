@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 import authFetch from "../../../services/interceptors";
 import { useRef } from "react";
 import { useEffect } from "react";

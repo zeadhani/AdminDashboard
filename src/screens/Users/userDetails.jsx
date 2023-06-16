@@ -1,7 +1,7 @@
 import React from "react";
 import useUser from "../../components/hooks/auth/useUser";
 import { useNavigate, useParams } from "react-router-dom";
-import {  MenuItem, Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import FormCard from "../../components/Forms/FormCard";
 import { Formik } from "formik";
 import CustomTextField from "../../components/Forms/CustomTextField";
@@ -142,11 +142,17 @@ function UserDetails() {
     }
   }, [user]);
 
+  console.log(user);
   return (
     <CustomContainer
-      title={"BOGO USERS"}
-      subtitle={"Viewing your bogo user!"}
-      onClick={() => handleTitleClick(navigate, "Users")}
+      title={`BOGO  ${user?.roles?.role === "admin" ? "Team" : "Users"}`}
+      subtitle={email ? "Viewing bogo user!" : "Adding new bogo user!"}
+      onClick={() =>
+        handleTitleClick(
+          navigate,
+          user?.roles?.role === "admin" ? "Team" : "Users"
+        )
+      }
     >
       <Formik
         onSubmit={handleFormSubmit}
@@ -262,25 +268,6 @@ function UserDetails() {
               imageFileerror={!email && nationalIdFileError}
             />
             {!email && <ImageFileDisplay imageFile={nationalIdFile} />}
-
-            {/* {!email && (
-              <>
-                <ImageFileUpload
-                  add={true}
-                  handleImageUpload={(e) => handleUserImageUpload(e)}
-                  imageFileerror={userImageFileError}
-                  label={"user Image"}
-                />
-                <ImageFileDisplay imageFile={userImageFile} />
-                <ImageFileUpload
-                  add={true}
-                  handleImageUpload={(e) => handleNationalIdImage(e)}
-                  imageFileerror={nationalIdFileError}
-                  label={"product Image"}
-                />
-                <ImageFileDisplay imageFile={nationalIdFile} />
-              </>
-            )} */}
 
             {email && (
               <Typography

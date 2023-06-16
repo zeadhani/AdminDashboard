@@ -63,12 +63,6 @@ function CommonModelContainer({ model }) {
     resetCommonFilters();
   };
 
-  const editAction = (id) => {
-    return () => {
-      navigate("/");
-    };
-  };
-  
   const handleTitleClick = () => {
     navigate(`/add-new/${model}`);
   };
