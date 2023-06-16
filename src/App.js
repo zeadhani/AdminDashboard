@@ -283,14 +283,14 @@ function App() {
                       </CustomSuspense>
                     }
                   />
-                  <Route
+                  {/* <Route
                     path="/Expenses"
                     element={
                       <CustomSuspense>
                         <ExpensesDashboard />
                       </CustomSuspense>
                     }
-                  />
+                  /> */}
                   <Route
                     path="/home-slider"
                     element={

@@ -14,6 +14,7 @@ import {
   LocalOfferOutlined,
   AttachMoneyOutlined,
   PeopleOutlined,
+  MoneyTwoTone,
 } from "@mui/icons-material";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
@@ -162,13 +163,13 @@ function SideBarItems({ selected, setSelected }) {
         selected={selected}
         setSelected={setSelected}
       />
-      <Item
+      {/* <Item
         title="Expenses"
         to="/Expenses"
-        icon={<AttachMoneyOutlined />}
+        icon={<MoneyTwoTone />}
         selected={selected}
         setSelected={setSelected}
-      />
+      /> */}
       <Item
         title="Home Slider"
         to="/home-slider"

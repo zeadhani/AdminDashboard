@@ -5,7 +5,7 @@ import PieChart from "../../../charts/PieChart";
 function PieChartStats({ colors,data }) {
   return (
     <Box
-      sx={{ gridColumn: { lg: "span 4", xs: "span 3" } }}
+      sx={{ gridColumn: { lg: "span 6", xs: "span 3" } }}
       gridRow="span 2"
       backgroundColor={colors.primary[400]}
       padding="30px"
