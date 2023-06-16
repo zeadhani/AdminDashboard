@@ -11,6 +11,7 @@ import SideBarContainer from "./components/global/sidebar/sideBarContainer";
 import ToastMessage from "./components/global/ToastMessage";
 import "react-toastify/dist/ReactToastify.min.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+
 const TeamDashboard = React.lazy(() => import("./screens/Team/Index"));
 const ProductsDashboard = React.lazy(() => import("./screens/products/index"));
 const ProductDetails = React.lazy(() =>
@@ -30,6 +31,9 @@ const OrderDetails = React.lazy(() => import("./screens/orders/orderDetails"));
 const SettingDashboard = React.lazy(() => import("./screens/setting"));
 const BogoProfile = React.lazy(() => import("./screens/setting/BogoProfile"));
 const BogoDataEdit = React.lazy(() => import("./screens/setting/BogoDataEit"));
+const HomeSliderDetails = React.lazy(() =>
+  import("./screens/HomeSlider/homeSilderDetails")
+);
 const NotificationsDashboard = React.lazy(() =>
   import("./screens/notifications")
 );
@@ -45,7 +49,6 @@ const OfferRangeDashboard = React.lazy(() => import("./screens/offerRanges"));
 const OfferTypesDashboard = React.lazy(() => import("./screens/offerTypes"));
 const PreferencesDashboard = React.lazy(() => import("./screens/preferences"));
 const RequestsDashboard = React.lazy(() => import("./screens/Requests"));
-const ExpensesDashboard = React.lazy(() => import("./screens/Expenses"));
 const HomeSliderDashboard = React.lazy(() => import("./screens/HomeSlider"));
 const AddNew = React.lazy(() =>
   import("./components/commonDataModelUI/addNew")
@@ -283,19 +286,20 @@ function App() {
                       </CustomSuspense>
                     }
                   />
-                  {/* <Route
-                    path="/Expenses"
-                    element={
-                      <CustomSuspense>
-                        <ExpensesDashboard />
-                      </CustomSuspense>
-                    }
-                  /> */}
+
                   <Route
                     path="/home-slider"
                     element={
                       <CustomSuspense>
                         <HomeSliderDashboard />
+                      </CustomSuspense>
+                    }
+                  />
+                  <Route
+                    path="/home-slider/:id"
+                    element={
+                      <CustomSuspense>
+                        <HomeSliderDetails />
                       </CustomSuspense>
                     }
                   />
