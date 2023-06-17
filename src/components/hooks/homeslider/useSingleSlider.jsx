@@ -21,7 +21,7 @@ function useSingleSlider({ id }) {
       getData();
     }
   }, [id]);
-  return { data ,loading,serverErrors};
+  return { data ,loading,serverErrors,setServerErrors};
 }
 
 export default useSingleSlider;

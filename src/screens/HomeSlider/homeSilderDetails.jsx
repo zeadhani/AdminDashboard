@@ -14,13 +14,19 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import useSingleSlider from "../../components/hooks/homeslider/useSingleSlider";
 import { handleTitleClick } from "../../utils/functions";
+import authFetch from "../../services/interceptors";
+import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 
 function HomeSliderDetails() {
   const theme = useTheme();
   const [add, setAdd] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, loading, serverErrors } = useSingleSlider({ id });
+  const { data, loading, serverErrors, setServerErrors } = useSingleSlider({
+    id,
+  });
+  let form_data = new FormData();
+
   const {
     handleImageUpload,
     imageFile,
@@ -30,14 +36,27 @@ function HomeSliderDetails() {
   } = useImage();
 
   const handleFormSubmit = async (values) => {
+    setServerErrors("")
     if (add) {
       if (!imageFile || imageFileerror) {
         changeImageFileError("Image is required");
         return;
       }
     }
-
-    toast.success("good");
+    const { image, imageLink, imageSubtitle } = values;
+    try {
+      if (imageFile) {
+        form_data.append("image", imageFile);
+      }
+      form_data.append("title", image);
+      form_data.append("subtitle", imageSubtitle);
+      form_data.append("link", imageLink);
+      const res = await authFetch.patch(`/homeSlider/${id}`, form_data);
+      if (res.statusText !== "OK") return;
+      toast.success("home slider updated");
+    } catch (error) {
+      setServerErrors(error.response.data.error);
+    }
   };
   const formValidation = yup.object().shape({
     image: yup.string().required("Image title is required"),
@@ -99,7 +118,7 @@ function HomeSliderDetails() {
               imageFileerror={imageFileerror}
               label={"product Image"}
             />
-
+             <ImageFileDisplay imageFile={imageFile} alt={values.image} />
             <FormButton theme={theme}>Save</FormButton>
           </FormCard>
         )}
