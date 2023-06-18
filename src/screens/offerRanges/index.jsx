@@ -51,11 +51,11 @@ function OfferRangeDashboard() {
   const handleRestFilters = () => {
     resetCommonFilters();
   };
-  const viewAction = (id) => {
-    return () => {
-      navigate(`/OfferRanges/${id}`);
-    };
-  };
+  // const viewAction = (id) => {
+  //   return () => {
+  //     navigate(`/OfferRanges/${id}`);
+  //   };
+  // };
   const handleDeleteOfferRange = (id) => {
     return async () => {
       try {
@@ -68,6 +68,9 @@ function OfferRangeDashboard() {
         toast.error(error.response.data.error);
       }
     };
+  };
+  const addNavFilter = () => {
+    navigate(`/OfferRanges/2`);
   };
   return (
     <CustomContainer title={"Bogo ranges"} subtitle={"managing offer ranges!"}>
@@ -82,6 +85,7 @@ function OfferRangeDashboard() {
         orderBy={orderBy}
         sortArray={sortArray}
         commonmodel={"true"}
+        addNav={addNavFilter}
       />
 
       <TableCard
@@ -104,7 +108,7 @@ function OfferRangeDashboard() {
               <DateCell date={row.createdAt} />
               <ActionsButtonsTable
                 deleteAction={handleDeleteOfferRange(row?.id)}
-                viewAction={viewAction(row?.id)}
+                // viewAction={viewAction(row?.id)}
                 colors={colors}
               />
             </CustomTableRow>

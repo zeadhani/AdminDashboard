@@ -59,7 +59,7 @@ function TeamDashboard() {
     resetCommonFilters();
   };
   const handleTitleClick = () => {
-    navigate("/Team/details");
+    navigate("/Users/details");
   };
   return (
     <CustomContainer title={"Bogo team"} subtitle={"Managing bogo Team!"}>
