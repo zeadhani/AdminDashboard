@@ -262,7 +262,7 @@ function RouteComponent() {
           }
         />
         <Route
-          path="/OfferRanges/:id"
+          path="/OfferRanges/add-new"
           element={
             <CustomSuspense>
               <OfferRangeDetails />

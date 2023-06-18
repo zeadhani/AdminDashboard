@@ -5,7 +5,7 @@ import FormCard from "../../components/Forms/FormCard";
 import CustomTextField from "../../components/Forms/CustomTextField";
 import FormButton from "../../components/Forms/FormButton";
 import * as yup from "yup";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import authFetch from "../../services/interceptors";
@@ -15,7 +15,6 @@ const initialValues = {
   highestPrice: 0,
 };
 function OfferRangeDetails() {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState();
   const theme = useTheme();

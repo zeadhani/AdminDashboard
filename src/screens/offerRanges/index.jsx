@@ -70,7 +70,7 @@ function OfferRangeDashboard() {
     };
   };
   const addNavFilter = () => {
-    navigate(`/OfferRanges/2`);
+    navigate(`/OfferRanges/add-new`);
   };
   return (
     <CustomContainer title={"Bogo ranges"} subtitle={"managing offer ranges!"}>
