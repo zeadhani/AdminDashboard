@@ -13,16 +13,18 @@ function CommonFilterContainer({
   orderBy,
   sortArray,
   searchLabel,
-  commonmodel
+  commonmodel,
 }) {
   return (
     <>
-      <SearchFilter
-        colors={colors}
-        label={searchLabel}
-        search={search}
-        handleSearchChange={handleSearchChange}
-      />
+      {searchLabel && (
+        <SearchFilter
+          colors={colors}
+          label={searchLabel}
+          search={search}
+          handleSearchChange={handleSearchChange}
+        />
+      )}
       <CustomFilter
         label={"Sort By"}
         filterarray={sortArray}

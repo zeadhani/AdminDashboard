@@ -14,8 +14,8 @@ import ActionsButtonsTable from "../../components/Table/ActionsButtonsTable";
 
 const columns = [
   { id: "id", label: "Id" },
-  { id: "title", label: "Title" },
   { id: "image", label: "Image" },
+  { id: "title", label: "Title" },
 ];
 function HomeSliderDashboard() {
   const [loading, setLoading] = useState();
@@ -52,7 +52,7 @@ function HomeSliderDashboard() {
             <CustomTableRow colors={colors} key={row.id}>
               <RowIdentifier>{row?.id}</RowIdentifier>
               <TableImage image={row?.image} />
-              <TableCell>{row?.title} EGP</TableCell>
+              <TableCell>{row?.title}</TableCell>
               <ActionsButtonsTable
                 editAction={editAction(row?.id)}
                 colors={colors}
