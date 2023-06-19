@@ -6,6 +6,9 @@ import AuthRoutes from "./AuthRoutes";
 import Login from "../../screens/auth/Login";
 import Dashboard from "../../screens/dashboard";
 
+const ReviewsDashboard = React.lazy(() =>
+  import("../../screens/products/reviews")
+);
 const TeamDashboard = React.lazy(() => import("../../screens/Team/Index"));
 const UserDashbaord = React.lazy(() => import("../../screens/Users/Index"));
 const UserDetails = React.lazy(() => import("../../screens/Users/userDetails"));
@@ -128,6 +131,14 @@ function RouteComponent() {
           element={
             <CustomSuspense>
               <ProductDetails />
+            </CustomSuspense>
+          }
+        />
+        <Route
+          path="/Reviews/:id"
+          element={
+            <CustomSuspense>
+              <ReviewsDashboard />
             </CustomSuspense>
           }
         />

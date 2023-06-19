@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   MenuItem,
@@ -25,6 +26,7 @@ import useImage from "../../components/hooks/general/useImage";
 import ImageFileDisplay from "../../components/Forms/imageFileDisplay";
 import { useEffect } from "react";
 import authFetch from "../../services/interceptors";
+import { ArrowRight } from "@mui/icons-material";
 
 function ProductDetails() {
   let { id } = useParams();
@@ -196,7 +198,9 @@ function ProductDetails() {
       : "",
     select: "",
   };
-
+  const handleViewReviews = () => {
+    navigate("/Reviews/" + product.id);
+  };
   const handlecheckGender = () => {
     setHasGender(!hasGender);
   };
@@ -225,6 +229,18 @@ function ProductDetails() {
             loading={loading}
             handleSubmit={handleSubmit}
           >
+            <Button
+              component="a"
+              variant="contained"
+              onClick={handleViewReviews}
+              sx={{
+                color: "#fff",
+                bgcolor: theme.palette.mode === "dark" ? "#535ac8" : "#1f2a40",
+              }}
+              endIcon={<ArrowRight color="primary" />}
+            >
+              View Reviews
+            </Button>
             <CustomTextField
               type={"text"}
               name="name"

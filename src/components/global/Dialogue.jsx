@@ -64,16 +64,18 @@ function Dialogue({
           )}
         </Box>
         <DialogContent>{children}</DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handlesaveitem}
-            variant="text"
-            color={theme.palette.mode === "dark" ? "secondary" : "primary"}
-            autoFocus
-          >
-            Submit
-          </Button>
-        </DialogActions>
+        {handlesaveitem && (
+          <DialogActions>
+            <Button
+              onClick={handlesaveitem}
+              variant="text"
+              color={theme.palette.mode === "dark" ? "secondary" : "primary"}
+              autoFocus
+            >
+              Submit
+            </Button>
+          </DialogActions>
+        )}
       </Dialog>
     </>
   );
