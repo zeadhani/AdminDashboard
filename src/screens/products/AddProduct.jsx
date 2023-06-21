@@ -100,7 +100,7 @@ function AddProduct() {
       );
       if (result.statusText === "OK") toast("Product added successfully");
     } catch (err) {
-      setServerErrors(err.response.data.error);
+      setServerErrors(err.response?.data?.error);
     }
     setLoading(false);
   };
