@@ -179,7 +179,7 @@ function OfferDetails({
                     <CustomTextField
                       type={"text"}
                       name="offerRange"
-                      label={"Offer Rnage"}
+                      label={"Offer Range"}
                       errors={errors.offerRange}
                       touched={touched.offerRange}
                       select
